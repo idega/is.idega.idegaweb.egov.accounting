@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<BillingEntries xmlns="BillingEntries" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="BillingEntriesSchema.xsd ">
+ <BillingEntry>
+  <PersonalId>180800-3280</PersonalId>
+  <PayerPersonalId>251067-5039</PayerPersonalId>
+  <ProvIderCode>i7138</ProvIderCode>
+  <ProductCode>AFTER_SCHOOL_CARE</ProductCode>
+  <ProjectCode>R18856</ProjectCode>
+  <Amount>1</Amount>
+  <StartDate>2006-05-29</StartDate>
+  <EndDate></EndDate>
+  <PaymentMethod>visa/euro</PaymentMethod>
+  <UnitPrice>5.000</UnitPrice>
+  <CardNumber>5411399203191208</CardNumber>
+  <CardType>eurocard</CardType>
+  <CardExpirationMonth>10</CardExpirationMonth>
+  <CardExpirationYear>2006</CardExpirationYear>
+ </BillingEntry>
+ <BillingEntry>
+  <PersonalId>180800-3280</PersonalId>
+  <PayerPersonalId>251067-5039</PayerPersonalId>
+  <ProvIderCode>i7138</ProvIderCode>
+  <ProductCode>REFRESHMENTS</ProductCode>
+  <ProjectCode>R18856</ProjectCode>
+  <Amount>1</Amount>
+  <StartDate>2006-05-29</StartDate>
+  <EndDate></EndDate>
+  <PaymentMethod>visa/euro</PaymentMethod>
+  <UnitPrice>1.000</UnitPrice>
+  <CardNumber>5411399203191208</CardNumber>
+  <CardType>eurocard</CardType>
+  <CardExpirationMonth>10</CardExpirationMonth>
+  <CardExpirationYear>2006</CardExpirationYear>
+ </BillingEntry>
+</BillingEntries>

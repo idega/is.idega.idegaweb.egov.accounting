@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://www.idega.com/BillingEntriesSchema"
+	xmlns:tns="http://www.idega.com/BillingEntriesSchema">
+
+
+	<complexType name="BillingEntries">
+		<sequence>
+			<element name="BillingEntry" type="tns:BillingEntry"
+				maxOccurs="unbounded" minOccurs="0">
+			</element>
+		</sequence>
+	</complexType>
+
+
+	<complexType name="BillingEntry">
+		<sequence>
+			<element name="PersonalId" type="string"></element>
+			<element name="PayerPersonalId" type="string"></element>
+			<element name="ProviderCode" type="string"></element>
+			<element name="ProductCode" type="string"></element>
+			<element name="ProjectCode" type="string"></element>
+			<element name="Amount" type="int"></element>
+			<element name="StartDate" type="date"></element>
+			<element name="EndDate" type="date"></element>
+			<element name="PaymentMethod" type="string"></element>
+			<element name="UnitPrice" type="float"></element>
+			<element name="CardNumber" type="string"></element>
+			<element name="CardType" type="string"></element>
+			<element name="CardExpirationMonth" type="int"></element>
+			<element name="CardExpirationYear" type="int"></element>
+		</sequence>
+	</complexType>
+
+</schema>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:tns="http://www.idega.com/AccountingService/"
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="AccountingService"
+	targetNamespace="http://www.idega.com/AccountingService/">
+	<wsdl:types>
+		<xsd:schema
+			targetNamespace="http://www.idega.com/AccountingService/">
+			
+			<xsd:complexType name="BillingEntries">
+				<xsd:sequence>
+					<xsd:element name="BillingEntry" type="tns:BillingEntry"
+						maxOccurs="unbounded" minOccurs="0">
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+
+
+			<xsd:complexType name="BillingEntry">
+				<xsd:sequence>
+					<xsd:element name="PersonalId" type="xsd:string"></xsd:element>
+					<xsd:element name="PayerPersonalId" type="xsd:string"></xsd:element>
+					<xsd:element name="ProviderCode" type="xsd:string"></xsd:element>
+					<xsd:element name="ProductCode" type="xsd:string"></xsd:element>
+					<xsd:element name="ProjectCode" type="xsd:string"></xsd:element>
+					<xsd:element name="Amount" type="xsd:int"></xsd:element>
+					<xsd:element name="StartDate" type="xsd:date"></xsd:element>
+					<xsd:element name="EndDate" type="xsd:date"></xsd:element>
+					<xsd:element name="PaymentMethod" type="xsd:string"></xsd:element>
+					<xsd:element name="UnitPrice" type="xsd:float"></xsd:element>
+					<xsd:element name="CardNumber" type="xsd:string"></xsd:element>
+					<xsd:element name="CardType" type="xsd:string"></xsd:element>
+					<xsd:element name="CardExpirationMonth" type="xsd:int"></xsd:element>
+					<xsd:element name="CardExpirationYear" type="xsd:int"></xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+			
+			<xsd:element name="getBillingEntriesResponse"
+				type="tns:BillingEntries" />
+			<xsd:element name="getBillingEntriesRequest"
+				type="tns:BillingEntriesRequest" />
+
+			<xsd:complexType name="BillingEntriesRequest">
+				<xsd:sequence>
+					<xsd:element name="ServiceCode" type="xsd:string"></xsd:element>
+					<xsd:element name="ProviderCode"
+						type="xsd:string">
+					</xsd:element>
+					<xsd:element name="PeriodStart" type="xsd:date"></xsd:element>
+					<xsd:element name="PeriodEnd" type="xsd:date"></xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+		</xsd:schema>
+	</wsdl:types>
+	<wsdl:message name="getBillingEntriesResponse">
+		<wsdl:part element="tns:getBillingEntriesResponse"
+			name="getBillingEntriesResponse" />
+	</wsdl:message>
+	<wsdl:message name="getBillingEntriesRequest">
+		<wsdl:part element="tns:getBillingEntriesRequest"
+			name="getBillingEntriesRequest" />
+	</wsdl:message>
+	<wsdl:portType name="AccountingService">
+		<wsdl:operation name="getBillingEntries">
+			<wsdl:input message="tns:getBillingEntriesRequest" />
+			<wsdl:output message="tns:getBillingEntriesResponse" />
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="AccountingServiceSOAP"
+		type="tns:AccountingService">
+		<soap:binding style="document"
+			transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="getBillingEntries">
+			<soap:operation
+				soapAction="http://www.idega.com/AccountingService/getBillingEntries" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="AccountingService">
+		<wsdl:port binding="tns:AccountingServiceSOAP"
+			name="AccountingServiceSOAP">
+			<soap:address location="http://www.idega.com" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>
