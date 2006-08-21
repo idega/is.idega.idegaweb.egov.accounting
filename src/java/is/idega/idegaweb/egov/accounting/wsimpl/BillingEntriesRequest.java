@@ -37,7 +37,7 @@ public class BillingEntriesRequest  implements java.io.Serializable {
      * @return serviceCode
      */
     public java.lang.String getServiceCode() {
-        return this.serviceCode;
+        return serviceCode;
     }
 
 
@@ -57,7 +57,7 @@ public class BillingEntriesRequest  implements java.io.Serializable {
      * @return providerCode
      */
     public java.lang.String getProviderCode() {
-        return this.providerCode;
+        return providerCode;
     }
 
 
@@ -77,7 +77,7 @@ public class BillingEntriesRequest  implements java.io.Serializable {
      * @return periodStart
      */
     public java.util.Date getPeriodStart() {
-        return this.periodStart;
+        return periodStart;
     }
 
 
@@ -97,7 +97,7 @@ public class BillingEntriesRequest  implements java.io.Serializable {
      * @return periodEnd
      */
     public java.util.Date getPeriodEnd() {
-        return this.periodEnd;
+        return periodEnd;
     }
 
 
@@ -116,10 +116,10 @@ public class BillingEntriesRequest  implements java.io.Serializable {
         BillingEntriesRequest other = (BillingEntriesRequest) obj;
         if (obj == null) return false;
         if (this == obj) return true;
-        if (this.__equalsCalc != null) {
-            return (this.__equalsCalc == obj);
+        if (__equalsCalc != null) {
+            return (__equalsCalc == obj);
         }
-        this.__equalsCalc = obj;
+        __equalsCalc = obj;
         boolean _equals;
         _equals = true && 
             ((this.serviceCode==null && other.getServiceCode()==null) || 
@@ -134,16 +134,16 @@ public class BillingEntriesRequest  implements java.io.Serializable {
             ((this.periodEnd==null && other.getPeriodEnd()==null) || 
              (this.periodEnd!=null &&
               this.periodEnd.equals(other.getPeriodEnd())));
-        this.__equalsCalc = null;
+        __equalsCalc = null;
         return _equals;
     }
 
     private boolean __hashCodeCalc = false;
     public synchronized int hashCode() {
-        if (this.__hashCodeCalc) {
+        if (__hashCodeCalc) {
             return 0;
         }
-        this.__hashCodeCalc = true;
+        __hashCodeCalc = true;
         int _hashCode = 1;
         if (getServiceCode() != null) {
             _hashCode += getServiceCode().hashCode();
@@ -157,7 +157,7 @@ public class BillingEntriesRequest  implements java.io.Serializable {
         if (getPeriodEnd() != null) {
             _hashCode += getPeriodEnd().hashCode();
         }
-        this.__hashCodeCalc = false;
+        __hashCodeCalc = false;
         return _hashCode;
     }
 

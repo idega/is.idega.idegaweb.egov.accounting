@@ -7,10 +7,7 @@
 
 package is.idega.idegaweb.egov.accounting.wsimpl;
 
-import is.idega.idegaweb.egov.accounting.business.AccountingEntry;
-
-public class BillingEntry  implements java.io.Serializable, AccountingEntry {
-	
+public class BillingEntry  implements java.io.Serializable {
     private java.lang.String personalId;
 
     private java.lang.String payerPersonalId;
@@ -80,7 +77,7 @@ public class BillingEntry  implements java.io.Serializable, AccountingEntry {
      * @return personalId
      */
     public java.lang.String getPersonalId() {
-        return this.personalId;
+        return personalId;
     }
 
 
@@ -100,7 +97,7 @@ public class BillingEntry  implements java.io.Serializable, AccountingEntry {
      * @return payerPersonalId
      */
     public java.lang.String getPayerPersonalId() {
-        return this.payerPersonalId;
+        return payerPersonalId;
     }
 
 
@@ -120,7 +117,7 @@ public class BillingEntry  implements java.io.Serializable, AccountingEntry {
      * @return providerCode
      */
     public java.lang.String getProviderCode() {
-        return this.providerCode;
+        return providerCode;
     }
 
 
@@ -140,7 +137,7 @@ public class BillingEntry  implements java.io.Serializable, AccountingEntry {
      * @return productCode
      */
     public java.lang.String getProductCode() {
-        return this.productCode;
+        return productCode;
     }
 
 
@@ -160,7 +157,7 @@ public class BillingEntry  implements java.io.Serializable, AccountingEntry {
      * @return projectCode
      */
     public java.lang.String getProjectCode() {
-        return this.projectCode;
+        return projectCode;
     }
 
 
@@ -180,7 +177,7 @@ public class BillingEntry  implements java.io.Serializable, AccountingEntry {
      * @return amount
      */
     public int getAmount() {
-        return this.amount;
+        return amount;
     }
 
 
@@ -200,7 +197,7 @@ public class BillingEntry  implements java.io.Serializable, AccountingEntry {
      * @return startDate
      */
     public java.util.Date getStartDate() {
-        return this.startDate;
+        return startDate;
     }
 
 
@@ -220,7 +217,7 @@ public class BillingEntry  implements java.io.Serializable, AccountingEntry {
      * @return endDate
      */
     public java.util.Date getEndDate() {
-        return this.endDate;
+        return endDate;
     }
 
 
@@ -240,7 +237,7 @@ public class BillingEntry  implements java.io.Serializable, AccountingEntry {
      * @return paymentMethod
      */
     public java.lang.String getPaymentMethod() {
-        return this.paymentMethod;
+        return paymentMethod;
     }
 
 
@@ -260,7 +257,7 @@ public class BillingEntry  implements java.io.Serializable, AccountingEntry {
      * @return unitPrice
      */
     public float getUnitPrice() {
-        return this.unitPrice;
+        return unitPrice;
     }
 
 
@@ -280,7 +277,7 @@ public class BillingEntry  implements java.io.Serializable, AccountingEntry {
      * @return cardNumber
      */
     public java.lang.String getCardNumber() {
-        return this.cardNumber;
+        return cardNumber;
     }
 
 
@@ -300,7 +297,7 @@ public class BillingEntry  implements java.io.Serializable, AccountingEntry {
      * @return cardType
      */
     public java.lang.String getCardType() {
-        return this.cardType;
+        return cardType;
     }
 
 
@@ -320,7 +317,7 @@ public class BillingEntry  implements java.io.Serializable, AccountingEntry {
      * @return cardExpirationMonth
      */
     public int getCardExpirationMonth() {
-        return this.cardExpirationMonth;
+        return cardExpirationMonth;
     }
 
 
@@ -340,7 +337,7 @@ public class BillingEntry  implements java.io.Serializable, AccountingEntry {
      * @return cardExpirationYear
      */
     public int getCardExpirationYear() {
-        return this.cardExpirationYear;
+        return cardExpirationYear;
     }
 
 
@@ -356,13 +353,13 @@ public class BillingEntry  implements java.io.Serializable, AccountingEntry {
     private java.lang.Object __equalsCalc = null;
     public synchronized boolean equals(java.lang.Object obj) {
         if (!(obj instanceof BillingEntry)) return false;
-        AccountingEntry other = (AccountingEntry) obj;
+        BillingEntry other = (BillingEntry) obj;
         if (obj == null) return false;
         if (this == obj) return true;
-        if (this.__equalsCalc != null) {
-            return (this.__equalsCalc == obj);
+        if (__equalsCalc != null) {
+            return (__equalsCalc == obj);
         }
-        this.__equalsCalc = obj;
+        __equalsCalc = obj;
         boolean _equals;
         _equals = true && 
             ((this.personalId==null && other.getPersonalId()==null) || 
@@ -399,16 +396,16 @@ public class BillingEntry  implements java.io.Serializable, AccountingEntry {
               this.cardType.equals(other.getCardType()))) &&
             this.cardExpirationMonth == other.getCardExpirationMonth() &&
             this.cardExpirationYear == other.getCardExpirationYear();
-        this.__equalsCalc = null;
+        __equalsCalc = null;
         return _equals;
     }
 
     private boolean __hashCodeCalc = false;
     public synchronized int hashCode() {
-        if (this.__hashCodeCalc) {
+        if (__hashCodeCalc) {
             return 0;
         }
-        this.__hashCodeCalc = true;
+        __hashCodeCalc = true;
         int _hashCode = 1;
         if (getPersonalId() != null) {
             _hashCode += getPersonalId().hashCode();
@@ -444,7 +441,7 @@ public class BillingEntry  implements java.io.Serializable, AccountingEntry {
         }
         _hashCode += getCardExpirationMonth();
         _hashCode += getCardExpirationYear();
-        this.__hashCodeCalc = false;
+        __hashCodeCalc = false;
         return _hashCode;
     }
 

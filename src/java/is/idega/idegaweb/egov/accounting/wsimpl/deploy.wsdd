@@ -20,10 +20,15 @@
       <parameter name="className" value="is.idega.idegaweb.egov.accounting.wsimpl.AccountingServiceSOAPImpl"/>
       <parameter name="wsdlPortType" value="AccountingService"/>
       <parameter name="typeMappingVersion" value="1.2"/>
-      <operation name="getBillingEntries" qname="getBillingEntries" returnQName="retNS:getBillingEntriesResponse" xmlns:retNS="http://www.idega.com/AccountingService/" returnType="rtns:BillingEntries" xmlns:rtns="http://www.idega.com/AccountingService/" returnItemQName="BillingEntry" soapAction="http://www.idega.com/AccountingService/getBillingEntries" >
+      <operation name="getBillingEntries" qname="getBillingEntries" returnQName="retNS:BillingEntries" xmlns:retNS="http://www.idega.com/AccountingService/" returnType="rtns:BillingEntries" xmlns:rtns="http://www.idega.com/AccountingService/" returnItemQName="BillingEntry" soapAction="http://www.idega.com/AccountingService/getBillingEntries" >
         <parameter qname="pns:getBillingEntriesRequest" xmlns:pns="http://www.idega.com/AccountingService/" type="tns:BillingEntriesRequest" xmlns:tns="http://www.idega.com/AccountingService/"/>
       </operation>
-      <parameter name="allowedMethods" value="getBillingEntries"/>
+      <operation name="getBillingEntriesFromServiceCode" qname="getBillingEntriesFromServiceCode" returnQName="retNS:BillingEntries" xmlns:retNS="http://www.idega.com/AccountingService/" returnType="rtns:BillingEntries" xmlns:rtns="http://www.idega.com/AccountingService/" returnItemQName="BillingEntry" soapAction="http://www.idega.com/AccountingService/getBillingEntriesFromServiceCode" >
+        <parameter qname="ServiceCode" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
+      <operation name="getAllBillingEntries" qname="getAllBillingEntries" returnQName="retNS:BillingEntries" xmlns:retNS="http://www.idega.com/AccountingService/" returnType="rtns:BillingEntries" xmlns:rtns="http://www.idega.com/AccountingService/" returnItemQName="BillingEntry" soapAction="http://www.idega.com/AccountingService/getAllBillingEntries" >
+      </operation>
+      <parameter name="allowedMethods" value="getBillingEntries getAllBillingEntries getBillingEntriesFromServiceCode"/>
 
       <arrayMapping
         xmlns:ns="http://www.idega.com/AccountingService/"
