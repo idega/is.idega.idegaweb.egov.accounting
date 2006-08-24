@@ -29,10 +29,10 @@ import com.idega.util.database.ConnectionBroker;
  * Daemon thread which handles the update of the table RRVK_AGRESSO for 
  * integration of date from the AfterschoolCare module with the Reykjavik Accounting system.
  * </p>
- *  Last modified: $Date: 2006/08/24 12:23:46 $ by $Author: tryggvil $
+ *  Last modified: $Date: 2006/08/24 12:33:42 $ by $Author: tryggvil $
  * 
  * @author <a href="mailto:tryggvil@idega.com">tryggvil</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class RvkAgressoUpdater implements Runnable {
 
@@ -60,10 +60,8 @@ public class RvkAgressoUpdater implements Runnable {
 				//Hack to make the necessary bundles load before we run:
 				Thread.sleep(1000*60);
 				runBatch();
-				//sleep for an hour:
-				//Thread.sleep(60*60*1000);
-				//sleep for 5 minutes minute:
-				Thread.sleep(5*60*1000);
+				//sleep for 30 minutes:
+				Thread.sleep(30*60*1000);
 			}
 			catch (InterruptedException e) {
 				log.info("Caught InterrupptedException. Shutting down);");
@@ -82,10 +80,10 @@ public class RvkAgressoUpdater implements Runnable {
 			executeUpdate();
 			// incerment the nextRun to run next after 24 hours:
 			IWTimestamp iwts = new IWTimestamp();
-			//ts.addDays(1);
-			//ts.setHour(4);
+			iwts.addDays(1);
+			iwts.setHour(4);
 
-			iwts.addHours(1);
+			//iwts.addHours(1);
 			
 			Timestamp ts = iwts.getTimestamp();
 			this.nextRun = ts.getTime();//System.currentTimeMillis() + 1000 * 60 * 60 * 24;
