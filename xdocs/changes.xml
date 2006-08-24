@@ -4,6 +4,13 @@
     <author email="laddi@idega.com">Thorhallur "Laddi" Helgason</author>
   </properties>
   <body>
+  	
+ 		<release version="1.0.3" date="2006-08-24">
+			<action dev="tryggvil" type="update">
+					Changing implementation of Agresso update daemon to run at 4 o'clock AM
+			</action>
+		</release>
+
   
  		<release version="1.0.2" date="2006-08-24">
 			<action dev="tryggvil" type="update">
