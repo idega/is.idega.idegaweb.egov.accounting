@@ -11,10 +11,8 @@ package is.idega.idegaweb.egov.accounting.data;
 
 import java.util.Collection;
 import java.util.Iterator;
-
 import javax.ejb.CreateException;
 import javax.ejb.FinderException;
-
 import com.idega.block.process.data.CaseCode;
 import com.idega.block.process.data.CaseCodeHome;
 import com.idega.data.GenericEntity;
@@ -24,7 +22,7 @@ import com.idega.data.query.SelectQuery;
 import com.idega.data.query.Table;
 
 
-public class CaseCodeAccountingKeyBMPBean extends GenericEntity {
+public class CaseCodeAccountingKeyBMPBean extends GenericEntity implements CaseCodeAccountingKey {
 
 	private static final String ENTITY_NAME = "acc_accounting_key";
 	
@@ -45,11 +43,11 @@ public class CaseCodeAccountingKeyBMPBean extends GenericEntity {
 	}
 
 	public void initializeAttributes() {
-    addOneToOneRelationship(COLUMN_CASE_CODE, CaseCode.class);
-    setAsPrimaryKey(COLUMN_CASE_CODE, true);
-
-    addAttribute(COLUMN_ACCOUNTING_KEY, "Accounting key", String.class);
-    addAttribute(COLUMN_DESCRIPTION, "Description", String.class);
+		addAttribute(COLUMN_CASE_CODE, "Case Code",true,true, String.class,7,GenericEntity.ONE_TO_ONE,CaseCode.class);
+	    setAsPrimaryKey(COLUMN_CASE_CODE, true);
+	    //addOneToOneRelationship(COLUMN_CASE_CODE, CaseCode.class);
+	    addAttribute(COLUMN_ACCOUNTING_KEY, "Accounting key", String.class);
+	    addAttribute(COLUMN_DESCRIPTION, "Description", String.class);
 	}
 	
 	public void insertStartData() {

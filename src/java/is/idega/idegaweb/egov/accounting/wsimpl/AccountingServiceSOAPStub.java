@@ -16,7 +16,7 @@ public class AccountingServiceSOAPStub extends org.apache.axis.client.Stub imple
     static org.apache.axis.description.OperationDesc [] _operations;
 
     static {
-        _operations = new org.apache.axis.description.OperationDesc[3];
+        _operations = new org.apache.axis.description.OperationDesc[1];
         _initOperationDesc1();
     }
 
@@ -29,36 +29,12 @@ public class AccountingServiceSOAPStub extends org.apache.axis.client.Stub imple
         oper.addParameter(param);
         oper.setReturnType(new javax.xml.namespace.QName("http://www.idega.com/AccountingService/", "BillingEntries"));
         oper.setReturnClass(is.idega.idegaweb.egov.accounting.wsimpl.BillingEntry[].class);
-        oper.setReturnQName(new javax.xml.namespace.QName("http://www.idega.com/AccountingService/", "BillingEntries"));
+        oper.setReturnQName(new javax.xml.namespace.QName("http://www.idega.com/AccountingService/", "getBillingEntriesResponse"));
         param = oper.getReturnParamDesc();
         param.setItemQName(new javax.xml.namespace.QName("", "BillingEntry"));
         oper.setStyle(org.apache.axis.constants.Style.DOCUMENT);
         oper.setUse(org.apache.axis.constants.Use.LITERAL);
         _operations[0] = oper;
-
-        oper = new org.apache.axis.description.OperationDesc();
-        oper.setName("getBillingEntriesFromServiceCode");
-        param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("", "ServiceCode"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"), java.lang.String.class, false, false);
-        oper.addParameter(param);
-        oper.setReturnType(new javax.xml.namespace.QName("http://www.idega.com/AccountingService/", "BillingEntries"));
-        oper.setReturnClass(is.idega.idegaweb.egov.accounting.wsimpl.BillingEntry[].class);
-        oper.setReturnQName(new javax.xml.namespace.QName("http://www.idega.com/AccountingService/", "BillingEntries"));
-        param = oper.getReturnParamDesc();
-        param.setItemQName(new javax.xml.namespace.QName("", "BillingEntry"));
-        oper.setStyle(org.apache.axis.constants.Style.DOCUMENT);
-        oper.setUse(org.apache.axis.constants.Use.LITERAL);
-        _operations[1] = oper;
-
-        oper = new org.apache.axis.description.OperationDesc();
-        oper.setName("getAllBillingEntries");
-        oper.setReturnType(new javax.xml.namespace.QName("http://www.idega.com/AccountingService/", "BillingEntries"));
-        oper.setReturnClass(is.idega.idegaweb.egov.accounting.wsimpl.BillingEntry[].class);
-        oper.setReturnQName(new javax.xml.namespace.QName("http://www.idega.com/AccountingService/", "BillingEntries"));
-        param = oper.getReturnParamDesc();
-        param.setItemQName(new javax.xml.namespace.QName("", "BillingEntry"));
-        oper.setStyle(org.apache.axis.constants.Style.DOCUMENT);
-        oper.setUse(org.apache.axis.constants.Use.LITERAL);
-        _operations[2] = oper;
 
     }
 
@@ -197,74 +173,6 @@ public class AccountingServiceSOAPStub extends org.apache.axis.client.Stub imple
         setRequestHeaders(_call);
         setAttachments(_call);
  try {        java.lang.Object _resp = _call.invoke(new java.lang.Object[] {getBillingEntriesRequest});
-
-        if (_resp instanceof java.rmi.RemoteException) {
-            throw (java.rmi.RemoteException)_resp;
-        }
-        else {
-            extractAttachments(_call);
-            try {
-                return (is.idega.idegaweb.egov.accounting.wsimpl.BillingEntry[]) _resp;
-            } catch (java.lang.Exception _exception) {
-                return (is.idega.idegaweb.egov.accounting.wsimpl.BillingEntry[]) org.apache.axis.utils.JavaUtils.convert(_resp, is.idega.idegaweb.egov.accounting.wsimpl.BillingEntry[].class);
-            }
-        }
-  } catch (org.apache.axis.AxisFault axisFaultException) {
-  throw axisFaultException;
-}
-    }
-
-    public is.idega.idegaweb.egov.accounting.wsimpl.BillingEntry[] getBillingEntriesFromServiceCode(java.lang.String serviceCode) throws java.rmi.RemoteException {
-        if (super.cachedEndpoint == null) {
-            throw new org.apache.axis.NoEndPointException();
-        }
-        org.apache.axis.client.Call _call = createCall();
-        _call.setOperation(_operations[1]);
-        _call.setUseSOAPAction(true);
-        _call.setSOAPActionURI("http://www.idega.com/AccountingService/getBillingEntriesFromServiceCode");
-        _call.setEncodingStyle(null);
-        _call.setProperty(org.apache.axis.client.Call.SEND_TYPE_ATTR, Boolean.FALSE);
-        _call.setProperty(org.apache.axis.AxisEngine.PROP_DOMULTIREFS, Boolean.FALSE);
-        _call.setSOAPVersion(org.apache.axis.soap.SOAPConstants.SOAP11_CONSTANTS);
-        _call.setOperationName(new javax.xml.namespace.QName("", "getBillingEntriesFromServiceCode"));
-
-        setRequestHeaders(_call);
-        setAttachments(_call);
- try {        java.lang.Object _resp = _call.invoke(new java.lang.Object[] {serviceCode});
-
-        if (_resp instanceof java.rmi.RemoteException) {
-            throw (java.rmi.RemoteException)_resp;
-        }
-        else {
-            extractAttachments(_call);
-            try {
-                return (is.idega.idegaweb.egov.accounting.wsimpl.BillingEntry[]) _resp;
-            } catch (java.lang.Exception _exception) {
-                return (is.idega.idegaweb.egov.accounting.wsimpl.BillingEntry[]) org.apache.axis.utils.JavaUtils.convert(_resp, is.idega.idegaweb.egov.accounting.wsimpl.BillingEntry[].class);
-            }
-        }
-  } catch (org.apache.axis.AxisFault axisFaultException) {
-  throw axisFaultException;
-}
-    }
-
-    public is.idega.idegaweb.egov.accounting.wsimpl.BillingEntry[] getAllBillingEntries() throws java.rmi.RemoteException {
-        if (super.cachedEndpoint == null) {
-            throw new org.apache.axis.NoEndPointException();
-        }
-        org.apache.axis.client.Call _call = createCall();
-        _call.setOperation(_operations[2]);
-        _call.setUseSOAPAction(true);
-        _call.setSOAPActionURI("http://www.idega.com/AccountingService/getAllBillingEntries");
-        _call.setEncodingStyle(null);
-        _call.setProperty(org.apache.axis.client.Call.SEND_TYPE_ATTR, Boolean.FALSE);
-        _call.setProperty(org.apache.axis.AxisEngine.PROP_DOMULTIREFS, Boolean.FALSE);
-        _call.setSOAPVersion(org.apache.axis.soap.SOAPConstants.SOAP11_CONSTANTS);
-        _call.setOperationName(new javax.xml.namespace.QName("", "getAllBillingEntries"));
-
-        setRequestHeaders(_call);
-        setAttachments(_call);
- try {        java.lang.Object _resp = _call.invoke(new java.lang.Object[] {});
 
         if (_resp instanceof java.rmi.RemoteException) {
             throw (java.rmi.RemoteException)_resp;

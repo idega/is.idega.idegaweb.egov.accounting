@@ -9,6 +9,4 @@ package is.idega.idegaweb.egov.accounting.wsimpl;
 
 public interface AccountingService_PortType extends java.rmi.Remote {
     public is.idega.idegaweb.egov.accounting.wsimpl.BillingEntry[] getBillingEntries(is.idega.idegaweb.egov.accounting.wsimpl.BillingEntriesRequest getBillingEntriesRequest) throws java.rmi.RemoteException;
-    public is.idega.idegaweb.egov.accounting.wsimpl.BillingEntry[] getBillingEntriesFromServiceCode(java.lang.String serviceCode) throws java.rmi.RemoteException;
-    public is.idega.idegaweb.egov.accounting.wsimpl.BillingEntry[] getAllBillingEntries() throws java.rmi.RemoteException;
 }

@@ -7,25 +7,49 @@
 
 package is.idega.idegaweb.egov.accounting.wsimpl;
 
+import is.idega.idegaweb.egov.accounting.business.AccountingBusiness;
+import is.idega.idegaweb.egov.accounting.business.AccountingBusinessManager;
 import is.idega.idegaweb.egov.accounting.business.AccountingEntry;
+import is.idega.idegaweb.egov.accounting.data.CaseCodeAccountingKey;
+import is.idega.idegaweb.egov.accounting.data.CaseCodeAccountingKeyHome;
 import java.rmi.RemoteException;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import javax.ejb.FinderException;
+import com.idega.block.process.data.CaseCode;
+import com.idega.data.IDOLookup;
+import com.idega.data.IDOLookupException;
+import com.idega.idegaweb.IWMainApplication;
 import com.idega.util.IWTimestamp;
 
 public class AccountingServiceSOAPImpl implements is.idega.idegaweb.egov.accounting.wsimpl.AccountingService_PortType {
 
 	public BillingEntry[] getBillingEntries(is.idega.idegaweb.egov.accounting.wsimpl.BillingEntriesRequest getBillingEntriesRequest) throws java.rmi.RemoteException {
-		/*try {
+		try {
 			CaseCodeAccountingKeyHome home = (CaseCodeAccountingKeyHome) IDOLookup.getHome(CaseCodeAccountingKey.class);
-			CaseCodeAccountingKey key = home.findByAccountingKey(getBillingEntriesRequest.getServiceCode());
 			
-			CaseCode code = key.getCaseCode();
+			CaseCodeAccountingKey key = null;
+			CaseCode code = null;
+			if(getBillingEntriesRequest.getServiceCode()!=null){
+				try{
+					key=home.findByAccountingKey(getBillingEntriesRequest.getServiceCode());
+					code=key.getCaseCode();
+				}
+				catch(FinderException fe){
+					fe.printStackTrace();
+				}
+			}
 			AccountingBusiness business = AccountingBusinessManager.getInstance().getAccountingBusinessOrDefault(code, IWMainApplication.getDefaultIWApplicationContext());
 			
-			IWTimestamp periodStart = new IWTimestamp(getBillingEntriesRequest.getPeriodStart());
-			IWTimestamp periodEnd = new IWTimestamp(getBillingEntriesRequest.getPeriodEnd());
 			
+			IWTimestamp periodStart = null;
+			if(getBillingEntriesRequest.getPeriodStart()!=null){
+				periodStart = new IWTimestamp(getBillingEntriesRequest.getPeriodStart());
+			}
+			IWTimestamp periodEnd = null;
+			if(getBillingEntriesRequest.getPeriodEnd()!=null){
+				periodEnd=new IWTimestamp(getBillingEntriesRequest.getPeriodEnd());
+			}
 			if (business != null) {
 				
 				AccountingEntry[] entries = business.getAccountingEntries(getBillingEntriesRequest.getServiceCode(), getBillingEntriesRequest.getProviderCode(), periodStart.getDate(), periodEnd.getDate());
@@ -33,15 +57,12 @@ public class AccountingServiceSOAPImpl implements is.idega.idegaweb.egov.account
 				return bEntries;
 			}
 		}
-		catch (FinderException fe) {
-			fe.printStackTrace();
-		}
 		catch (IDOLookupException ile) {
 			ile.printStackTrace();
 		}
 		
-		return null;*/
-		return generateDummyData();
+		return null;
+		//return generateDummyData();
 	}
 
 	/**

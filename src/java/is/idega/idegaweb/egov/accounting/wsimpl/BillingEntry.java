@@ -7,7 +7,9 @@
 
 package is.idega.idegaweb.egov.accounting.wsimpl;
 
-public class BillingEntry  implements java.io.Serializable {
+import is.idega.idegaweb.egov.accounting.business.AccountingEntry;
+
+public class BillingEntry  implements java.io.Serializable,AccountingEntry {
     private java.lang.String personalId;
 
     private java.lang.String payerPersonalId;

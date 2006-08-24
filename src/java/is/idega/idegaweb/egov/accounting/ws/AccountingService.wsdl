@@ -7,11 +7,11 @@
 	<wsdl:types>
 		<xsd:schema
 			targetNamespace="http://www.idega.com/AccountingService/">
-
+			
 			<xsd:complexType name="BillingEntries">
 				<xsd:sequence>
-					<xsd:element name="BillingEntry"
-						type="tns:BillingEntry" maxOccurs="unbounded" minOccurs="0">
+					<xsd:element name="BillingEntry" type="tns:BillingEntry"
+						maxOccurs="unbounded" minOccurs="0">
 					</xsd:element>
 				</xsd:sequence>
 			</xsd:complexType>
@@ -20,33 +20,23 @@
 			<xsd:complexType name="BillingEntry">
 				<xsd:sequence>
 					<xsd:element name="PersonalId" type="xsd:string"></xsd:element>
-					<xsd:element name="PayerPersonalId"
-						type="xsd:string">
-					</xsd:element>
-					<xsd:element name="ProviderCode"
-						type="xsd:string">
-					</xsd:element>
+					<xsd:element name="PayerPersonalId" type="xsd:string"></xsd:element>
+					<xsd:element name="ProviderCode" type="xsd:string"></xsd:element>
 					<xsd:element name="ProductCode" type="xsd:string"></xsd:element>
 					<xsd:element name="ProjectCode" type="xsd:string"></xsd:element>
 					<xsd:element name="Amount" type="xsd:int"></xsd:element>
 					<xsd:element name="StartDate" type="xsd:date"></xsd:element>
 					<xsd:element name="EndDate" type="xsd:date"></xsd:element>
-					<xsd:element name="PaymentMethod"
-						type="xsd:string">
-					</xsd:element>
+					<xsd:element name="PaymentMethod" type="xsd:string"></xsd:element>
 					<xsd:element name="UnitPrice" type="xsd:float"></xsd:element>
 					<xsd:element name="CardNumber" type="xsd:string"></xsd:element>
 					<xsd:element name="CardType" type="xsd:string"></xsd:element>
-					<xsd:element name="CardExpirationMonth"
-						type="xsd:int">
-					</xsd:element>
-					<xsd:element name="CardExpirationYear"
-						type="xsd:int">
-					</xsd:element>
+					<xsd:element name="CardExpirationMonth" type="xsd:int"></xsd:element>
+					<xsd:element name="CardExpirationYear" type="xsd:int"></xsd:element>
 				</xsd:sequence>
 			</xsd:complexType>
-
-			<xsd:element name="BillingEntries"
+			
+			<xsd:element name="getBillingEntriesResponse"
 				type="tns:BillingEntries" />
 			<xsd:element name="getBillingEntriesRequest"
 				type="tns:BillingEntriesRequest" />
@@ -55,52 +45,26 @@
 				<xsd:sequence>
 					<xsd:element name="ServiceCode" type="xsd:string"></xsd:element>
 					<xsd:element name="ProviderCode"
-						type="xsd:string">
+						type="xsd:string" nillable="true">
 					</xsd:element>
-					<xsd:element name="PeriodStart" type="xsd:date"></xsd:element>
-					<xsd:element name="PeriodEnd" type="xsd:date"></xsd:element>
+					<xsd:element name="PeriodStart" type="xsd:date" nillable="true"></xsd:element>
+					<xsd:element name="PeriodEnd" type="xsd:date" nillable="true"></xsd:element>
 				</xsd:sequence>
 			</xsd:complexType>
 		</xsd:schema>
 	</wsdl:types>
 	<wsdl:message name="getBillingEntriesResponse">
-		<wsdl:part element="tns:BillingEntries"
+		<wsdl:part element="tns:getBillingEntriesResponse"
 			name="getBillingEntriesResponse" />
 	</wsdl:message>
 	<wsdl:message name="getBillingEntriesRequest">
 		<wsdl:part element="tns:getBillingEntriesRequest"
 			name="getBillingEntriesRequest" />
 	</wsdl:message>
-	<wsdl:message name="getBillingEntriesFromServiceCodeRequest">
-		<wsdl:part name="ServiceCode" type="xsd:string"></wsdl:part>
-	</wsdl:message>
-	<wsdl:message name="getBillingEntriesFromServiceCodeResponse">
-		<wsdl:part name="getBillingEntriesResponse"
-			element="tns:BillingEntries">
-		</wsdl:part>
-	</wsdl:message>
-	<wsdl:message name="getAllBillingEntriesRequest"></wsdl:message>
-	<wsdl:message name="getAllBillingEntriesResponse">
-		<wsdl:part name="getAllBillingEntriesResponse"
-			element="tns:BillingEntries">
-		</wsdl:part>
-	</wsdl:message>
 	<wsdl:portType name="AccountingService">
 		<wsdl:operation name="getBillingEntries">
 			<wsdl:input message="tns:getBillingEntriesRequest" />
 			<wsdl:output message="tns:getBillingEntriesResponse" />
-		</wsdl:operation>
-		<wsdl:operation name="getBillingEntriesFromServiceCode">
-			<wsdl:input
-				message="tns:getBillingEntriesFromServiceCodeRequest">
-			</wsdl:input>
-			<wsdl:output
-				message="tns:getBillingEntriesFromServiceCodeResponse">
-			</wsdl:output>
-		</wsdl:operation>
-		<wsdl:operation name="getAllBillingEntries">
-			<wsdl:input message="tns:getAllBillingEntriesRequest"></wsdl:input>
-			<wsdl:output message="tns:getAllBillingEntriesResponse"></wsdl:output>
 		</wsdl:operation>
 	</wsdl:portType>
 	<wsdl:binding name="AccountingServiceSOAP"
@@ -110,26 +74,6 @@
 		<wsdl:operation name="getBillingEntries">
 			<soap:operation
 				soapAction="http://www.idega.com/AccountingService/getBillingEntries" />
-			<wsdl:input>
-				<soap:body use="literal" />
-			</wsdl:input>
-			<wsdl:output>
-				<soap:body use="literal" />
-			</wsdl:output>
-		</wsdl:operation>
-		<wsdl:operation name="getBillingEntriesFromServiceCode">
-			<soap:operation
-				soapAction="http://www.idega.com/AccountingService/getBillingEntriesFromServiceCode" />
-			<wsdl:input>
-				<soap:body use="literal" />
-			</wsdl:input>
-			<wsdl:output>
-				<soap:body use="literal" />
-			</wsdl:output>
-		</wsdl:operation>
-		<wsdl:operation name="getAllBillingEntries">
-			<soap:operation
-				soapAction="http://www.idega.com/AccountingService/getAllBillingEntries" />
 			<wsdl:input>
 				<soap:body use="literal" />
 			</wsdl:input>

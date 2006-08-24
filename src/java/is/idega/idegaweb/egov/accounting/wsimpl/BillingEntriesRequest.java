@@ -177,19 +177,19 @@ public class BillingEntriesRequest  implements java.io.Serializable {
         elemField.setFieldName("providerCode");
         elemField.setXmlName(new javax.xml.namespace.QName("", "ProviderCode"));
         elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"));
-        elemField.setNillable(false);
+        elemField.setNillable(true);
         typeDesc.addFieldDesc(elemField);
         elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("periodStart");
         elemField.setXmlName(new javax.xml.namespace.QName("", "PeriodStart"));
         elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "date"));
-        elemField.setNillable(false);
+        elemField.setNillable(true);
         typeDesc.addFieldDesc(elemField);
         elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("periodEnd");
         elemField.setXmlName(new javax.xml.namespace.QName("", "PeriodEnd"));
         elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "date"));
-        elemField.setNillable(false);
+        elemField.setNillable(true);
         typeDesc.addFieldDesc(elemField);
     }
 
