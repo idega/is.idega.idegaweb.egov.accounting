@@ -5,7 +5,7 @@
   <pomVersion>3</pomVersion>
   <name>eGov Accounting</name>
   <artifactId>is.idega.idegaweb.egov.accounting</artifactId>
-  <currentVersion>1.0.4</currentVersion>
+  <currentVersion>1.0.5</currentVersion>
   <inceptionYear>2006</inceptionYear>
   <shortDescription>eGov Citizen</shortDescription>
   <versions>
@@ -74,7 +74,7 @@
     <dependency>
       <groupId>bundles</groupId>
       <artifactId>is.idega.idegaweb.egov</artifactId>
-      <version>1.0.3</version>
+      <version>1.0.4</version>
       <type>jar</type>
       <url>http://www.idega.com/</url>
       <properties>

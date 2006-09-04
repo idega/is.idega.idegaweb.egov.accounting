@@ -12,10 +12,12 @@ import is.idega.idegaweb.egov.accounting.business.AccountingBusinessManager;
 import is.idega.idegaweb.egov.accounting.business.AccountingEntry;
 import is.idega.idegaweb.egov.accounting.data.CaseCodeAccountingKey;
 import is.idega.idegaweb.egov.accounting.data.CaseCodeAccountingKeyHome;
+
 import java.rmi.RemoteException;
 import java.util.Date;
-import java.util.GregorianCalendar;
+
 import javax.ejb.FinderException;
+
 import com.idega.block.process.data.CaseCode;
 import com.idega.data.IDOLookup;
 import com.idega.data.IDOLookupException;
@@ -98,7 +100,7 @@ public class AccountingServiceSOAPImpl implements is.idega.idegaweb.egov.account
 		return returnArray;
 	}
 	
-	private BillingEntry[] generateDummyData() {
+	/*private BillingEntry[] generateDummyData() {
 		
 		BillingEntry[] returnArray = new BillingEntry[2];
 			
@@ -147,13 +149,13 @@ public class AccountingServiceSOAPImpl implements is.idega.idegaweb.egov.account
 			returnArray[1]=entry1;
 			
 		return returnArray;
-	}
+	}*/
 
 	/* (non-Javadoc)
 	 * @see is.idega.idegaweb.egov.accounting.wsimpl.AccountingService_PortType#getBillingEntriesFromServiceCode(java.lang.String)
 	 */
 	public BillingEntry[] getBillingEntriesFromServiceCode(String serviceCode) throws RemoteException {
-		GregorianCalendar calendar = new GregorianCalendar();
+		//GregorianCalendar calendar = new GregorianCalendar();
 		Date start = IWTimestamp.RightNow().getDate();
 		Date end = IWTimestamp.RightNow().getDate();	
 		BillingEntriesRequest getBillingEntriesRequest = new BillingEntriesRequest(serviceCode,null,start,end);

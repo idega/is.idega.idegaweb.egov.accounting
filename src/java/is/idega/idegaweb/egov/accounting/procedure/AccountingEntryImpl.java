@@ -78,6 +78,13 @@ public class AccountingEntryImpl implements AccountingEntry{
     public void setUnitPrice(float f) {
     }
 
+    public float getUnits() {
+      return 0.0f;
+  }
+
+  public void setUnits(float f) {
+  }
+
     public String getCardNumber() {
         return null;
     }

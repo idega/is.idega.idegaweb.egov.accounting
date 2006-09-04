@@ -1,33 +1,43 @@
 <document>
-  <properties>
-    <title>eGov Accounting changes</title>
-    <author email="laddi@idega.com">Thorhallur "Laddi" Helgason</author>
-  </properties>
-  <body>
-  	<release version="1.0.4" date="2006-08-31">
+	<properties>
+		<title>eGov Accounting changes</title>
+		<author email="laddi@idega.com">
+			Thorhallur "Laddi" Helgason
+		</author>
+	</properties>
+	<body>
+	
+		<release version="1.0.5" date="2006-09-04">
+			<action dev="palli" type="update">
+				Finished implementation of the AccountingEntryFetcher class.
+			</action>
+		</release>
+
+		<release version="1.0.4" date="2006-08-31">
 			<action dev="palli" type="update">
 				Implemented the AccountingEntryFetcher class.
 			</action>
 		</release>
-  	
- 		<release version="1.0.3" date="2006-08-24">
+
+		<release version="1.0.3" date="2006-08-24">
 			<action dev="tryggvil" type="update">
-					Changing implementation of Agresso update daemon to run at 4 o'clock AM
+				Changing implementation of Agresso update daemon to run
+				at 4 o'clock AM
 			</action>
 		</release>
 
-  
- 		<release version="1.0.2" date="2006-08-24">
+
+		<release version="1.0.2" date="2006-08-24">
 			<action dev="tryggvil" type="update">
-					Update for delivering Agression integration for ITR
+				Update for delivering Agression integration for ITR
 			</action>
 		</release>
 
-   <release version="1.0.1" date="2006-08-07">
-      <action dev="laddi" type="update">
-        Declaring new version of block.
-      </action>
-    </release>
+		<release version="1.0.1" date="2006-08-07">
+			<action dev="laddi" type="update">
+				Declaring new version of block.
+			</action>
+		</release>
 
-  </body>
+	</body>
 </document>

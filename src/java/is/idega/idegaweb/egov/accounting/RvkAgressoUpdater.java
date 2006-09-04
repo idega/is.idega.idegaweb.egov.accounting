@@ -8,6 +8,7 @@ import is.idega.idegaweb.egov.accounting.business.AccountingBusinessManager;
 import is.idega.idegaweb.egov.accounting.business.AccountingEntry;
 import is.idega.idegaweb.egov.accounting.data.CaseCodeAccountingKey;
 import is.idega.idegaweb.egov.accounting.data.CaseCodeAccountingKeyHome;
+
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -15,9 +16,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.logging.Logger;
-import com.idega.block.process.business.CaseBusiness;
+
 import com.idega.block.process.data.CaseCode;
-import com.idega.business.IBOLookup;
 import com.idega.data.IDOLookup;
 import com.idega.idegaweb.IWMainApplication;
 import com.idega.util.IWTimestamp;
@@ -29,10 +29,10 @@ import com.idega.util.database.ConnectionBroker;
  * Daemon thread which handles the update of the table RRVK_AGRESSO for 
  * integration of date from the AfterschoolCare module with the Reykjavik Accounting system.
  * </p>
- *  Last modified: $Date: 2006/08/24 12:33:42 $ by $Author: tryggvil $
+ *  Last modified: $Date: 2006/09/04 14:08:37 $ by $Author: laddi $
  * 
  * @author <a href="mailto:tryggvil@idega.com">tryggvil</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class RvkAgressoUpdater implements Runnable {
 
@@ -65,7 +65,7 @@ public class RvkAgressoUpdater implements Runnable {
 			}
 			catch (InterruptedException e) {
 				log.info("Caught InterrupptedException. Shutting down);");
-				active=false;
+				this.active=false;
 			}
 		}
 	}
@@ -123,14 +123,14 @@ public class RvkAgressoUpdater implements Runnable {
 			stmt1.close();
 			
 			//CaseCode code = AfterSchoolCareConstants.CASE_CODE;
-			CaseBusiness cb = (CaseBusiness) IBOLookup.getServiceInstance(iwma.getIWApplicationContext(), CaseBusiness.class);
+			//CaseBusiness cb = (CaseBusiness) IBOLookup.getServiceInstance(this.iwma.getIWApplicationContext(), CaseBusiness.class);
 			//CaseCode afterSchCare = cb.getCaseCode("MBFRITV");
 			
 			CaseCodeAccountingKeyHome ccah = (CaseCodeAccountingKeyHome) IDOLookup.getHome(CaseCodeAccountingKey.class);
 			CaseCodeAccountingKey accKey = ccah.findByAccountingKey("ITR");
 			CaseCode afterSchCare = accKey.getCaseCode();
 			
-			AccountingBusiness business = AccountingBusinessManager.getInstance().getAccountingBusinessOrDefault(afterSchCare, iwma.getIWApplicationContext());
+			AccountingBusiness business = AccountingBusinessManager.getInstance().getAccountingBusinessOrDefault(afterSchCare, this.iwma.getIWApplicationContext());
 			
 			IWTimestamp fromDateTS = new IWTimestamp();
 			fromDateTS.addDays(-62);
@@ -219,7 +219,7 @@ public class RvkAgressoUpdater implements Runnable {
 	 * @return the thread
 	 */
 	public Thread getThread() {
-		return thread;
+		return this.thread;
 	}
 
 	
