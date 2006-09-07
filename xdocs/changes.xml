@@ -7,8 +7,17 @@
 	</properties>
 	<body>
 	
+		<release version="1.0.6" date="2006-09-07">
+			<action dev="laddi" type="fix">
+				Fixed layout of AccountingEntryFetcher.
+			</action>
+			<action dev="laddi" type="update">
+				Added storage of created accounting files for Navision.
+			</action>
+		</release>
+
 		<release version="1.0.5" date="2006-09-04">
-			<action dev="palli" type="update">
+			<action dev="laddi" type="update">
 				Finished implementation of the AccountingEntryFetcher class.
 			</action>
 		</release>

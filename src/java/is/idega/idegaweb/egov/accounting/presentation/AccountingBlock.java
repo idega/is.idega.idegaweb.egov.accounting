@@ -20,7 +20,7 @@ public abstract class AccountingBlock extends Block {
 
 	protected IWBundle iwb = null;
 
-	public static final String ACCOUNTING_BLOCK_BUNDLE_IDENTIFIER = "is.idega.idegaweb.egov.healthcare";
+	public static final String ACCOUNTING_BLOCK_BUNDLE_IDENTIFIER = "is.idega.idegaweb.egov.accounting";
 
 	public String getBundleIdentifier() {
 		return AccountingBlock.ACCOUNTING_BLOCK_BUNDLE_IDENTIFIER;

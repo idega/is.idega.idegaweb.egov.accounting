@@ -8,31 +8,21 @@
  */
 package is.idega.idegaweb.egov.accounting.presentation;
 
-import is.idega.idegaweb.egov.accounting.business.AccountingBusiness;
-import is.idega.idegaweb.egov.accounting.business.AccountingBusinessManager;
-import is.idega.idegaweb.egov.accounting.business.AccountingEntry;
-import is.idega.idegaweb.egov.accounting.business.AccountingKeyBusiness;
-import is.idega.idegaweb.egov.accounting.data.CaseCodeAccountingKey;
+import is.idega.idegaweb.egov.accounting.data.AccountingFiles;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.rmi.RemoteException;
-import java.text.NumberFormat;
+import java.util.Collection;
+import java.util.Iterator;
 
-import javax.ejb.CreateException;
-import javax.ejb.FinderException;
-
-import com.idega.block.process.data.CaseCode;
-import com.idega.business.IBOLookupException;
+import com.idega.business.IBORuntimeException;
 import com.idega.core.file.data.ICFile;
-import com.idega.core.file.data.ICFileHome;
-import com.idega.data.IDOLookup;
 import com.idega.presentation.IWContext;
 import com.idega.presentation.Layer;
-import com.idega.presentation.text.DownloadLink;
+import com.idega.presentation.Table2;
+import com.idega.presentation.TableCell2;
+import com.idega.presentation.TableRow;
+import com.idega.presentation.TableRowGroup;
+import com.idega.presentation.text.Link;
 import com.idega.presentation.text.Text;
 import com.idega.presentation.ui.DateInput;
 import com.idega.presentation.ui.Form;
@@ -42,339 +32,157 @@ import com.idega.util.IWTimestamp;
 
 public class AccountingEntryFetcher extends AccountingBlock {
 
-	private final static String DATE_FROM = "date_from";
+	private final static String PARAMETER_DATE_FROM = "prm_date_from";
+	private static final String PARAMETER_ACCOUNTING_FILE_PK = "prm_accounting_file_pk";
 
 	private String caseCode = null;
 
-	private String fromDate = null;
-
-	private void parse(IWContext iwc) {
-		if (iwc.isParameterSet(DATE_FROM)) {
-			this.fromDate = iwc.getParameter(DATE_FROM);
+	private void parse(IWContext iwc) throws RemoteException {
+		if (iwc.isParameterSet(PARAMETER_DATE_FROM)) {
+			IWTimestamp month = new IWTimestamp(iwc.getParameter(PARAMETER_DATE_FROM));
+			getAccountingKeyBusiness(iwc).createAccountingFile(this.caseCode, month.getDate());
+		}
+		
+		if (iwc.isParameterSet(PARAMETER_ACCOUNTING_FILE_PK)) {
+			getAccountingKeyBusiness(iwc).removeAccountingFile(iwc.getParameter(PARAMETER_ACCOUNTING_FILE_PK));
 		}
 	}
 
 	protected void present(IWContext iwc) {
-		parse(iwc);
-
-		if (this.caseCode == null) {
-			add(new Text("Please set the case code"));
-			return;
-		}
-
-		Form form = new Form();
-		form.setID("accountingEntryFetcher");
-		form.setStyleClass("adminForm");
-
-		Layer layer = new Layer(Layer.DIV);
-		layer.setStyleClass("formSection");
-		form.add(layer);
-		
-		DateInput from = new DateInput(DATE_FROM);
-		from.setStyleClass("dateInput");
-		from.setToShowDay(false);
-
-		Layer formItem = new Layer(Layer.DIV);
-		formItem.setStyleClass("formItem");
-		Label label = new Label(this.iwrb.getLocalizedString("month", "Month"), from);
-		formItem.add(label);
-		formItem.add(from);
-		layer.add(formItem);
-
-		SubmitButton fetch = new SubmitButton(this.iwrb.getLocalizedString("get", "Get"));
-		fetch.setStyleClass("indentedButton");
-		fetch.setStyleClass("button");
-		formItem = new Layer(Layer.DIV);
-		formItem.setStyleClass("formItem");
-		formItem.add(fetch);
-		layer.add(formItem);
-		
-		add(form);
-
-		AccountingBusinessManager manager = AccountingBusinessManager.getInstance();
-		AccountingBusiness b = null;
 		try {
-			b = manager.getAccountingBusiness(this.caseCode, iwc.getApplicationContext());
+			parse(iwc);
+	
+			if (this.caseCode == null) {
+				add(new Text("Please set the case code"));
+				return;
+			}
+	
+			Form form = new Form();
+			form.setID("accountingEntryFetcher");
+			form.setStyleClass("adminForm");
+	
+			Layer layer = new Layer(Layer.DIV);
+			layer.setStyleClass("formSection");
+			form.add(layer);
+			
+			Layer helpLayer = new Layer(Layer.DIV);
+			helpLayer.setStyleClass("helperText");
+			helpLayer.add(new Text(this.iwrb.getLocalizedString("accounting_fetcher.help_text", "Select the month you want to create a file for and click 'Create'.  The created file is then added to the list below.")));
+			layer.add(helpLayer);
+
+			DateInput from = new DateInput(PARAMETER_DATE_FROM);
+			from.setStyleClass("dateInput");
+			from.setToShowDay(false);
+	
+			Layer formItem = new Layer(Layer.DIV);
+			formItem.setStyleClass("formItem");
+			Label label = new Label(this.iwrb.getLocalizedString("accounting_fetcher.month", "Month"), from);
+			formItem.add(label);
+			formItem.add(from);
+			layer.add(formItem);
+	
+			SubmitButton fetch = new SubmitButton(this.iwrb.getLocalizedString("accounting_fetcher.create", "Create"));
+			fetch.setStyleClass("indentedButton");
+			fetch.setStyleClass("button");
+			formItem = new Layer(Layer.DIV);
+			formItem.setStyleClass("formItem");
+			formItem.add(fetch);
+			layer.add(formItem);
+			
+			Layer clearLayer = new Layer(Layer.DIV);
+			clearLayer.setStyleClass("Clear");
+			layer.add(clearLayer);
+	
+			form.add(getFileTable(iwc));
+			
+			add(form);
 		}
-		catch (IBOLookupException e) {
-			e.printStackTrace();
-		}
-
-		if (b != null && this.fromDate != null) {
-			IWTimestamp fromStamp = new IWTimestamp(this.fromDate);
-			IWTimestamp toStamp = new IWTimestamp(fromStamp);
-			toStamp.addMonths(1);
-			toStamp.addDays(-1);
-
-			AccountingKeyBusiness accKeyBiz = this.getAccountingKeyBusiness(iwc);
-
-			try {
-				CaseCode code = getCaseCodeHome().findByPrimaryKey(this.caseCode);
-				CaseCodeAccountingKey key = accKeyBiz.getAccountingKey(code);
-
-				AccountingEntry[] accEntry = b.getAccountingEntries(key.getAccountingKey(), null, fromStamp.getDate(), toStamp.getDate());
-				if (accEntry != null && accEntry.length != 0) {
-					if ("SCHMEAL".equals(this.caseCode)) {
-						File tempfile = File.createTempFile("MEAL" + fromStamp.getDateString("MMyyyy"), ".csv");
-						FileWriter writer = new FileWriter(tempfile);
-						BufferedWriter bWriter = new BufferedWriter(writer);
-
-						NumberFormat format = NumberFormat.getInstance();
-						format.setMaximumFractionDigits(0);
-						format.setMinimumFractionDigits(0);
-						format.setGroupingUsed(false);
-
-						for (int i = 0; i < accEntry.length; i++) {
-							AccountingEntry entry = accEntry[i];
-							
-							if (entry.getProductCode().equals("MEAL")) {
-								bWriter.write("MATUR");
-							}
-							else if (entry.getProductCode().equals("MILK")) {
-								bWriter.write("MJîLK");
-							}
-							else {
-								bWriter.write(entry.getProductCode());
-							}
-							bWriter.write(",");
-							bWriter.write(entry.getPayerPersonalId());
-							bWriter.write(",");
-							bWriter.write(entry.getPersonalId());
-							bWriter.write(",");
-							bWriter.write(format.format(entry.getAmount()));
-							bWriter.write(",");
-							bWriter.write(format.format(entry.getUnitPrice()));
-							bWriter.write(",");
-							IWTimestamp startDate = new IWTimestamp(entry.getStartDate());
-							if (startDate.isEarlierThan(fromStamp)) {
-								bWriter.write(fromStamp.getDateString("dd-MM-yyyy"));
-							}
-							else {
-								bWriter.write(startDate.getDateString("dd-MM-yyyy"));
-							}
-							bWriter.write(",");
-							if (entry.getEndDate() == null) {
-								bWriter.write(toStamp.getDateString("dd-MM-yyyy"));
-							}
-							else {
-								IWTimestamp endDate = new IWTimestamp(entry.getEndDate());
-								if (endDate.isLaterThan(toStamp)) {
-									bWriter.write(toStamp.getDateString("dd-MM-yyyy"));
-								}
-								else {
-									bWriter.write(endDate.getDateString("dd-MM-yyyy"));
-								}
-							}
-							bWriter.write(",");
-							bWriter.write("BRAUÜ"); // TODO get in table
-							bWriter.write(",");
-							bWriter.write(entry.getProviderCode());
-							
-							if (entry.getCardNumber() != null) {
-								bWriter.write(",");
-								bWriter.write(entry.getCardNumber());
-								bWriter.write(",");
-								bWriter.write(entry.getCardType());
-								bWriter.write(",");
-								bWriter.write(entry.getCardExpirationMonth());
-								bWriter.write(",");
-								bWriter.write(entry.getCardExpirationYear());
-							}
-							else {
-								bWriter.write(",,,,");
-							}
-							bWriter.newLine();
-						}
-
-						bWriter.close();
-
-						// TMP sollution
-						ICFile file = ((ICFileHome) IDOLookup.getHome(ICFile.class)).create();
-						file.setFileValue(new FileInputStream(tempfile));
-						file.setName(tempfile.getName());
-						file.store();
-
-						DownloadLink link = new DownloadLink(((Integer) file.getPrimaryKey()).intValue());
-						link.setAlternativeFileName(tempfile.getName());
-						link.setText(tempfile.getName());
-
-						add(link);
-					}
-					else if ("MBANBOP".equals(this.caseCode)) {
-						File tempfile = File.createTempFile("CHILD" + fromStamp.getDateString("MMyyyy"), ".csv");
-						FileWriter writer = new FileWriter(tempfile);
-						BufferedWriter bWriter = new BufferedWriter(writer);
-
-						NumberFormat format = NumberFormat.getInstance();
-						format.setMaximumFractionDigits(0);
-						format.setMinimumFractionDigits(0);
-						format.setGroupingUsed(false);
-
-						for (int i = 0; i < accEntry.length; i++) {
-							AccountingEntry entry = accEntry[i];
-							bWriter.write(entry.getProductCode());
-							bWriter.write(",");
-							bWriter.write(entry.getPayerPersonalId());
-							bWriter.write(",");
-							bWriter.write(entry.getPersonalId());
-							bWriter.write(",");
-							bWriter.write(format.format(entry.getAmount()));
-							bWriter.write(",");
-							bWriter.write(format.format(entry.getUnitPrice()));
-							bWriter.write(",");
-							bWriter.write("LEIK"); // TODO get in table
-							bWriter.write(",");
-							bWriter.write(entry.getProviderCode());
-							bWriter.newLine();
-						}
-
-						bWriter.close();
-
-						// TMP sollution
-						ICFile file = ((ICFileHome) IDOLookup.getHome(ICFile.class)).create();
-						file.setFileValue(new FileInputStream(tempfile));
-						file.setName(tempfile.getName());
-						file.store();
-
-						DownloadLink link = new DownloadLink(((Integer) file.getPrimaryKey()).intValue());
-						link.setAlternativeFileName(tempfile.getName());
-						link.setText(tempfile.getName());
-
-						add(link);
-					}
-					else if ("MUSICCH".equals(this.caseCode)) {
-						File tempfile = File.createTempFile("MUSIC" + fromStamp.getDateString("MMyyyy"), ".csv");
-						FileWriter writer = new FileWriter(tempfile);
-						BufferedWriter bWriter = new BufferedWriter(writer);
-
-						NumberFormat format = NumberFormat.getInstance();
-						format.setMaximumFractionDigits(0);
-						format.setMinimumFractionDigits(0);
-						format.setGroupingUsed(false);
-
-						for (int i = 0; i < accEntry.length; i++) {
-							AccountingEntry entry = accEntry[i];
-							bWriter.write(entry.getProductCode());
-							bWriter.write(",");
-							bWriter.write(entry.getPayerPersonalId());
-							bWriter.write(",");
-							bWriter.write(entry.getPersonalId());
-							bWriter.write(",");
-							IWTimestamp startDate = new IWTimestamp(entry.getStartDate());
-							if (startDate.isEarlierThan(fromStamp)) {
-								bWriter.write(fromStamp.getDateString("dd-MM-yyyy"));
-							}
-							else {
-								bWriter.write(startDate.getDateString("dd-MM-yyyy"));
-							}
-							bWriter.write(",");
-							if (entry.getEndDate() == null) {
-								bWriter.write(toStamp.getDateString("dd-MM-yyyy"));
-							}
-							else {
-								IWTimestamp endDate = new IWTimestamp(entry.getEndDate());
-								if (endDate.isLaterThan(toStamp)) {
-									bWriter.write(toStamp.getDateString("dd-MM-yyyy"));
-								}
-								else {
-									bWriter.write(endDate.getDateString("dd-MM-yyyy"));
-								}
-							}
-							bWriter.write(",");
-							bWriter.write("TONO"); // TODO get in table
-							bWriter.write(",");
-							bWriter.write(entry.getProviderCode());
-							bWriter.newLine();
-						}
-
-						bWriter.close();
-
-						// TMP sollution
-						ICFile file = ((ICFileHome) IDOLookup.getHome(ICFile.class)).create();
-						file.setFileValue(new FileInputStream(tempfile));
-						file.setName(tempfile.getName());
-						file.store();
-
-						DownloadLink link = new DownloadLink(((Integer) file.getPrimaryKey()).intValue());
-						link.setAlternativeFileName(tempfile.getName());
-						link.setText(tempfile.getName());
-
-						add(link);
-					}
-					else if ("MBFRITV".equals(this.caseCode)) {
-						File tempfile = File.createTempFile("CARE" + fromStamp.getDateString("MMyyyy"), ".csv");
-						FileWriter writer = new FileWriter(tempfile);
-						BufferedWriter bWriter = new BufferedWriter(writer);
-
-						NumberFormat format = NumberFormat.getInstance();
-						format.setMaximumFractionDigits(0);
-						format.setMinimumFractionDigits(0);
-						format.setGroupingUsed(false);
-
-						for (int i = 0; i < accEntry.length; i++) {
-							AccountingEntry entry = accEntry[i];
-
-							if (entry.getProductCode().equals("CARE")) {
-								bWriter.write("SKOL");
-							}
-							else if (entry.getProductCode().equals("REFRESHMENTS")) {
-								bWriter.write("HRESSING");
-							}
-							else {
-								bWriter.write(entry.getProductCode());
-							}
-
-							bWriter.write(",");
-							bWriter.write(entry.getPayerPersonalId());
-							bWriter.write(",");
-							bWriter.write(entry.getPersonalId());
-							bWriter.write(",");
-							if (entry.getUnits() > 0) {
-								bWriter.write(String.valueOf(entry.getUnits()));
-							}
-							else {
-								bWriter.write(format.format(entry.getAmount()));
-							}
-							bWriter.write(",");
-							bWriter.write(format.format(entry.getUnitPrice()));
-							bWriter.write(",");
-							bWriter.write("SKOL"); // TODO get in table
-							bWriter.write(",");
-							bWriter.write(entry.getProviderCode());
-							bWriter.newLine();
-						}
-
-						bWriter.close();
-
-						// TMP sollution
-						ICFile file = ((ICFileHome) IDOLookup.getHome(ICFile.class)).create();
-						file.setFileValue(new FileInputStream(tempfile));
-						file.setName(tempfile.getName());
-						file.store();
-
-						DownloadLink link = new DownloadLink(((Integer) file.getPrimaryKey()).intValue());
-						link.setAlternativeFileName(tempfile.getName());
-						link.setText(tempfile.getName());
-
-						add(link);
-					}
-				}
-			}
-			catch (FinderException e) {
-				e.printStackTrace();
-			}
-			catch (RemoteException e) {
-				e.printStackTrace();
-			}
-			catch (IOException e) {
-				e.printStackTrace();
-			}
-			catch (CreateException e) {
-				e.printStackTrace();
-			}
+		catch (RemoteException re) {
+			throw new IBORuntimeException(re);
 		}
 	}
 
+	private Table2 getFileTable(IWContext iwc) throws RemoteException {
+		Table2 table = new Table2();
+		table.setWidth("100%");
+		table.setCellpadding(0);
+		table.setCellspacing(0);
+		table.setStyleClass("ruler");
+		table.setStyleClass("adminTable");
+		
+		TableRowGroup group = table.createHeaderRowGroup();
+		TableRow row = group.createRow();
+		TableCell2 cell = row.createHeaderCell();
+		cell.setStyleClass("firstColumn");
+		cell.setStyleClass("fileName");
+		cell.add(new Text(this.iwrb.getLocalizedString("accounting_fetcher.file_name", "File name")));
+		
+		cell = row.createHeaderCell();
+		cell.setStyleClass("createdDate");
+		cell.add(new Text(this.iwrb.getLocalizedString("accounting_fetcher.created_date", "Created date")));
+		
+		cell = row.createHeaderCell();
+		cell.setStyleClass("month");
+		cell.add(new Text(this.iwrb.getLocalizedString("accounting_fetcher.month", "Month")));
+		
+		cell = row.createHeaderCell();
+		cell.setStyleClass("remove");
+		cell.setStyleClass("lastColumn");
+		cell.add(Text.getNonBrakingSpace());
+
+		group = table.createBodyRowGroup();
+		int iRow = 1;
+		
+		Collection files = getAccountingKeyBusiness(iwc).getAccountingFiles(this.caseCode);
+		Iterator iter = files.iterator();
+		while (iter.hasNext()) {
+			AccountingFiles file = (AccountingFiles) iter.next();
+			row = group.createRow();
+			
+			ICFile icFile = file.getFile();
+
+			Link link = new Link(icFile.getName());
+			link.setTarget(Link.TARGET_BLANK_WINDOW);
+			link.setFile(icFile);
+			
+			Link delete = new Link(this.iwb.getImage("delete.png", this.iwrb.getLocalizedString("remove", "Remove")));
+			delete.addParameter(PARAMETER_ACCOUNTING_FILE_PK, file.getPrimaryKey().toString());
+			delete.setClickConfirmation(this.iwrb.getLocalizedString("accounting_fetcher.confirm_remove", "Are you sure you want to remove this file?"));
+
+			IWTimestamp createdDate = new IWTimestamp(file.getCreatedDate());
+			IWTimestamp month = new IWTimestamp(file.getMonth());
+			
+			if (iRow % 2 == 0) {
+				row.setStyleClass("evenRow");
+			}
+			else {
+				row.setStyleClass("oddRow");
+			}
+
+			cell = row.createCell();
+			cell.setStyleClass("firstColumn");
+			cell.setStyleClass("fileName");
+			cell.add(link);
+
+			cell = row.createCell();
+			cell.setStyleClass("createdDate");
+			cell.add(new Text(createdDate.getLocaleDateAndTime(iwc.getCurrentLocale(), IWTimestamp.SHORT, IWTimestamp.SHORT)));
+
+			cell = row.createCell();
+			cell.setStyleClass("month");
+			cell.add(new Text(month.getDateString("MM-yyyy", iwc.getCurrentLocale())));
+
+			cell = row.createCell();
+			cell.setStyleClass("lastColumn");
+			cell.setStyleClass("remove");
+			cell.add(delete);
+
+			iRow++;
+		}
+
+		return table;
+	}
+	
 	public void setCaseCode(String code) {
 		this.caseCode = code;
 	}

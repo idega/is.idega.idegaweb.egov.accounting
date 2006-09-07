@@ -1,0 +1,7 @@
+accounting_fetcher.confirm_remove=Are you sure you want to remove this file?
+accounting_fetcher.create=Create
+accounting_fetcher.created_date=Created date
+accounting_fetcher.file_name=File name
+accounting_fetcher.help_text=Select the month you want to create a file for and click 'Create'.  The created file is then added to the list below.
+accounting_fetcher.month=Month
+accounting_fetcher.remove=Remove file
