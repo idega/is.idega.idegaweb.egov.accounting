@@ -34,6 +34,11 @@
       <name>1.0.5</name>
       <tag>EGOV_ACCOUNTING_1_0_5</tag>
     </version>
+    <version>
+      <id>1.0.6</id>
+      <name>1.0.6</name>
+      <tag>EGOV_ACCOUNTING_1_0_6</tag>
+    </version>
   </versions>
   <branches/>
   <developers>
