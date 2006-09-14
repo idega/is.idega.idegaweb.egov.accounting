@@ -7,6 +7,12 @@
 	</properties>
 	<body>
 	
+		<release version="1.0.7" date="2006-09-14">
+			<action dev="laddi" type="update">
+				Added usage of extra information field in AccountingEntry.
+			</action>
+		</release>
+
 		<release version="1.0.6" date="2006-09-07">
 			<action dev="laddi" type="fix">
 				Fixed layout of AccountingEntryFetcher.

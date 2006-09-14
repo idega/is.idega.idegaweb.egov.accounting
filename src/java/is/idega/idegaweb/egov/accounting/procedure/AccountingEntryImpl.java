@@ -112,4 +112,11 @@ public class AccountingEntryImpl implements AccountingEntry{
 
     public void setCardExpirationYear(int i) {
     }
+
+		public Object getExtraInformation() {
+			return null;
+		}
+
+		public void setExtraInformation(Object extraInformation) {
+		}
 }

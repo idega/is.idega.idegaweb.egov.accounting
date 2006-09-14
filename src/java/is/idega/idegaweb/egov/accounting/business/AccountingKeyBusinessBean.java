@@ -232,6 +232,12 @@ public class AccountingKeyBusinessBean extends IBOServiceBean implements Account
 							else {
 								bWriter.write(",,,,");
 							}
+							
+							if (entry.getExtraInformation() != null) {
+								bWriter.write(",");
+								bWriter.write(entry.getExtraInformation().toString());
+							}
+							
 							bWriter.newLine();
 						}
 	

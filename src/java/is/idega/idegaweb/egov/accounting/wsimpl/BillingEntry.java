@@ -41,6 +41,8 @@ public class BillingEntry implements java.io.Serializable, AccountingEntry {
 
 	private int cardExpirationYear;
 
+	private Object extraInformation;
+
 	public BillingEntry() {
 	}
 
@@ -497,6 +499,14 @@ public class BillingEntry implements java.io.Serializable, AccountingEntry {
 
 	public void setUnits(float units) {
 		this.units = units;
+	}
+
+	public Object getExtraInformation() {
+		return this.extraInformation;
+	}
+
+	public void setExtraInformation(Object extraInformation) {
+		this.extraInformation = extraInformation;
 	}
 
 }
