@@ -194,12 +194,17 @@ public class AccountingKeyBusinessBean extends IBOServiceBean implements Account
 							bWriter.write(",");
 							bWriter.write(format.format(entry.getUnitPrice()));
 							bWriter.write(",");
-							IWTimestamp startDate = new IWTimestamp(entry.getStartDate());
-							if (startDate.isEarlierThan(fromStamp)) {
+							if (entry.getStartDate() == null) {
 								bWriter.write(fromStamp.getDateString("dd-MM-yyyy"));
 							}
 							else {
-								bWriter.write(startDate.getDateString("dd-MM-yyyy"));
+								IWTimestamp startDate = new IWTimestamp(entry.getStartDate());
+								if (startDate.isEarlierThan(fromStamp)) {
+									bWriter.write(fromStamp.getDateString("dd-MM-yyyy"));
+								}
+								else {
+									bWriter.write(startDate.getDateString("dd-MM-yyyy"));
+								}
 							}
 							bWriter.write(",");
 							if (entry.getEndDate() == null) {
