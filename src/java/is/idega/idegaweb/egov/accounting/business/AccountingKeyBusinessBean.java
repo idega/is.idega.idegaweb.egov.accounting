@@ -15,6 +15,8 @@ import is.idega.idegaweb.egov.accounting.data.CaseCodeAccountingKey;
 import is.idega.idegaweb.egov.accounting.data.CaseCodeAccountingKeyHome;
 import is.idega.idegaweb.egov.accounting.data.ProductCode;
 import is.idega.idegaweb.egov.accounting.data.ProductCodeHome;
+import is.idega.idegaweb.egov.accounting.data.SchoolProductCode;
+import is.idega.idegaweb.egov.accounting.data.SchoolProductCodeHome;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -37,6 +39,9 @@ import javax.ejb.RemoveException;
 
 import com.idega.block.process.data.CaseCode;
 import com.idega.block.process.data.CaseCodeHome;
+import com.idega.block.school.business.SchoolBusiness;
+import com.idega.block.school.data.School;
+import com.idega.business.IBOLookup;
 import com.idega.business.IBOLookupException;
 import com.idega.business.IBORuntimeException;
 import com.idega.business.IBOServiceBean;
@@ -82,6 +87,24 @@ public class AccountingKeyBusinessBean extends IBOServiceBean implements Account
 		}
 		catch (IDOLookupException e) {
 			throw new IBORuntimeException(e);
+		}
+	}
+	
+	private SchoolProductCodeHome getSchoolProductCodeHome() {
+		try {
+			return (SchoolProductCodeHome) IDOLookup.getHome(SchoolProductCode.class);
+		}
+		catch (IDOLookupException e) {
+			throw new IBORuntimeException(e);
+		}
+	}
+	
+	private SchoolBusiness getSchoolBusiness() {
+		try {
+			return (SchoolBusiness) IBOLookup.getServiceInstance(getIWApplicationContext(), SchoolBusiness.class);
+		}
+		catch (IBOLookupException ile) {
+			throw new IBORuntimeException(ile);
 		}
 	}
 
@@ -137,6 +160,41 @@ public class AccountingKeyBusinessBean extends IBOServiceBean implements Account
 		return map;
 	}
 	
+	public Map getSchoolProductKeyMap() {
+		Map map = new HashMap();
+		
+		try {
+			Collection schools = getSchoolBusiness().findAllSchools();
+			
+			Iterator iter = schools.iterator();
+			while (iter.hasNext()) {
+				School school = (School) iter.next();
+				
+				try {
+					Collection codes = getSchoolProductCodeHome().findAllBySchool(school);
+					if (!codes.isEmpty()) {
+						Map schoolMap = new HashMap();
+						Iterator iterator = codes.iterator();
+						while (iterator.hasNext()) {
+							SchoolProductCode code = (SchoolProductCode) iterator.next();
+							schoolMap.put(code.getProductCode(), code.getSchoolProductCode());
+						}
+						
+						map.put(school.getOrganizationNumber(), schoolMap);
+					}
+				}
+				catch (FinderException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		catch (RemoteException e) {
+			throw new IBORuntimeException(e);
+		}
+		
+		return map;
+	}
+	
 	public void createAccountingFile(String caseCode, Date month) {
 		try {
 			CaseCode code = getCaseCodeHome().findByPrimaryKey(caseCode);
@@ -159,6 +217,7 @@ public class AccountingKeyBusinessBean extends IBOServiceBean implements Account
 				try {
 					CaseCodeAccountingKey key = getAccountingKey(code);
 					Map productCodes = getProductKeyMap(code);
+					Map schoolProductCodes = getSchoolProductKeyMap();
 	
 					AccountingEntry[] accEntry = b.getAccountingEntries(key.getAccountingKey(), null, fromStamp.getDate(), toStamp.getDate());
 					if (accEntry != null && accEntry.length != 0) {
@@ -173,8 +232,12 @@ public class AccountingKeyBusinessBean extends IBOServiceBean implements Account
 						for (int i = 0; i < accEntry.length; i++) {
 							AccountingEntry entry = accEntry[i];
 							ProductCode product = (ProductCode) productCodes.get(entry.getProductCode());
+							Map schoolProduct = (Map) schoolProductCodes.get(entry.getProviderCode());
 							
-							if (product != null) {
+							if (schoolProduct != null && schoolProduct.containsKey(entry.getProductCode())) {
+								bWriter.write((String) schoolProduct.get(entry.getProductCode()));
+							}
+							else if (product != null) {
 								bWriter.write(product.getAccountingKey());
 							}
 							else {

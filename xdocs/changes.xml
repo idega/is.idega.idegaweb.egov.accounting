@@ -7,6 +7,12 @@
 	</properties>
 	<body>
 	
+		<release version="1.0.9" date="2006-09-19">
+			<action dev="laddi" type="update">
+				Added new bean for specific school product codes.
+			</action>
+		</release>
+
 		<release version="1.0.8" date="2006-09-14">
 			<action dev="laddi" type="update">
 				Fixed creation of accounting files when AccountingEntry has no start date set.

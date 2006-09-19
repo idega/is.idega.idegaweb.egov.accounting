@@ -19,6 +19,19 @@
             <type>map</type>
           </key>
           <key>
+            <name>is.idega.idegaweb.egov.accounting.data.SchoolProductCode</name>
+            <value>
+              <map>
+                <key>
+                  <name>component_property_file</name>
+                  <type>java.lang.String</type>
+                  <value>is.idega.idegaweb.egov.accounting.data.SchoolProductCode.pxml</value>
+                </key>
+              </map>
+            </value>
+            <type>map</type>
+          </key>
+          <key>
             <name>is.idega.idegaweb.egov.accounting.data.AccountingFiles</name>
             <value>
               <map>

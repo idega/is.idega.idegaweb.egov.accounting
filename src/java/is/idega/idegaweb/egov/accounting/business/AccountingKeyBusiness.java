@@ -33,6 +33,11 @@ public interface AccountingKeyBusiness extends IBOService {
 	public Map getProductKeyMap(CaseCode code) throws RemoteException;
 
 	/**
+	 * @see is.idega.idegaweb.egov.accounting.business.AccountingKeyBusinessBean#getSchoolProductKeyMap
+	 */
+	public Map getSchoolProductKeyMap() throws RemoteException;
+
+	/**
 	 * @see is.idega.idegaweb.egov.accounting.business.AccountingKeyBusinessBean#createAccountingFile
 	 */
 	public void createAccountingFile(String caseCode, Date month) throws RemoteException;

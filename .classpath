@@ -5,6 +5,8 @@
   </classpathentry>
   <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
   </classpathentry>
+  <classpathentry kind="src" path="/com.idega.block.school">
+  </classpathentry>
   <classpathentry kind="src" path="/com.idega.core">
   </classpathentry>
   <classpathentry kind="src" path="/com.idega.user">
