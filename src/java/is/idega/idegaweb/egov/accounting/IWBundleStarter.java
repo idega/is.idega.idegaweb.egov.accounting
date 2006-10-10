@@ -9,8 +9,13 @@
  */
 package is.idega.idegaweb.egov.accounting;
 
+import is.idega.idegaweb.egov.accounting.business.AccountingConstants;
 import is.idega.idegaweb.egov.accounting.business.AccountingEntry;
+import is.idega.idegaweb.egov.accounting.business.AccountingSystemManager;
+import is.idega.idegaweb.egov.accounting.business.NavisionStringResult;
+import is.idega.idegaweb.egov.accounting.business.SFSStringResult;
 import is.idega.idegaweb.egov.accounting.wsimpl.BillingEntry;
+
 import com.idega.idegaweb.IWBundle;
 import com.idega.idegaweb.IWBundleStartable;
 import com.idega.repository.data.ImplementorRepository;
@@ -22,6 +27,9 @@ public class IWBundleStarter implements IWBundleStartable {
 	
 	public void start(IWBundle starterBundle) {
 		ImplementorRepository.getInstance().addImplementor(AccountingEntry.class, BillingEntry.class);
+		
+		AccountingSystemManager.getInstance().addAccountingStringResult(AccountingConstants.ACCOUNTING_SYSTEM_NAVISION, NavisionStringResult.class);
+		AccountingSystemManager.getInstance().addAccountingStringResult(AccountingConstants.ACCOUNTING_SYSTEM_SFS, SFSStringResult.class);
 		
 		startAgressoDaemon(starterBundle);
 		

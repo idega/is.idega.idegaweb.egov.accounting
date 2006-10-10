@@ -26,7 +26,6 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.rmi.RemoteException;
 import java.sql.Date;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -208,26 +207,22 @@ public class AccountingKeyBusinessBean extends IBOServiceBean implements Account
 				e.printStackTrace();
 			}
 	
+			IWTimestamp fromStamp = new IWTimestamp(month);
+			IWTimestamp toStamp = new IWTimestamp(fromStamp);
+			toStamp.addMonths(1);
+			toStamp.addDays(-1);
+
 			if (b != null && month != null) {
-				IWTimestamp fromStamp = new IWTimestamp(month);
-				IWTimestamp toStamp = new IWTimestamp(fromStamp);
-				toStamp.addMonths(1);
-				toStamp.addDays(-1);
-	
 				try {
 					CaseCodeAccountingKey key = getAccountingKey(code);
 					Map productCodes = getProductKeyMap(code);
 					Map schoolProductCodes = getSchoolProductKeyMap();
+					String accountingSystem = this.getIWApplicationContext().getApplicationSettings().getProperty(AccountingConstants.PROPERTY_ACCOUNTING_SYSTEM, AccountingConstants.ACCOUNTING_SYSTEM_NAVISION);
 	
 					AccountingEntry[] accEntry = b.getAccountingEntries(key.getAccountingKey(), null, fromStamp.getDate(), toStamp.getDate());
 					if (accEntry != null && accEntry.length != 0) {
 						File tempfile = File.createTempFile(key.getAccountingKey() + "-" + fromStamp.getDateString("MM-yyyy", getIWMainApplication().getDefaultLocale()), ".csv");
 						BufferedWriter bWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(tempfile), "ISO-8859-1"));
-	
-						NumberFormat format = NumberFormat.getInstance();
-						format.setMaximumFractionDigits(0);
-						format.setMinimumFractionDigits(0);
-						format.setGroupingUsed(false);
 	
 						for (int i = 0; i < accEntry.length; i++) {
 							AccountingEntry entry = accEntry[i];
@@ -235,76 +230,14 @@ public class AccountingKeyBusinessBean extends IBOServiceBean implements Account
 							Map schoolProduct = (Map) schoolProductCodes.get(entry.getProviderCode());
 							
 							if (schoolProduct != null && schoolProduct.containsKey(entry.getProductCode())) {
-								bWriter.write((String) schoolProduct.get(entry.getProductCode()));
+								entry.setProductCode((String) schoolProduct.get(entry.getProductCode()));
 							}
 							else if (product != null) {
-								bWriter.write(product.getAccountingKey());
+								entry.setProductCode(product.getAccountingKey());
 							}
-							else {
-								bWriter.write(entry.getProductCode());
-							}
-							bWriter.write(",");
-							bWriter.write(entry.getPayerPersonalId());
-							bWriter.write(",");
-							bWriter.write(entry.getPersonalId());
-							bWriter.write(",");
-							if (entry.getUnits() > 0) {
-								bWriter.write(String.valueOf(entry.getUnits()));
-							}
-							else {
-								bWriter.write(format.format(entry.getAmount()));
-							}
-							bWriter.write(",");
-							bWriter.write(format.format(entry.getUnitPrice()));
-							bWriter.write(",");
-							if (entry.getStartDate() == null) {
-								bWriter.write(fromStamp.getDateString("dd-MM-yyyy"));
-							}
-							else {
-								IWTimestamp startDate = new IWTimestamp(entry.getStartDate());
-								if (startDate.isEarlierThan(fromStamp)) {
-									bWriter.write(fromStamp.getDateString("dd-MM-yyyy"));
-								}
-								else {
-									bWriter.write(startDate.getDateString("dd-MM-yyyy"));
-								}
-							}
-							bWriter.write(",");
-							if (entry.getEndDate() == null) {
-								bWriter.write(toStamp.getDateString("dd-MM-yyyy"));
-							}
-							else {
-								IWTimestamp endDate = new IWTimestamp(entry.getEndDate());
-								if (endDate.isLaterThan(toStamp)) {
-									bWriter.write(toStamp.getDateString("dd-MM-yyyy"));
-								}
-								else {
-									bWriter.write(endDate.getDateString("dd-MM-yyyy"));
-								}
-							}
-							bWriter.write(",");
-							bWriter.write(key.getAccountingKey());
-							bWriter.write(",");
-							bWriter.write(entry.getProviderCode());
-							
-							if (entry.getCardNumber() != null) {
-								bWriter.write(",");
-								bWriter.write(entry.getCardNumber());
-								bWriter.write(",");
-								bWriter.write(entry.getCardType());
-								bWriter.write(",");
-								bWriter.write(entry.getCardExpirationMonth());
-								bWriter.write(",");
-								bWriter.write(entry.getCardExpirationYear());
-							}
-							else {
-								bWriter.write(",,,,");
-							}
-							
-							if (entry.getExtraInformation() != null) {
-								bWriter.write(",");
-								bWriter.write(entry.getExtraInformation().toString());
-							}
+
+							AccountingStringResult result = AccountingSystemManager.getInstance().getAccountingStringResult(accountingSystem);
+							bWriter.write(result.toString(getIWApplicationContext(), entry, key, fromStamp, toStamp));
 							
 							bWriter.newLine();
 						}
@@ -313,7 +246,7 @@ public class AccountingKeyBusinessBean extends IBOServiceBean implements Account
 	
 						ICFile file = ((ICFileHome) IDOLookup.getHome(ICFile.class)).create();
 						file.setFileValue(new FileInputStream(tempfile));
-						file.setName(tempfile.getName());
+						file.setName(tempfile.getName().substring(0, tempfile.getName().length() - 9) + ".csv");
 						file.store();
 	
 						AccountingFiles files = getAccountingFilesHome().create();
