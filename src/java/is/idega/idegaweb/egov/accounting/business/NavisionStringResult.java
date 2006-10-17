@@ -78,9 +78,9 @@ public class NavisionStringResult implements AccountingStringResult {
 			buffer.append(",");
 			buffer.append(entry.getCardType());
 			buffer.append(",");
-			buffer.append(entry.getCardExpirationMonth());
+			buffer.append(Integer.toString(entry.getCardExpirationMonth()));
 			buffer.append(",");
-			buffer.append(entry.getCardExpirationYear());
+			buffer.append(Integer.toString(entry.getCardExpirationYear()));
 		}
 		else {
 			buffer.append(",,,,");
