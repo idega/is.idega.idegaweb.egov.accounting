@@ -9,7 +9,7 @@
 <undeployment
     xmlns="http://xml.apache.org/axis/wsdd/">
 
-  <!-- Services from AccountingService WSDL service -->
+  <!-- Services from WiseWebService WSDL service -->
 
-  <service name="AccountingServiceSOAP"/>
+  <service name="WiseWebServiceSoap"/>
 </undeployment>

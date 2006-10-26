@@ -10,40 +10,119 @@
     xmlns="http://xml.apache.org/axis/wsdd/"
     xmlns:java="http://xml.apache.org/axis/wsdd/providers/java">
 
-  <!-- Services from AccountingService WSDL service -->
+  <!-- Services from WiseWebService WSDL service -->
 
-  <service name="AccountingServiceSOAP" provider="java:RPC" style="document" use="literal">
-      <parameter name="wsdlTargetNamespace" value="http://www.idega.com/AccountingService/"/>
-      <parameter name="wsdlServiceElement" value="AccountingService"/>
-      <parameter name="schemaUnqualified" value="http://www.idega.com/AccountingService/"/>
-      <parameter name="wsdlServicePort" value="AccountingServiceSOAP"/>
-      <parameter name="className" value="is.idega.idegaweb.egov.accounting.wsimpl.AccountingServiceSOAPImpl"/>
-      <parameter name="wsdlPortType" value="AccountingService"/>
+  <service name="WiseWebServiceSoap" provider="java:RPC" style="wrapped" use="literal">
+      <parameter name="wsdlTargetNamespace" value="http://tempuri.org/"/>
+      <parameter name="wsdlServiceElement" value="WiseWebService"/>
+      <parameter name="schemaQualified" value="http://tempuri.org/"/>
+      <parameter name="wsdlServicePort" value="WiseWebServiceSoap"/>
+      <parameter name="className" value="is.idega.idegaweb.egov.accounting.wsimpl.WiseWebServiceSoap_BindingImpl"/>
+      <parameter name="wsdlPortType" value="WiseWebServiceSoap"/>
       <parameter name="typeMappingVersion" value="1.2"/>
-      <operation name="getBillingEntries" qname="getBillingEntries" returnQName="retNS:getBillingEntriesResponse" xmlns:retNS="http://www.idega.com/AccountingService/" returnType="rtns:BillingEntries" xmlns:rtns="http://www.idega.com/AccountingService/" returnItemQName="BillingEntry" soapAction="http://www.idega.com/AccountingService/getBillingEntries" >
-        <parameter qname="pns:getBillingEntriesRequest" xmlns:pns="http://www.idega.com/AccountingService/" type="tns:BillingEntriesRequest" xmlns:tns="http://www.idega.com/AccountingService/"/>
+      <operation name="getVMadur" qname="operNS:getVMadur" xmlns:operNS="http://tempuri.org/" returnQName="retNS:getVMadurResult" xmlns:retNS="http://tempuri.org/" returnType="rtns:string" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="http://tempuri.org/getVMadur" >
+        <parameter qname="pns:sHost" xmlns:pns="http://tempuri.org/" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:sPort" xmlns:pns="http://tempuri.org/" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:sUser" xmlns:pns="http://tempuri.org/" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:sPass" xmlns:pns="http://tempuri.org/" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:sVMadur" xmlns:pns="http://tempuri.org/" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
       </operation>
-      <parameter name="allowedMethods" value="getBillingEntries"/>
+      <operation name="setVMadur" qname="operNS:setVMadur" xmlns:operNS="http://tempuri.org/" returnQName="retNS:setVMadurResult" xmlns:retNS="http://tempuri.org/" returnType="rtns:string" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="http://tempuri.org/setVMadur" >
+        <parameter qname="pns:sHost" xmlns:pns="http://tempuri.org/" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:sPort" xmlns:pns="http://tempuri.org/" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:sUser" xmlns:pns="http://tempuri.org/" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:sPass" xmlns:pns="http://tempuri.org/" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:sVMadur" xmlns:pns="http://tempuri.org/" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:sSimi" xmlns:pns="http://tempuri.org/" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:sEmail" xmlns:pns="http://tempuri.org/" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
+      <operation name="getReportHTML" qname="operNS:getReportHTML" xmlns:operNS="http://tempuri.org/" returnQName="retNS:getReportHTMLResult" xmlns:retNS="http://tempuri.org/" returnType="rtns:string" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="http://tempuri.org/getReportHTML" >
+        <parameter qname="pns:sHost" xmlns:pns="http://tempuri.org/" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:sPort" xmlns:pns="http://tempuri.org/" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:sName" xmlns:pns="http://tempuri.org/" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:dSecTimeOut" xmlns:pns="http://tempuri.org/" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:sUser" xmlns:pns="http://tempuri.org/" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:sPass" xmlns:pns="http://tempuri.org/" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:sKey1" xmlns:pns="http://tempuri.org/" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:sKey2" xmlns:pns="http://tempuri.org/" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:sKey3" xmlns:pns="http://tempuri.org/" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:sKey4" xmlns:pns="http://tempuri.org/" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:sKey5" xmlns:pns="http://tempuri.org/" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
+      <operation name="getQueryXML" qname="operNS:getQueryXML" xmlns:operNS="http://tempuri.org/" returnQName="retNS:getQueryXMLResult" xmlns:retNS="http://tempuri.org/" returnType="rtns:string" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="http://tempuri.org/getQueryXML" >
+        <parameter qname="pns:sHost" xmlns:pns="http://tempuri.org/" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:sPort" xmlns:pns="http://tempuri.org/" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:sName" xmlns:pns="http://tempuri.org/" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:dSecTimeOut" xmlns:pns="http://tempuri.org/" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:sUser" xmlns:pns="http://tempuri.org/" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:sPass" xmlns:pns="http://tempuri.org/" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:sKey1" xmlns:pns="http://tempuri.org/" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:sKey2" xmlns:pns="http://tempuri.org/" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:sKey3" xmlns:pns="http://tempuri.org/" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:sKey4" xmlns:pns="http://tempuri.org/" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:sKey5" xmlns:pns="http://tempuri.org/" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
+      <operation name="u_getQueryXML" qname="operNS:u_getQueryXML" xmlns:operNS="http://tempuri.org/" returnQName="retNS:u_getQueryXMLResult" xmlns:retNS="http://tempuri.org/" returnType="rtns:>>u_getQueryXMLResponse>u_getQueryXMLResult" xmlns:rtns="http://tempuri.org/" soapAction="http://tempuri.org/u_getQueryXML" >
+        <parameter qname="pns:sHost" xmlns:pns="http://tempuri.org/" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:sPort" xmlns:pns="http://tempuri.org/" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:stUseCaseCode" xmlns:pns="http://tempuri.org/" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:stUser" xmlns:pns="http://tempuri.org/" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:stSessionKey" xmlns:pns="http://tempuri.org/" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:stCompanyName" xmlns:pns="http://tempuri.org/" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:stXML" xmlns:pns="http://tempuri.org/" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
+      <operation name="u_Login" qname="operNS:u_Login" xmlns:operNS="http://tempuri.org/" returnQName="retNS:u_LoginResult" xmlns:retNS="http://tempuri.org/" returnType="rtns:string" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="http://tempuri.org/u_Login" >
+        <parameter qname="pns:sHost" xmlns:pns="http://tempuri.org/" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:sPort" xmlns:pns="http://tempuri.org/" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:stUser" xmlns:pns="http://tempuri.org/" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:stPass" xmlns:pns="http://tempuri.org/" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:stComp" xmlns:pns="http://tempuri.org/" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
+      <operation name="u_LoginDistribution" qname="operNS:u_LoginDistribution" xmlns:operNS="http://tempuri.org/" returnQName="retNS:u_LoginDistributionResult" xmlns:retNS="http://tempuri.org/" returnType="rtns:string" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="http://tempuri.org/u_LoginDistribution" >
+        <parameter qname="pns:sHost" xmlns:pns="http://tempuri.org/" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:sPort" xmlns:pns="http://tempuri.org/" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:stUser" xmlns:pns="http://tempuri.org/" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:stPass" xmlns:pns="http://tempuri.org/" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:stComp" xmlns:pns="http://tempuri.org/" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
+      <parameter name="allowedMethods" value="u_Login setVMadur getVMadur getReportHTML u_LoginDistribution getQueryXML u_getQueryXML"/>
 
-      <arrayMapping
-        xmlns:ns="http://www.idega.com/AccountingService/"
-        qname="ns:BillingEntries"
-        type="java:is.idega.idegaweb.egov.accounting.wsimpl.BillingEntry[]"
-        innerType="cmp-ns:BillingEntry" xmlns:cmp-ns="http://www.idega.com/AccountingService/"
-        encodingStyle=""
-      />
       <typeMapping
-        xmlns:ns="http://www.idega.com/AccountingService/"
-        qname="ns:BillingEntry"
-        type="java:is.idega.idegaweb.egov.accounting.wsimpl.BillingEntry"
+        xmlns:ns="http://tempuri.org/"
+        qname="ns:>>u_getQueryXMLResponse>u_getQueryXMLResult"
+        type="java:is.idega.idegaweb.egov.accounting.wsimpl.U_getQueryXMLResponseU_getQueryXMLResult"
         serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
         deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
         encodingStyle=""
       />
       <typeMapping
-        xmlns:ns="http://www.idega.com/AccountingService/"
-        qname="ns:BillingEntriesRequest"
-        type="java:is.idega.idegaweb.egov.accounting.wsimpl.BillingEntriesRequest"
+        xmlns:ns="http://tempuri.org/"
+        qname="ns:>u_LoginResponse"
+        type="java:is.idega.idegaweb.egov.accounting.wsimpl.U_LoginResponse"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+      <typeMapping
+        xmlns:ns="http://tempuri.org/"
+        qname="ns:>u_LoginDistribution"
+        type="java:is.idega.idegaweb.egov.accounting.wsimpl.U_LoginDistribution"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+      <typeMapping
+        xmlns:ns="http://tempuri.org/"
+        qname="ns:>u_LoginDistributionResponse"
+        type="java:is.idega.idegaweb.egov.accounting.wsimpl.U_LoginDistributionResponse"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+      <typeMapping
+        xmlns:ns="http://tempuri.org/"
+        qname="ns:>u_Login"
+        type="java:is.idega.idegaweb.egov.accounting.wsimpl.U_Login"
         serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
         deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
         encodingStyle=""

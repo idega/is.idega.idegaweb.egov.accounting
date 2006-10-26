@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tns="http://tempuri.org/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:import namespace="http://www.w3.org/2001/XMLSchema" />
+      <s:element name="getVMadur">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="sHost" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="sPort" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="sUser" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="sPass" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="sVMadur" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getVMadurResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getVMadurResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="setVMadur">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="sHost" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="sPort" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="sUser" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="sPass" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="sVMadur" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="sSimi" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="sEmail" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="setVMadurResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="setVMadurResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getReportHTML">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="sHost" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="sPort" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="sName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="dSecTimeOut" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="sUser" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="sPass" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="sKey1" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="sKey2" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="sKey3" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="sKey4" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="sKey5" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getReportHTMLResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getReportHTMLResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getQueryXML">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="sHost" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="sPort" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="sName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="dSecTimeOut" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="sUser" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="sPass" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="sKey1" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="sKey2" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="sKey3" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="sKey4" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="sKey5" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getQueryXMLResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getQueryXMLResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="u_getQueryXML">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="sHost" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="sPort" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="stUseCaseCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="stUser" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="stSessionKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="stCompanyName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="stXML" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="u_getQueryXMLResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="u_getQueryXMLResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="u_Login">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="sHost" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="sPort" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="stUser" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="stPass" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="stComp" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="u_LoginResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="u_LoginResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="u_LoginDistribution">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="sHost" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="sPort" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="stUser" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="stPass" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="stComp" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="u_LoginDistributionResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="u_LoginDistributionResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="getVMadurSoapIn">
+    <wsdl:part name="parameters" element="tns:getVMadur" />
+  </wsdl:message>
+  <wsdl:message name="getVMadurSoapOut">
+    <wsdl:part name="parameters" element="tns:getVMadurResponse" />
+  </wsdl:message>
+  <wsdl:message name="setVMadurSoapIn">
+    <wsdl:part name="parameters" element="tns:setVMadur" />
+  </wsdl:message>
+  <wsdl:message name="setVMadurSoapOut">
+    <wsdl:part name="parameters" element="tns:setVMadurResponse" />
+  </wsdl:message>
+  <wsdl:message name="getReportHTMLSoapIn">
+    <wsdl:part name="parameters" element="tns:getReportHTML" />
+  </wsdl:message>
+  <wsdl:message name="getReportHTMLSoapOut">
+    <wsdl:part name="parameters" element="tns:getReportHTMLResponse" />
+  </wsdl:message>
+  <wsdl:message name="getQueryXMLSoapIn">
+    <wsdl:part name="parameters" element="tns:getQueryXML" />
+  </wsdl:message>
+  <wsdl:message name="getQueryXMLSoapOut">
+    <wsdl:part name="parameters" element="tns:getQueryXMLResponse" />
+  </wsdl:message>
+  <wsdl:message name="u_getQueryXMLSoapIn">
+    <wsdl:part name="parameters" element="tns:u_getQueryXML" />
+  </wsdl:message>
+  <wsdl:message name="u_getQueryXMLSoapOut">
+    <wsdl:part name="parameters" element="tns:u_getQueryXMLResponse" />
+  </wsdl:message>
+  <wsdl:message name="u_LoginSoapIn">
+    <wsdl:part name="parameters" element="tns:u_Login" />
+  </wsdl:message>
+  <wsdl:message name="u_LoginSoapOut">
+    <wsdl:part name="parameters" element="tns:u_LoginResponse" />
+  </wsdl:message>
+  <wsdl:message name="u_LoginDistributionSoapIn">
+    <wsdl:part name="parameters" element="tns:u_LoginDistribution" />
+  </wsdl:message>
+  <wsdl:message name="u_LoginDistributionSoapOut">
+    <wsdl:part name="parameters" element="tns:u_LoginDistributionResponse" />
+  </wsdl:message>
+  <wsdl:portType name="WiseWebServiceSoap">
+    <wsdl:operation name="getVMadur">
+      <wsdl:input message="tns:getVMadurSoapIn" />
+      <wsdl:output message="tns:getVMadurSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="setVMadur">
+      <wsdl:input message="tns:setVMadurSoapIn" />
+      <wsdl:output message="tns:setVMadurSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getReportHTML">
+      <wsdl:input message="tns:getReportHTMLSoapIn" />
+      <wsdl:output message="tns:getReportHTMLSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getQueryXML">
+      <wsdl:input message="tns:getQueryXMLSoapIn" />
+      <wsdl:output message="tns:getQueryXMLSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="u_getQueryXML">
+      <wsdl:input message="tns:u_getQueryXMLSoapIn" />
+      <wsdl:output message="tns:u_getQueryXMLSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="u_Login">
+      <wsdl:input message="tns:u_LoginSoapIn" />
+      <wsdl:output message="tns:u_LoginSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="u_LoginDistribution">
+      <wsdl:input message="tns:u_LoginDistributionSoapIn" />
+      <wsdl:output message="tns:u_LoginDistributionSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="WiseWebServiceSoap" type="tns:WiseWebServiceSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document" />
+    <wsdl:operation name="getVMadur">
+      <soap:operation soapAction="http://tempuri.org/getVMadur" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="setVMadur">
+      <soap:operation soapAction="http://tempuri.org/setVMadur" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getReportHTML">
+      <soap:operation soapAction="http://tempuri.org/getReportHTML" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getQueryXML">
+      <soap:operation soapAction="http://tempuri.org/getQueryXML" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="u_getQueryXML">
+      <soap:operation soapAction="http://tempuri.org/u_getQueryXML" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="u_Login">
+      <soap:operation soapAction="http://tempuri.org/u_Login" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="u_LoginDistribution">
+      <soap:operation soapAction="http://tempuri.org/u_LoginDistribution" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="WiseWebService">
+    <wsdl:port name="WiseWebServiceSoap" binding="tns:WiseWebServiceSoap">
+      <soap:address location="http://postur.arborg.is:81/ApprovalsWS/Wisews.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
