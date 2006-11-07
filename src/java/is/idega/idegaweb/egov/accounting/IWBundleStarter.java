@@ -36,7 +36,7 @@ import com.idega.util.timer.TimerManager;
 public class IWBundleStarter implements IWBundleStartable {
 
 	RvkAgressoUpdater agressoDaemon;
-	private TimerEntry maritechTimerEntry = null;
+	//private TimerEntry maritechTimerEntry = null;
 
 
 	public void start(IWBundle starterBundle) {
@@ -87,7 +87,7 @@ public class IWBundleStarter implements IWBundleStartable {
 
 			TimerManager tManager = new TimerManager();
 			try {
-				this.maritechTimerEntry = tManager.addTimer(0,4,-1,-1,-1,-1, new TimerListener() {
+				/*this.maritechTimerEntry =*/ tManager.addTimer(0,4,-1,-1,-1,-1, new TimerListener() {
 
 
 					public void handleTimer(TimerEntry entry) {
