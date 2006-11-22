@@ -1,6 +1,6 @@
-#Wed Nov 22 14:10:16 GMT 2006
+#Wed Nov 22 14:07:07 GMT 2006
 eclipse.preferences.version=1
 encoding//src/java/is/idega/idegaweb/egov/accounting/IWBundleStarter.java=UTF-8
 encoding//src/java/is/idega/idegaweb/egov/accounting/WSTester.java=UTF-8
 encoding//src/java/is/idega/idegaweb/egov/accounting/business/AccountingKeyBusinessBean.java=UTF-8
-encoding//src/java/is/idega/idegaweb/egov/accounting/business/NavisionBusinessBean.java=UTF-8
+encoding//src/java/is/idega/idegaweb/egov/accounting/business/NavisionBusinessBean.java=ISO-8859-1
