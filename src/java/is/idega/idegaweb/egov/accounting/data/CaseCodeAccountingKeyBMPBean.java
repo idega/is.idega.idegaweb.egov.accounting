@@ -9,8 +9,11 @@
  */
 package is.idega.idegaweb.egov.accounting.data;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
+
 import javax.ejb.CreateException;
 import javax.ejb.FinderException;
 import com.idega.block.process.data.CaseCode;
@@ -120,5 +123,9 @@ public class CaseCodeAccountingKeyBMPBean extends GenericEntity implements CaseC
 		query.addCriteria(new MatchCriteria(table, COLUMN_ACCOUNTING_KEY, MatchCriteria.EQUALS, accountingKey));
 		
 		return super.idoFindOnePKByQuery(query);
+	}
+	
+	public Collection ejbFindAllCaseCodeAccountingKeys() throws FinderException {
+		return super.idoFindAllIDsBySQL();
 	}
 }

@@ -1,5 +1,5 @@
 /*
- * $Id: NavisionXMLStringResult.java,v 1.1 2006/10/26 15:56:05 eiki Exp $
+ * $Id: NavisionXMLStringResult.java,v 1.2 2006/11/22 14:03:10 eiki Exp $
  * Created on Oct 9, 2006
  *
  * Copyright (C) 2006 Idega Software hf. All Rights Reserved.
@@ -14,6 +14,7 @@ import is.idega.idegaweb.egov.accounting.data.CaseCodeAccountingKey;
 import java.text.NumberFormat;
 
 import com.idega.idegaweb.IWApplicationContext;
+import com.idega.util.IWCalendar;
 import com.idega.util.IWTimestamp;
 
 /**
@@ -37,13 +38,15 @@ import com.idega.util.IWTimestamp;
 Ê <Duration_Month>10</Duration_Month>
 Ê <Duration_Day>31</Duration_Day>
 </Parameters>
- *  Last modified: $Date: 2006/10/26 15:56:05 $ by $Author: eiki $
+ *  Last modified: $Date: 2006/11/22 14:03:10 $ by $Author: eiki $
  * 
  * @author <a href="mailto:eiki@idega.com">eiki</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class NavisionXMLStringResult implements AccountingStringResult {
 
+	protected static final String DURATION_DAY = "Duration_Day";
+	protected static final String DURATION_MONTH = "Duration_Month";
 	protected static final String PARAMETERS = "Parameters";
 	protected static final String CARD_EXPIRE_YEAR = "Card_Expire_Year";
 	protected static final String CARD_EXPIRE_MONTH = "Card_Expire_Month";
@@ -70,16 +73,18 @@ public class NavisionXMLStringResult implements AccountingStringResult {
 
 		StringBuffer buffer = new StringBuffer();
 		StringBuffer returner = new StringBuffer();
+		IWTimestamp now = new IWTimestamp();
+		
 		
 		//customer pin
 		
-		addXMLTagWithValue(buffer,CUSTOMER_NO,entry.getPayerPersonalId());
+		addXMLTagWithValue(buffer,CUSTOMER_NO,entry.getPayerPersonalId().replaceAll("-","") );
 		///description header
 		addXMLTagWithValue(buffer,HEADER_DESCRIPTION,"IdegaWeb eGov");
 		//posting date...today
-		addXMLTagWithValue(buffer,POSTING_DATE,(new IWTimestamp()).getDateString(DATE_FORMAT_DD_MM_YYYY));
+		addXMLTagWithValue(buffer,POSTING_DATE,now.getDateString(DATE_FORMAT_DD_MM_YYYY));
 		//child pin
-		addXMLTagWithValue(buffer,CHILD_NO,entry.getPersonalId());
+		addXMLTagWithValue(buffer,CHILD_NO,entry.getPersonalId().replaceAll("-",""));
 		//item no
 		addXMLTagWithValue(buffer,ITEM_NO,entry.getProductCode());
 		
@@ -145,6 +150,13 @@ public class NavisionXMLStringResult implements AccountingStringResult {
 		
 		addXMLTagWithValue(buffer,CARD_EXPIRE_YEAR,Integer.toString(entry.getCardExpirationYear()));
 		
+		
+		addXMLTagWithValue(buffer,DURATION_MONTH,Integer.toString(now.getMonth()));
+		IWCalendar calendar = new IWCalendar();
+		int daysInMonth = calendar.getLengthOfMonth(now.getMonth(), now.getYear());
+		
+		addXMLTagWithValue(buffer,DURATION_DAY,Integer.toString(daysInMonth));
+	
 //		if (entry.getExtraInformation() != null) {
 //			buffer.append(",");
 //			buffer.append(entry.getExtraInformation().toString());

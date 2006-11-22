@@ -5,7 +5,6 @@ import com.idega.block.process.data.CaseCode;
 import com.idega.data.IDOEntity;
 
 public interface CaseCodeAccountingKey extends IDOEntity {
-
 	/**
 	 * @see is.idega.idegaweb.egov.accounting.data.CaseCodeAccountingKeyBMPBean#getPrimaryKeyClass
 	 */

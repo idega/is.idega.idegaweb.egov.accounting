@@ -11,7 +11,6 @@ import java.rmi.RemoteException;
 import is.idega.idegaweb.egov.accounting.data.CaseCodeAccountingKey;
 
 public interface AccountingKeyBusiness extends IBOService {
-
 	/**
 	 * @see is.idega.idegaweb.egov.accounting.business.AccountingKeyBusinessBean#getAccountingKey
 	 */
@@ -41,4 +40,14 @@ public interface AccountingKeyBusiness extends IBOService {
 	 * @see is.idega.idegaweb.egov.accounting.business.AccountingKeyBusinessBean#createAccountingFile
 	 */
 	public void createAccountingFile(String caseCode, Date month) throws RemoteException;
+
+	/**
+	 * @see is.idega.idegaweb.egov.accounting.business.AccountingKeyBusinessBean#generateAccountingString
+	 */
+	public void generateAccountingString(String caseCode, Date month, boolean createFile) throws RemoteException;
+
+	/**
+	 * @see is.idega.idegaweb.egov.accounting.business.AccountingKeyBusinessBean#generateAccountingString
+	 */
+	public void generateAccountingString(CaseCode code, Date month, boolean createFile) throws RemoteException;
 }

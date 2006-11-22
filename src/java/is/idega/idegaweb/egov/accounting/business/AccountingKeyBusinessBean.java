@@ -53,7 +53,12 @@ import com.idega.util.IWTimestamp;
 
 public class AccountingKeyBusinessBean extends IBOServiceBean implements AccountingKeyBusiness {
 
-	private CaseCodeAccountingKeyHome getCaseCodeAccountingKeyHome() {
+	/**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+	private static final long serialVersionUID = 4569648374518077672L;
+
+	protected CaseCodeAccountingKeyHome getCaseCodeAccountingKeyHome() {
 		try {
 			return (CaseCodeAccountingKeyHome) IDOLookup.getHome(CaseCodeAccountingKey.class);
 		}
@@ -61,8 +66,8 @@ public class AccountingKeyBusinessBean extends IBOServiceBean implements Account
 			throw new IBORuntimeException(e);
 		}
 	}
-	
-	private ProductCodeHome getProductCodeHome() {
+
+	protected ProductCodeHome getProductCodeHome() {
 		try {
 			return (ProductCodeHome) IDOLookup.getHome(ProductCode.class);
 		}
@@ -70,8 +75,8 @@ public class AccountingKeyBusinessBean extends IBOServiceBean implements Account
 			throw new IBORuntimeException(e);
 		}
 	}
-	
-	private AccountingFilesHome getAccountingFilesHome() {
+
+	protected AccountingFilesHome getAccountingFilesHome() {
 		try {
 			return (AccountingFilesHome) IDOLookup.getHome(AccountingFiles.class);
 		}
@@ -80,7 +85,7 @@ public class AccountingKeyBusinessBean extends IBOServiceBean implements Account
 		}
 	}
 
-	private CaseCodeHome getCaseCodeHome() {
+	protected CaseCodeHome getCaseCodeHome() {
 		try {
 			return (CaseCodeHome) IDOLookup.getHome(CaseCode.class);
 		}
@@ -88,8 +93,8 @@ public class AccountingKeyBusinessBean extends IBOServiceBean implements Account
 			throw new IBORuntimeException(e);
 		}
 	}
-	
-	private SchoolProductCodeHome getSchoolProductCodeHome() {
+
+	protected SchoolProductCodeHome getSchoolProductCodeHome() {
 		try {
 			return (SchoolProductCodeHome) IDOLookup.getHome(SchoolProductCode.class);
 		}
@@ -97,8 +102,8 @@ public class AccountingKeyBusinessBean extends IBOServiceBean implements Account
 			throw new IBORuntimeException(e);
 		}
 	}
-	
-	private SchoolBusiness getSchoolBusiness() {
+
+	protected SchoolBusiness getSchoolBusiness() {
 		try {
 			return (SchoolBusiness) IBOLookup.getServiceInstance(getIWApplicationContext(), SchoolBusiness.class);
 		}
@@ -117,7 +122,7 @@ public class AccountingKeyBusinessBean extends IBOServiceBean implements Account
 	public CaseCodeAccountingKey getAccountingKey(CaseCode code) throws FinderException {
 		return getCaseCodeAccountingKeyHome().findByPrimaryKey(code);
 	}
-	
+
 	public Collection getAccountingFiles(String caseCode) {
 		try {
 			CaseCode code = getCaseCodeHome().findByPrimaryKey(caseCode);
@@ -128,7 +133,7 @@ public class AccountingKeyBusinessBean extends IBOServiceBean implements Account
 			return new ArrayList();
 		}
 	}
-	
+
 	public void removeAccountingFile(Object accountingFilePK) {
 		try {
 			getAccountingFilesHome().findByPrimaryKey(accountingFilePK).remove();
@@ -140,10 +145,10 @@ public class AccountingKeyBusinessBean extends IBOServiceBean implements Account
 			re.printStackTrace();
 		}
 	}
-	
+
 	public Map getProductKeyMap(CaseCode code) {
 		Map map = new HashMap();
-		
+
 		try {
 			Collection keys = getProductCodeHome().findAllByCaseCode(code);
 			Iterator iter = keys.iterator();
@@ -155,20 +160,20 @@ public class AccountingKeyBusinessBean extends IBOServiceBean implements Account
 		catch (FinderException fe) {
 			fe.printStackTrace();
 		}
-		
+
 		return map;
 	}
-	
+
 	public Map getSchoolProductKeyMap() {
 		Map map = new HashMap();
-		
+
 		try {
 			Collection schools = getSchoolBusiness().findAllSchools();
-			
+
 			Iterator iter = schools.iterator();
 			while (iter.hasNext()) {
 				School school = (School) iter.next();
-				
+
 				try {
 					Collection codes = getSchoolProductCodeHome().findAllBySchool(school);
 					if (!codes.isEmpty()) {
@@ -178,7 +183,7 @@ public class AccountingKeyBusinessBean extends IBOServiceBean implements Account
 							SchoolProductCode code = (SchoolProductCode) iterator.next();
 							schoolMap.put(code.getProductCode(), code.getSchoolProductCode());
 						}
-						
+
 						map.put(school.getOrganizationNumber(), schoolMap);
 					}
 				}
@@ -190,65 +195,94 @@ public class AccountingKeyBusinessBean extends IBOServiceBean implements Account
 		catch (RemoteException e) {
 			throw new IBORuntimeException(e);
 		}
-		
+
 		return map;
 	}
-	
+
 	public void createAccountingFile(String caseCode, Date month) {
+		generateAccountingString(caseCode,month,true);
+	}
+
+	public void generateAccountingString(String caseCode, Date month, boolean createFile) {
+		CaseCode code;
 		try {
-			CaseCode code = getCaseCodeHome().findByPrimaryKey(caseCode);
-			
-			AccountingBusinessManager manager = AccountingBusinessManager.getInstance();
-			AccountingBusiness b = null;
+			code = getCaseCodeHome().findByPrimaryKey(caseCode);
+			generateAccountingString(code,month,createFile);
+		} catch (FinderException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	public void generateAccountingString(CaseCode code, Date month, boolean createFile) {
+
+		AccountingBusinessManager manager = AccountingBusinessManager.getInstance();
+		AccountingBusiness b = null;
+		try {
+			b = manager.getAccountingBusiness(code, getIWApplicationContext());
+		}
+		catch (IBOLookupException e) {
+			e.printStackTrace();
+		}
+
+		IWTimestamp fromStamp = new IWTimestamp(month);
+//		Change the day to the first of the month
+		fromStamp.setDay(1);
+		IWTimestamp toStamp = new IWTimestamp(fromStamp);
+		toStamp.addMonths(1);
+		toStamp.addDays(-1);
+
+		if (b != null && month != null) {
 			try {
-				b = manager.getAccountingBusiness(code, getIWApplicationContext());
-			}
-			catch (IBOLookupException e) {
-				e.printStackTrace();
-			}
-	
-			IWTimestamp fromStamp = new IWTimestamp(month);
-			IWTimestamp toStamp = new IWTimestamp(fromStamp);
-			toStamp.addMonths(1);
-			toStamp.addDays(-1);
+				CaseCodeAccountingKey key = getAccountingKey(code);
+				Map productCodes = getProductKeyMap(code);
+				Map schoolProductCodes = getSchoolProductKeyMap();
+				String accountingSystem = this.getIWApplicationContext().getApplicationSettings().getProperty(AccountingConstants.PROPERTY_ACCOUNTING_SYSTEM, AccountingConstants.ACCOUNTING_SYSTEM_NAVISION);
 
-			if (b != null && month != null) {
-				try {
-					CaseCodeAccountingKey key = getAccountingKey(code);
-					Map productCodes = getProductKeyMap(code);
-					Map schoolProductCodes = getSchoolProductKeyMap();
-					String accountingSystem = this.getIWApplicationContext().getApplicationSettings().getProperty(AccountingConstants.PROPERTY_ACCOUNTING_SYSTEM, AccountingConstants.ACCOUNTING_SYSTEM_NAVISION);
-	
-					AccountingEntry[] accEntry = b.getAccountingEntries(key.getAccountingKey(), null, fromStamp.getDate(), toStamp.getDate());
-					if (accEntry != null && accEntry.length != 0) {
-						File tempfile = File.createTempFile(key.getAccountingKey() + "-" + fromStamp.getDateString("MM-yyyy", getIWMainApplication().getDefaultLocale()), ".csv");
-						BufferedWriter bWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(tempfile), "ISO-8859-1"));
-	
-						for (int i = 0; i < accEntry.length; i++) {
-							AccountingEntry entry = accEntry[i];
-							ProductCode product = (ProductCode) productCodes.get(entry.getProductCode());
-							Map schoolProduct = (Map) schoolProductCodes.get(entry.getProviderCode());
-							
-							if (schoolProduct != null && schoolProduct.containsKey(entry.getProductCode())) {
-								entry.setProductCode((String) schoolProduct.get(entry.getProductCode()));
-							}
-							else if (product != null) {
-								entry.setProductCode(product.getAccountingKey());
-							}
+				AccountingEntry[] accEntry = b.getAccountingEntries(key.getAccountingKey(), null, fromStamp.getDate(), toStamp.getDate());
+				if (accEntry != null && accEntry.length != 0) {
 
-							AccountingStringResult result = AccountingSystemManager.getInstance().getAccountingStringResult(accountingSystem);
-							bWriter.write(result.toString(getIWApplicationContext(), entry, key, fromStamp, toStamp));
-							
+					BufferedWriter bWriter = null;
+					File tempfile = null;
+					if(createFile){
+						tempfile = File.createTempFile(key.getAccountingKey() + "-" + fromStamp.getDateString("MM-yyyy", getIWMainApplication().getDefaultLocale()), ".csv");
+						bWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(tempfile), "ISO-8859-1"));
+					}
+
+
+					for (int i = 0; i < accEntry.length; i++) {
+						AccountingEntry entry = accEntry[i];
+						ProductCode product = (ProductCode) productCodes.get(entry.getProductCode());
+						Map schoolProduct = (Map) schoolProductCodes.get(entry.getProviderCode());
+
+						if (schoolProduct != null && schoolProduct.containsKey(entry.getProductCode())) {
+							entry.setProductCode((String) schoolProduct.get(entry.getProductCode()));
+						}
+						else if (product != null) {
+							entry.setProductCode(product.getAccountingKey());
+						}
+
+						AccountingStringResult result = AccountingSystemManager.getInstance().getAccountingStringResult(accountingSystem);
+						String resultString = result.toString(getIWApplicationContext(), entry, key, fromStamp, toStamp);
+
+						if(createFile){
+							bWriter.write(resultString);
 							bWriter.newLine();
 						}
-	
+
+						onGeneratedAccountingString(resultString,entry,key,accountingSystem,fromStamp,toStamp);
+
+					}
+
+
+					if(createFile){
 						bWriter.close();
-	
+
 						ICFile file = ((ICFileHome) IDOLookup.getHome(ICFile.class)).create();
 						file.setFileValue(new FileInputStream(tempfile));
 						file.setName(tempfile.getName().substring(0, tempfile.getName().length() - 9) + ".csv");
 						file.store();
-	
+
 						AccountingFiles files = getAccountingFilesHome().create();
 						files.setCaseCode(code);
 						files.setFile(file);
@@ -257,22 +291,31 @@ public class AccountingKeyBusinessBean extends IBOServiceBean implements Account
 						files.store();
 					}
 				}
-				catch (FinderException e) {
-					e.printStackTrace();
-				}
-				catch (RemoteException e) {
-					e.printStackTrace();
-				}
-				catch (IOException e) {
-					e.printStackTrace();
-				}
-				catch (CreateException e) {
-					e.printStackTrace();
-				}
+			}
+			catch (FinderException e) {
+				e.printStackTrace();
+			}
+			catch (RemoteException e) {
+				e.printStackTrace();
+			}
+			catch (IOException e) {
+				e.printStackTrace();
+			}
+			catch (CreateException e) {
+				e.printStackTrace();
 			}
 		}
-		catch (FinderException fe) {
-			fe.printStackTrace();
-		}
 	}
+
+	/**
+	 * You can extend this class and overide this method so for each line of writing to a file or just generating an accountingstring it also calls this method.
+	 * Used for example in NavisionBusiness
+	 * @param resultString
+	 */
+	protected void onGeneratedAccountingString(String resultString, AccountingEntry entry, CaseCodeAccountingKey key, String accountingSystem, IWTimestamp fromStamp, IWTimestamp toStamp) {
+
+
+	}
+
+
 }

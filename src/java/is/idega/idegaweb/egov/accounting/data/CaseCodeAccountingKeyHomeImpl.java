@@ -1,9 +1,12 @@
 package is.idega.idegaweb.egov.accounting.data;
 
 
+import java.util.Collection;
+
 import javax.ejb.CreateException;
-import com.idega.block.process.data.CaseCode;
 import javax.ejb.FinderException;
+
+import com.idega.block.process.data.CaseCode;
 import com.idega.data.IDOCreateException;
 import com.idega.data.IDOEntity;
 import com.idega.data.IDOFactory;
@@ -50,5 +53,12 @@ public class CaseCodeAccountingKeyHomeImpl extends IDOFactory implements CaseCod
 		Object pk = ((CaseCodeAccountingKeyBMPBean) entity).ejbFindByAccountingKey(accountingKey);
 		this.idoCheckInPooledEntity(entity);
 		return this.findByPrimaryKey(pk);
+	}
+
+	public Collection findAllCaseCodeAccountingKeys() throws FinderException {
+		IDOEntity entity = this.idoCheckOutPooledEntity();
+		Collection ids = ((CaseCodeAccountingKeyBMPBean) entity).ejbFindAllCaseCodeAccountingKeys();
+		this.idoCheckInPooledEntity(entity);
+		return this.getEntityCollectionForPrimaryKeys(ids);
 	}
 }

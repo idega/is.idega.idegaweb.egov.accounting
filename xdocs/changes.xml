@@ -6,6 +6,18 @@
 		</author>
 	</properties>
 	<body>
+		
+		<release version="1.0.11" date="2006-11-20">
+			<action dev="eiki" type="update">
+				Adding support for Navision XML export file and Maritech Navision webservice. 
+				Set egov.external.accounting.system=NAVISIONXML in application properties to activate the xml file format
+				and set maritech.navision.enable to true to enable the webservice.
+				The businessbean checks if it is the last day of the month and if that month has been sent before.
+ 				Other application properties to consider: 
+ 					maritech.nav.lastmonthsent,maritech.nav.lastmonthfailed,maritech.nav.fakecurrentdate
+ 					The last one can be used to force a month to process by setting it to a date of the last day of that month (2006-11-30).
+			</action>
+		</release>
 	
 		<release version="1.0.10" date="2006-10-09">
 			<action dev="laddi" type="update">
