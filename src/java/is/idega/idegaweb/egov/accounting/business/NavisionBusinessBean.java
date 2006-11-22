@@ -1,5 +1,5 @@
 /*
- * $Id: NavisionBusinessBean.java,v 1.1 2006/11/22 14:03:11 eiki Exp $
+ * $Id: NavisionBusinessBean.java,v 1.2 2006/11/22 14:08:55 eiki Exp $
  * Created on Jul 12, 2006
  *
  * Copyright (C) 2006 Idega Software hf. All Rights Reserved.
@@ -30,10 +30,10 @@ import com.idega.util.IWTimestamp;
  * The application property "maritech.navision.enable" must be set and the bean checks if it is the last day of the month and if that month has been sent before.
  * Other application properties: maritech.nav.lastmonthsent,maritech.nav.lastmonthfailed,maritech.nav.fakecurrentdate . The last one can be used to force a month 
  * to process by setting it to a date of the last day of that month (2006-11-30)
- *  Last modified: $Date: 2006/11/22 14:03:11 $ by $Author: eiki $
+ *  Last modified: $Date: 2006/11/22 14:08:55 $ by $Author: eiki $
  * 
  * @author <a href="mailto:eiki@idega.com">eiki</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class NavisionBusinessBean extends AccountingKeyBusinessBean implements NavisionBusiness,ActionListener{
 
@@ -85,7 +85,7 @@ public class NavisionBusinessBean extends AccountingKeyBusinessBean implements N
 
 			String internalNavisionServer = (String)this.getIWApplicationContext().getApplicationSettings().getProperty("maritech.nav.internal.ip", "172.20.1.11");
 			String internalNavisionServerPort = (String)this.getIWApplicationContext().getApplicationSettings().getProperty("maritech.nav.internal.port", "8049");
-			String companyName = (String)this.getIWApplicationContext().getApplicationSettings().getProperty("maritech.nav.companyName", "¡rborg-EKKI NOTA-Afrit");
+			String companyName = (String)this.getIWApplicationContext().getApplicationSettings().getProperty("maritech.nav.companyName", "√Årborg-EKKI NOTA-Afrit");
 			String userName = (String)this.getIWApplicationContext().getApplicationSettings().getProperty("maritech.nav.user", "TM");
 
 			U_getQueryXMLResponseU_getQueryXMLResult result = maritechService.u_getQueryXML(internalNavisionServer, internalNavisionServerPort, "SAVE_NEW_INVOICE_LINE", userName, "",companyName,generatedAccountingString);

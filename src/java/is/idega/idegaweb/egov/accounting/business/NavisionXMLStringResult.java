@@ -1,5 +1,5 @@
 /*
- * $Id: NavisionXMLStringResult.java,v 1.2 2006/11/22 14:03:10 eiki Exp $
+ * $Id: NavisionXMLStringResult.java,v 1.3 2006/11/22 14:13:06 eiki Exp $
  * Created on Oct 9, 2006
  *
  * Copyright (C) 2006 Idega Software hf. All Rights Reserved.
@@ -20,28 +20,28 @@ import com.idega.util.IWTimestamp;
 /**
  * Writes one accountentry as an xml string. In the format:
 <Parameters>
-Ê <Customer_No>2402624449</Customer_No>
-Ê <HeaderDescription>Idegaweb eGov</HeaderDescription>
-Ê <Posting_Date>01.11.06</Posting_Date>
-Ê <Child_No>0805952639</Child_No>
-Ê <Item_No>FOOD</Item_No>
-Ê <Quantity>20</Quantity>
-Ê <Unit_Price>235</Unit_Price>
-Ê <Customer_Invoice>BREAD</Customer_Invoice>
-Ê <Date_To>31.10.2006</Date_To>
-Ê <Date_From>01.10.2006</Date_From>
-Ê <School_No>04-211</School_No>
-Ê <Card_No>1111222233334444</Card_No>
+ï¿½ <Customer_No>2402624449</Customer_No>
+ï¿½ <HeaderDescription>Idegaweb eGov</HeaderDescription>
+ï¿½ <Posting_Date>01.11.06</Posting_Date>
+ï¿½ <Child_No>0805952639</Child_No>
+ï¿½ <Item_No>FOOD</Item_No>
+ï¿½ <Quantity>20</Quantity>
+ï¿½ <Unit_Price>235</Unit_Price>
+ï¿½ <Customer_Invoice>BREAD</Customer_Invoice>
+ï¿½ <Date_To>31.10.2006</Date_To>
+ï¿½ <Date_From>01.10.2006</Date_From>
+ï¿½ <School_No>04-211</School_No>
+ï¿½ <Card_No>1111222233334444</Card_No>
   <Card_Expire_Month>2</Card_Expire_Month>
   <Card_Expire_Year>2006</Card_Expire_Year>
-Ê <Payment_Method_Code>V</Payment_Method_Code>
-Ê <Duration_Month>10</Duration_Month>
-Ê <Duration_Day>31</Duration_Day>
+ï¿½ <Payment_Method_Code>V</Payment_Method_Code>
+ï¿½ <Duration_Month>10</Duration_Month>
+<Duration_Day>31</Duration_Day>
 </Parameters>
- *  Last modified: $Date: 2006/11/22 14:03:10 $ by $Author: eiki $
+ *  Last modified: $Date: 2006/11/22 14:13:06 $ by $Author: eiki $
  * 
  * @author <a href="mailto:eiki@idega.com">eiki</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class NavisionXMLStringResult implements AccountingStringResult {
 
