@@ -1,5 +1,5 @@
 /*
- * $Id: NavisionBusinessBean.java,v 1.2 2006/11/22 14:08:55 eiki Exp $
+ * $Id: NavisionBusinessBean.java,v 1.3 2006/11/23 12:07:48 eiki Exp $
  * Created on Jul 12, 2006
  *
  * Copyright (C) 2006 Idega Software hf. All Rights Reserved.
@@ -30,10 +30,10 @@ import com.idega.util.IWTimestamp;
  * The application property "maritech.navision.enable" must be set and the bean checks if it is the last day of the month and if that month has been sent before.
  * Other application properties: maritech.nav.lastmonthsent,maritech.nav.lastmonthfailed,maritech.nav.fakecurrentdate . The last one can be used to force a month 
  * to process by setting it to a date of the last day of that month (2006-11-30)
- *  Last modified: $Date: 2006/11/22 14:08:55 $ by $Author: eiki $
+ *  Last modified: $Date: 2006/11/23 12:07:48 $ by $Author: eiki $
  * 
  * @author <a href="mailto:eiki@idega.com">eiki</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class NavisionBusinessBean extends AccountingKeyBusinessBean implements NavisionBusiness,ActionListener{
 
@@ -126,6 +126,8 @@ public class NavisionBusinessBean extends AccountingKeyBusinessBean implements N
 	 * @return
 	 */
 	public void sendAllAccountingEntriesForMonth(IWTimestamp stamp){
+		
+		log("STARTING to send account entries to Navision ("+stamp.toString()+")");
 
 		//get all the case codes and for each do:
 		Collection caseCodes;
@@ -139,10 +141,15 @@ public class NavisionBusinessBean extends AccountingKeyBusinessBean implements N
 			
 			setMonthAsLastSent(stamp);
 			
+			log("FINISHED sending account entries to Navision ("+stamp.toString()+")");
+
+			
 		} catch (Exception e) {
 			//probably never reached because exception are buried!
 			setMonthAsLastFailed(stamp);
 			e.printStackTrace();
+			
+			log("FAILED ON sending account entries to Navision ("+stamp.toString()+")");
 		}
 
 	}
@@ -152,14 +159,14 @@ public class NavisionBusinessBean extends AccountingKeyBusinessBean implements N
 	 * @param stamp
 	 */
 	protected void setMonthAsLastSent(IWTimestamp stamp) {
-		this.getIWApplicationContext().setApplicationAttribute(MARITECH_NAV_LASTMONTHSENT, Integer.toString(stamp.getMonth()));
+		this.getIWApplicationContext().getApplicationSettings().setProperty(MARITECH_NAV_LASTMONTHSENT, Integer.toString(stamp.getMonth()));
 	}
 	
 	/**
 	 * @param stamp
 	 */
 	protected void setMonthAsLastFailed(IWTimestamp stamp) {
-		this.getIWApplicationContext().setApplicationAttribute(MARITECH_NAV_LASTMONTHFAILED, Integer.toString(stamp.getMonth()));
+		this.getIWApplicationContext().getApplicationSettings().setProperty(MARITECH_NAV_LASTMONTHFAILED, Integer.toString(stamp.getMonth()));
 	}
 
 

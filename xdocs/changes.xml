@@ -7,6 +7,13 @@
 	</properties>
 	<body>
 		
+		<release version="1.0.12" date="2006-11-23">
+			<action dev="eiki" type="fix">
+				Fixing bug in NavisionBusiness, used setApplicationAttribute instead of getApplicationSettings().setProperty like I should have.
+				Also added some minimal logging.
+			</action>
+		</release>
+		
 		<release version="1.0.11" date="2006-11-20">
 			<action dev="eiki" type="update">
 				Adding support for Navision XML export file and Maritech Navision webservice. 
