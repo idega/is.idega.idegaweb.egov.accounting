@@ -9,13 +9,12 @@
  */
 package is.idega.idegaweb.egov.accounting.data;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 
 import javax.ejb.CreateException;
 import javax.ejb.FinderException;
+
 import com.idega.block.process.data.CaseCode;
 import com.idega.block.process.data.CaseCodeHome;
 import com.idega.data.GenericEntity;
