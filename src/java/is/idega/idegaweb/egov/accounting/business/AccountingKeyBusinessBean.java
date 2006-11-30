@@ -1,11 +1,9 @@
 /*
- * $Id$
- * Created on Jul 12, 2006
- *
+ * $Id$ Created on Jul 12, 2006
+ * 
  * Copyright (C) 2006 Idega Software hf. All Rights Reserved.
- *
- * This software is the proprietary information of Idega hf.
- * Use is subject to license terms.
+ * 
+ * This software is the proprietary information of Idega hf. Use is subject to license terms.
  */
 package is.idega.idegaweb.egov.accounting.business;
 
@@ -49,7 +47,6 @@ import com.idega.core.file.data.ICFileHome;
 import com.idega.data.IDOLookup;
 import com.idega.data.IDOLookupException;
 import com.idega.util.IWTimestamp;
-
 
 public class AccountingKeyBusinessBean extends IBOServiceBean implements AccountingKeyBusiness {
 
@@ -115,8 +112,9 @@ public class AccountingKeyBusinessBean extends IBOServiceBean implements Account
 	/**
 	 * Retrieves the <code>CaseCodeAccountingKey</code> entry for the corresponding <code>CaseCode</code>
 	 * 
-	 * @param code The <code>CaseCode</code> you want to retrieve the accounting key for.
-	 * @return	Returns a <code>CaseCodeAccountingKey</code> entry or throws a <code>FinderException</code> if it doesn't exist.
+	 * @param code
+	 *          The <code>CaseCode</code> you want to retrieve the accounting key for.
+	 * @return Returns a <code>CaseCodeAccountingKey</code> entry or throws a <code>FinderException</code> if it doesn't exist.
 	 * @throws FinderException
 	 */
 	public CaseCodeAccountingKey getAccountingKey(CaseCode code) throws FinderException {
@@ -200,22 +198,46 @@ public class AccountingKeyBusinessBean extends IBOServiceBean implements Account
 	}
 
 	public void createAccountingFile(String caseCode, Date month) {
-		generateAccountingString(caseCode,month,true);
+		generateAccountingString(caseCode, month, true);
 	}
 
 	public void generateAccountingString(String caseCode, Date month, boolean createFile) {
 		CaseCode code;
 		try {
 			code = getCaseCodeHome().findByPrimaryKey(caseCode);
-			generateAccountingString(code,month,createFile);
-		} catch (FinderException e) {
+			generateAccountingString(code, month, createFile);
+		}
+		catch (FinderException e) {
 			e.printStackTrace();
 		}
+	}
 
+	public void createAccountingFile(String caseCode, Date from, Date to) {
+		generateAccountingString(caseCode, from, to, true);
+	}
+	
+	public void generateAccountingString(String caseCode, Date from, Date to, boolean createFile) {
+		CaseCode code;
+		try {
+			code = getCaseCodeHome().findByPrimaryKey(caseCode);
+			generateAccountingString(code, from, to, createFile);
+		}
+		catch (FinderException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void generateAccountingString(CaseCode code, Date month, boolean createFile) {
+		IWTimestamp fromStamp = new IWTimestamp(month);
+		fromStamp.setDay(1);
+		IWTimestamp toStamp = new IWTimestamp(fromStamp);
+		toStamp.addMonths(1);
+		toStamp.addDays(-1);
 
+		generateAccountingString(code, fromStamp.getDate(), toStamp.getDate(), createFile);
+	}
+
+	public void generateAccountingString(CaseCode code, Date from, Date to, boolean createFile) {
 		AccountingBusinessManager manager = AccountingBusinessManager.getInstance();
 		AccountingBusiness b = null;
 		try {
@@ -225,30 +247,25 @@ public class AccountingKeyBusinessBean extends IBOServiceBean implements Account
 			e.printStackTrace();
 		}
 
-		IWTimestamp fromStamp = new IWTimestamp(month);
-//		Change the day to the first of the month
-		fromStamp.setDay(1);
-		IWTimestamp toStamp = new IWTimestamp(fromStamp);
-		toStamp.addMonths(1);
-		toStamp.addDays(-1);
-
-		if (b != null && month != null) {
+		if (b != null && from != null && to != null) {
 			try {
 				CaseCodeAccountingKey key = getAccountingKey(code);
 				Map productCodes = getProductKeyMap(code);
 				Map schoolProductCodes = getSchoolProductKeyMap();
 				String accountingSystem = this.getIWApplicationContext().getApplicationSettings().getProperty(AccountingConstants.PROPERTY_ACCOUNTING_SYSTEM, AccountingConstants.ACCOUNTING_SYSTEM_NAVISION);
 
-				AccountingEntry[] accEntry = b.getAccountingEntries(key.getAccountingKey(), null, fromStamp.getDate(), toStamp.getDate());
+				AccountingEntry[] accEntry = b.getAccountingEntries(key.getAccountingKey(), null, from, to);
 				if (accEntry != null && accEntry.length != 0) {
 
+					IWTimestamp fromStamp = new IWTimestamp(from);
+					IWTimestamp toStamp = new IWTimestamp(to);
+					
 					BufferedWriter bWriter = null;
 					File tempfile = null;
-					if(createFile){
-						tempfile = File.createTempFile(key.getAccountingKey() + "-" + fromStamp.getDateString("MM-yyyy", getIWMainApplication().getDefaultLocale()), ".csv");
+					if (createFile) {
+						tempfile = File.createTempFile(key.getAccountingKey() + "-" + fromStamp.getDateString("dd.MM.yyyy", getIWMainApplication().getDefaultLocale()) + "-" + toStamp.getDateString("dd.MM.yyyy", getIWMainApplication().getDefaultLocale()), ".csv");
 						bWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(tempfile), "ISO-8859-1"));
 					}
-
 
 					for (int i = 0; i < accEntry.length; i++) {
 						AccountingEntry entry = accEntry[i];
@@ -265,17 +282,16 @@ public class AccountingKeyBusinessBean extends IBOServiceBean implements Account
 						AccountingStringResult result = AccountingSystemManager.getInstance().getAccountingStringResult(accountingSystem);
 						String resultString = result.toString(getIWApplicationContext(), entry, key, fromStamp, toStamp);
 
-						if(createFile){
+						if (createFile) {
 							bWriter.write(resultString);
 							bWriter.newLine();
 						}
 
-						onGeneratedAccountingString(resultString,entry,key,accountingSystem,fromStamp,toStamp);
+						onGeneratedAccountingString(resultString, entry, key, accountingSystem, fromStamp, toStamp);
 
 					}
 
-
-					if(createFile){
+					if (createFile) {
 						bWriter.close();
 
 						ICFile file = ((ICFileHome) IDOLookup.getHome(ICFile.class)).create();
@@ -308,14 +324,13 @@ public class AccountingKeyBusinessBean extends IBOServiceBean implements Account
 	}
 
 	/**
-	 * You can extend this class and overide this method so for each line of writing to a file or just generating an accountingstring it also calls this method.
-	 * Used for example in NavisionBusiness
+	 * You can extend this class and overide this method so for each line of writing to a file or just generating an accountingstring it also calls this
+	 * method. Used for example in NavisionBusiness
+	 * 
 	 * @param resultString
 	 */
 	protected void onGeneratedAccountingString(String resultString, AccountingEntry entry, CaseCodeAccountingKey key, String accountingSystem, IWTimestamp fromStamp, IWTimestamp toStamp) {
 
-
 	}
-
 
 }

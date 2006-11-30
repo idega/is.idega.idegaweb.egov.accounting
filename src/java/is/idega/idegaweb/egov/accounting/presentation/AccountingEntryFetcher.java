@@ -8,6 +8,7 @@
  */
 package is.idega.idegaweb.egov.accounting.presentation;
 
+import is.idega.idegaweb.egov.accounting.business.AccountingConstants;
 import is.idega.idegaweb.egov.accounting.data.AccountingFiles;
 
 import java.rmi.RemoteException;
@@ -33,14 +34,23 @@ import com.idega.util.IWTimestamp;
 public class AccountingEntryFetcher extends AccountingBlock {
 
 	private final static String PARAMETER_DATE_FROM = "prm_date_from";
+	private final static String PARAMETER_DATE_TO = "prm_date_to";
 	private static final String PARAMETER_ACCOUNTING_FILE_PK = "prm_accounting_file_pk";
 
 	private String caseCode = null;
 
 	private void parse(IWContext iwc) throws RemoteException {
 		if (iwc.isParameterSet(PARAMETER_DATE_FROM)) {
+			
 			IWTimestamp month = new IWTimestamp(iwc.getParameter(PARAMETER_DATE_FROM));
-			getAccountingKeyBusiness(iwc).createAccountingFile(this.caseCode, month.getDate());
+			if (iwc.isParameterSet(PARAMETER_DATE_TO)) {
+				IWTimestamp to = new IWTimestamp(iwc.getParameter(PARAMETER_DATE_TO));
+				
+				getAccountingKeyBusiness(iwc).createAccountingFile(this.caseCode, month.getDate(), to.getDate());
+			}
+			else {
+				getAccountingKeyBusiness(iwc).createAccountingFile(this.caseCode, month.getDate());
+			}
 		}
 		
 		if (iwc.isParameterSet(PARAMETER_ACCOUNTING_FILE_PK)) {
@@ -56,6 +66,8 @@ public class AccountingEntryFetcher extends AccountingBlock {
 				add(new Text("Please set the case code"));
 				return;
 			}
+			
+			boolean showFullInputs = iwc.getApplicationSettings().getBoolean(AccountingConstants.PROPERTY_ACCOUNTING_FETCHER_SHOW_INPUTS, false);
 	
 			Form form = new Form();
 			form.setID("accountingEntryFetcher");
@@ -70,16 +82,41 @@ public class AccountingEntryFetcher extends AccountingBlock {
 			helpLayer.add(new Text(this.iwrb.getLocalizedString("accounting_fetcher.help_text", "Select the month you want to create a file for and click 'Create'.  The created file is then added to the list below.")));
 			layer.add(helpLayer);
 
+			IWTimestamp fromStamp = new IWTimestamp();
+			fromStamp.setDay(1);
+
+			IWTimestamp toStamp = new IWTimestamp(fromStamp);
+			toStamp.addMonths(1);
+			toStamp.addDays(-1);
+
 			DateInput from = new DateInput(PARAMETER_DATE_FROM);
 			from.setStyleClass("dateInput");
-			from.setToShowDay(false);
+			from.setDate(fromStamp.getDate());
+			from.keepStatusOnAction(true);
+			if (!showFullInputs) {
+				from.setToShowDay(false);
+			}
+			
+			DateInput to = new DateInput(PARAMETER_DATE_TO);
+			to.setStyleClass("dateInput");
+			to.setDate(toStamp.getDate());
+			to.keepStatusOnAction(true);
 	
 			Layer formItem = new Layer(Layer.DIV);
 			formItem.setStyleClass("formItem");
-			Label label = new Label(this.iwrb.getLocalizedString("accounting_fetcher.month", "Month"), from);
+			Label label = new Label(showFullInputs ? this.iwrb.getLocalizedString("accounting_fetcher.from", "From") : this.iwrb.getLocalizedString("accounting_fetcher.month", "Month"), from);
 			formItem.add(label);
 			formItem.add(from);
 			layer.add(formItem);
+	
+			formItem = new Layer(Layer.DIV);
+			formItem.setStyleClass("formItem");
+			label = new Label(this.iwrb.getLocalizedString("accounting_fetcher.to", "To"), to);
+			formItem.add(label);
+			formItem.add(to);
+			if (showFullInputs) {
+				layer.add(formItem);
+			}
 	
 			SubmitButton fetch = new SubmitButton(this.iwrb.getLocalizedString("accounting_fetcher.create", "Create"));
 			fetch.setStyleClass("indentedButton");

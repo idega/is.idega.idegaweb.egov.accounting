@@ -17,5 +17,6 @@ public class AccountingConstants {
 	public static final String ACCOUNTING_SYSTEM_SFS = "SFS";
 
 	public static final String PROPERTY_ACCOUNTING_SYSTEM = "egov.external.accounting.system";
+	public static final String PROPERTY_ACCOUNTING_FETCHER_SHOW_INPUTS = "egov.accounting.show.all.inputs";
 	
 }

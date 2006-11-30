@@ -7,6 +7,12 @@
 	</properties>
 	<body>
 		
+		<release version="1.0.13" date="2006-11-30">
+			<action dev="laddi" type="update">
+				Added possibility to set an application binding property to allow choosing both from and to dates when fetching accounting entries.
+			</action>
+		</release>
+		
 		<release version="1.0.12" date="2006-11-23">
 			<action dev="eiki" type="fix">
 				Fixing bug in NavisionBusiness, used setApplicationAttribute instead of getApplicationSettings().setProperty like I should have.
