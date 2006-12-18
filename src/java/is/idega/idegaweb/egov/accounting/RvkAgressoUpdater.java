@@ -3,25 +3,16 @@
  */
 package is.idega.idegaweb.egov.accounting;
 
-import is.idega.idegaweb.egov.accounting.business.AccountingBusiness;
-import is.idega.idegaweb.egov.accounting.business.AccountingBusinessManager;
-import is.idega.idegaweb.egov.accounting.business.AccountingEntry;
-import is.idega.idegaweb.egov.accounting.data.CaseCodeAccountingKey;
-import is.idega.idegaweb.egov.accounting.data.CaseCodeAccountingKeyHome;
+import is.idega.idegaweb.egov.accounting.business.AgressoBusiness;
 
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.rmi.RemoteException;
 import java.sql.Timestamp;
 import java.util.logging.Logger;
 
-import com.idega.block.process.data.CaseCode;
-import com.idega.data.IDOLookup;
+import com.idega.business.IBOLookup;
+import com.idega.business.IBOLookupException;
 import com.idega.idegaweb.IWMainApplication;
 import com.idega.util.IWTimestamp;
-import com.idega.util.database.ConnectionBroker;
 
 
 /**
@@ -29,10 +20,10 @@ import com.idega.util.database.ConnectionBroker;
  * Daemon thread which handles the update of the table RRVK_AGRESSO for 
  * integration of date from the AfterschoolCare module with the Reykjavik Accounting system.
  * </p>
- *  Last modified: $Date: 2006/09/04 14:08:37 $ by $Author: laddi $
+ *  Last modified: $Date: 2006/12/18 13:59:57 $ by $Author: laddi $
  * 
  * @author <a href="mailto:tryggvil@idega.com">tryggvil</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class RvkAgressoUpdater implements Runnable {
 
@@ -42,10 +33,6 @@ public class RvkAgressoUpdater implements Runnable {
 	private Thread thread;
 	static Logger log = Logger.getLogger(RvkAgressoUpdater.class.getName());
 
-	
-	/**
-	 * 
-	 */
 	public RvkAgressoUpdater(IWMainApplication iwma) {
 		this.iwma=iwma;
 	}
@@ -70,11 +57,6 @@ public class RvkAgressoUpdater implements Runnable {
 		}
 	}
 
-	/**
-	 * <p>
-	 * TODO tryggvil describe method checkRunBatch
-	 * </p>
-	 */
 	public void runBatch() {
 		if (this.nextRun < System.currentTimeMillis()) {
 			executeUpdate();
@@ -83,129 +65,21 @@ public class RvkAgressoUpdater implements Runnable {
 			iwts.addDays(1);
 			iwts.setHour(4);
 
-			//iwts.addHours(1);
-			
 			Timestamp ts = iwts.getTimestamp();
-			this.nextRun = ts.getTime();//System.currentTimeMillis() + 1000 * 60 * 60 * 24;
+			this.nextRun = ts.getTime();
 		}
 	}
 	
-	/**
-	 * <p>
-	 * TODO tryggvil describe method executeUpdate
-	 * </p>
-	 */
 	private void executeUpdate() {
-
-		log.info("Starting Agresso update");
-		
-		Connection conn = ConnectionBroker.getConnection();
-		int prevTransactionLevel = Connection.TRANSACTION_SERIALIZABLE;
-		boolean prevAutoComm = true;
 		try {
-			prevTransactionLevel = conn.getTransactionIsolation();
-			prevAutoComm = conn.getAutoCommit();
+			AgressoBusiness business = (AgressoBusiness) IBOLookup.getServiceInstance(this.iwma.getIWApplicationContext(), AgressoBusiness.class);
+			business.executeUpdate();
 		}
-		catch (SQLException e1) {
-			e1.printStackTrace();
-		}
-		AccountingEntry entry;
-		try{
-			String tableName = "RRVK_AGRESSO";
-			
-			conn.setAutoCommit(false);
-			 
-			conn.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
-			
-
-			Statement stmt1 = conn.createStatement();
-			stmt1.executeUpdate("delete from "+tableName);
-			stmt1.close();
-			
-			//CaseCode code = AfterSchoolCareConstants.CASE_CODE;
-			//CaseBusiness cb = (CaseBusiness) IBOLookup.getServiceInstance(this.iwma.getIWApplicationContext(), CaseBusiness.class);
-			//CaseCode afterSchCare = cb.getCaseCode("MBFRITV");
-			
-			CaseCodeAccountingKeyHome ccah = (CaseCodeAccountingKeyHome) IDOLookup.getHome(CaseCodeAccountingKey.class);
-			CaseCodeAccountingKey accKey = ccah.findByAccountingKey("ITR");
-			CaseCode afterSchCare = accKey.getCaseCode();
-			
-			AccountingBusiness business = AccountingBusinessManager.getInstance().getAccountingBusinessOrDefault(afterSchCare, this.iwma.getIWApplicationContext());
-			
-			IWTimestamp fromDateTS = new IWTimestamp();
-			fromDateTS.addDays(-62);
-			Date fromDate = fromDateTS.getDate();
-			String productCode = null;
-			IWTimestamp toDateTS = new IWTimestamp();
-			toDateTS.addDays(62);
-			Date toDate = toDateTS.getDate();
-			AccountingEntry[] entries = business.getAccountingEntries(productCode, null, fromDate, toDate);
-			
-			PreparedStatement stmt2 = conn.prepareCall("insert into "+tableName+"(PAYER_PERSONAL_ID,PERSONAL_ID,PRODUCT_CODE,PROVIDER_CODE,PAYMENT_TYPE,CARD_NUMBER,CARD_EXPIRATION_MONTH,CARD_EXPIRATION_YEAR,START_DATE,END_DATE) values(?,?,?,?,?,?,?,?,?,?)");
-			
-			for (int i = 0; i < entries.length; i++) {
-
-				entry = entries[i];
-				Date startDate=null;
-				if(entry.getStartDate()!=null){
-					startDate=new IWTimestamp(entry.getStartDate()).getDate();
-				}
-				Date endDate=null;
-				if(entry.getEndDate()!=null){
-					endDate= new IWTimestamp(entry.getEndDate()).getDate();
-				}
-				stmt2.setString(1, entry.getPayerPersonalId());
-				stmt2.setString(2, entry.getPersonalId());
-				stmt2.setString(3, entry.getProductCode());
-				stmt2.setString(4,entry.getProviderCode());
-				stmt2.setString(5, entry.getPaymentMethod());
-				stmt2.setString(6, entry.getCardNumber());
-				stmt2.setString(7, Integer.toString(entry.getCardExpirationMonth()));
-				stmt2.setString(8, Integer.toString(entry.getCardExpirationYear()));
-				stmt2.setDate(9, startDate);
-				stmt2.setDate(10,endDate);
-				stmt2.execute();
-			}
-			
-			stmt2.close();
-			
-			conn.commit();
-			
-			log.info("Finished Agresso update successfully");
-			
-		}
-		catch(Exception e){
-			try {
-				if(conn!=null){
-					conn.rollback();
-				}
-			}
-			catch (SQLException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+		catch (IBOLookupException e) {
 			e.printStackTrace();
 		}
-		finally{
-			if(conn!=null){
-
-				try {
-					conn.setAutoCommit(prevAutoComm);
-				}
-				catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				try {
-					conn.setTransactionIsolation(prevTransactionLevel);
-				}
-				catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			
-				ConnectionBroker.freeConnection(conn);
-			}
+		catch (RemoteException e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -214,7 +88,6 @@ public class RvkAgressoUpdater implements Runnable {
 		getThread().interrupt();
 	}
 
-	
 	/**
 	 * @return the thread
 	 */
@@ -222,7 +95,6 @@ public class RvkAgressoUpdater implements Runnable {
 		return this.thread;
 	}
 
-	
 	/**
 	 * @param thread the thread to set
 	 */

@@ -7,6 +7,12 @@
 	</properties>
 	<body>
 		
+		<release version="1.0.14" date="2006-12-18">
+			<action dev="laddi" type="update">
+				Added method to enable manual update of agresso table.
+			</action>
+		</release>
+		
 		<release version="1.0.13" date="2006-11-30">
 			<action dev="laddi" type="update">
 				Added possibility to set an application binding property to allow choosing both from and to dates when fetching accounting entries.

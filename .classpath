@@ -9,6 +9,8 @@
   </classpathentry>
   <classpathentry kind="src" path="/com.idega.user">
   </classpathentry>
+  <classpathentry kind="src" path="/com.idega.webface">
+  </classpathentry>
   <classpathentry kind="src" path="/com.idega.block.process">
   </classpathentry>
   <classpathentry kind="src" path="/com.idega.block.school">
