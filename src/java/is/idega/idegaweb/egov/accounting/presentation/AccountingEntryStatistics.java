@@ -69,15 +69,17 @@ public class AccountingEntryStatistics extends AccountingBlock {
 				toStamp = new IWTimestamp(iwc.getParameter(PARAMETER_DATE_TO));
 
 				entries = getAccountingKeyBusiness(iwc).getAccountingEntries(code, fromStamp.getDate(), toStamp.getDate());
-				for (int i = 0; i < entries.length; i++) {
-					AccountingEntry entry = entries[i];
+				if (entries != null) {
+					for (int i = 0; i < entries.length; i++) {
+						AccountingEntry entry = entries[i];
+						
+						addToProductsMap(entry.getProductCode(), entry);
+						addToPaymentMap(entry.getPaymentMethod(), entry.getPayerPersonalId());
+					}
 					
-					addToProductsMap(entry.getProductCode(), entry);
-					addToPaymentMap(entry.getPaymentMethod(), entry.getPayerPersonalId());
+					iwc.setSessionAttribute(AccountingConstants.SESSION_PAYMENT_METHOD_MAP, paymentMethod);
+					iwc.setSessionAttribute(AccountingConstants.SESSION_PRODUCT_MAP, products);
 				}
-				
-				iwc.setSessionAttribute(AccountingConstants.SESSION_PAYMENT_METHOD_MAP, paymentMethod);
-				iwc.setSessionAttribute(AccountingConstants.SESSION_PRODUCT_MAP, products);
 			}
 			catch (FinderException fe) {
 				fe.printStackTrace();
@@ -384,7 +386,7 @@ public class AccountingEntryStatistics extends AccountingBlock {
 		if (this.products.size() > 0) {
 			collection = (Collection) this.products.get(key);
 		}
-		else {
+		if (collection == null) {
 			collection = new ArrayList();
 		}
 		
@@ -401,7 +403,7 @@ public class AccountingEntryStatistics extends AccountingBlock {
 		if (this.paymentMethod.size() > 0) {
 			collection = (List) this.paymentMethod.get(key);
 		}
-		else {
+		if (collection == null) {
 			collection = new ArrayList();
 		}
 		
