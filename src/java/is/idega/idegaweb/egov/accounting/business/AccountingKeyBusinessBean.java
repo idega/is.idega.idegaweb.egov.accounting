@@ -238,23 +238,14 @@ public class AccountingKeyBusinessBean extends IBOServiceBean implements Account
 	}
 
 	public void generateAccountingString(CaseCode code, Date from, Date to, boolean createFile) {
-		AccountingBusinessManager manager = AccountingBusinessManager.getInstance();
-		AccountingBusiness b = null;
-		try {
-			b = manager.getAccountingBusiness(code, getIWApplicationContext());
-		}
-		catch (IBOLookupException e) {
-			e.printStackTrace();
-		}
-
-		if (b != null && from != null && to != null) {
+		if (from != null && to != null) {
 			try {
 				CaseCodeAccountingKey key = getAccountingKey(code);
 				Map productCodes = getProductKeyMap(code);
 				Map schoolProductCodes = getSchoolProductKeyMap();
 				String accountingSystem = this.getIWApplicationContext().getApplicationSettings().getProperty(AccountingConstants.PROPERTY_ACCOUNTING_SYSTEM, AccountingConstants.ACCOUNTING_SYSTEM_NAVISION);
 
-				AccountingEntry[] accEntry = b.getAccountingEntries(key.getAccountingKey(), null, from, to);
+				AccountingEntry[] accEntry = getAccountingEntries(code, from, to);
 				if (accEntry != null && accEntry.length != 0) {
 
 					IWTimestamp fromStamp = new IWTimestamp(from);
@@ -321,6 +312,24 @@ public class AccountingKeyBusinessBean extends IBOServiceBean implements Account
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	public AccountingEntry[] getAccountingEntries(CaseCode code, Date from, Date to) throws FinderException {
+		AccountingBusinessManager manager = AccountingBusinessManager.getInstance();
+		AccountingBusiness b = null;
+		try {
+			b = manager.getAccountingBusiness(code, getIWApplicationContext());
+			if (b == null) {
+				throw new FinderException("No AccountingBusiness found for case code: " + code.getCode());
+			}
+		}
+		catch (IBOLookupException e) {
+			e.printStackTrace();
+		}
+
+		CaseCodeAccountingKey key = getAccountingKey(code);
+
+		return b.getAccountingEntries(key.getAccountingKey(), null, from, to);
 	}
 
 	/**

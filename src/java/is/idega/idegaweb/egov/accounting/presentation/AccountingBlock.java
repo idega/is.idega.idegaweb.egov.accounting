@@ -1,6 +1,7 @@
 package is.idega.idegaweb.egov.accounting.presentation;
 
 import is.idega.idegaweb.egov.accounting.business.AccountingBusiness;
+import is.idega.idegaweb.egov.accounting.business.AccountingConstants;
 import is.idega.idegaweb.egov.accounting.business.AccountingKeyBusiness;
 
 import com.idega.block.process.data.CaseCode;
@@ -20,10 +21,8 @@ public abstract class AccountingBlock extends Block {
 
 	protected IWBundle iwb = null;
 
-	public static final String ACCOUNTING_BLOCK_BUNDLE_IDENTIFIER = "is.idega.idegaweb.egov.accounting";
-
 	public String getBundleIdentifier() {
-		return AccountingBlock.ACCOUNTING_BLOCK_BUNDLE_IDENTIFIER;
+		return AccountingConstants.IW_BUNDLE_IDENTIFIER;
 	}
 
 	public void main(IWContext iwc) {

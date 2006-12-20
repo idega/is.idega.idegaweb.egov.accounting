@@ -66,4 +66,9 @@ public interface AccountingKeyBusiness extends IBOService {
 	 * @see is.idega.idegaweb.egov.accounting.business.AccountingKeyBusinessBean#generateAccountingString
 	 */
 	public void generateAccountingString(CaseCode code, Date from, Date to, boolean createFile) throws RemoteException;
+
+	/**
+	 * @see is.idega.idegaweb.egov.accounting.business.AccountingKeyBusinessBean#getAccountingEntries
+	 */
+	public AccountingEntry[] getAccountingEntries(CaseCode code, Date from, Date to) throws FinderException, RemoteException;
 }

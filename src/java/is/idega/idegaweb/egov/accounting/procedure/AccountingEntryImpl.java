@@ -4,119 +4,127 @@ import is.idega.idegaweb.egov.accounting.business.AccountingEntry;
 
 import java.util.Date;
 
-public class AccountingEntryImpl implements AccountingEntry{
-    public AccountingEntryImpl() {
-    }
+public class AccountingEntryImpl implements AccountingEntry {
 
-    public String getPersonalId() {
-        return null;
-    }
+	public String getName() {
+		return null;
+	}
 
-    public void setPersonalId(String string) {
-    }
+	public void setName(String name) {
+	}
 
-    public String getPayerPersonalId() {
-        return null;
-    }
+	public AccountingEntryImpl() {
+	}
 
-    public void setPayerPersonalId(String string) {
-    }
+	public String getPersonalId() {
+		return null;
+	}
 
-    public String getProviderCode() {
-        return null;
-    }
+	public void setPersonalId(String string) {
+	}
 
-    public void setProviderCode(String string) {
-    }
+	public String getPayerPersonalId() {
+		return null;
+	}
 
-    public String getProductCode() {
-        return null;
-    }
+	public void setPayerPersonalId(String string) {
+	}
 
-    public void setProductCode(String string) {
-    }
+	public String getProviderCode() {
+		return null;
+	}
 
-    public String getProjectCode() {
-        return null;
-    }
+	public void setProviderCode(String string) {
+	}
 
-    public void setProjectCode(String string) {
-    }
+	public String getProductCode() {
+		return null;
+	}
 
-    public int getAmount() {
-        return 0;
-    }
+	public void setProductCode(String string) {
+	}
 
-    public void setAmount(int i) {
-    }
+	public String getProjectCode() {
+		return null;
+	}
 
-    public Date getStartDate() {
-        return null;
-    }
+	public void setProjectCode(String string) {
+	}
 
-    public void setStartDate(Date date) {
-    }
+	public int getAmount() {
+		return 0;
+	}
 
-    public Date getEndDate() {
-        return null;
-    }
+	public void setAmount(int i) {
+	}
 
-    public void setEndDate(Date date) {
-    }
+	public Date getStartDate() {
+		return null;
+	}
 
-    public String getPaymentMethod() {
-        return null;
-    }
+	public void setStartDate(Date date) {
+	}
 
-    public void setPaymentMethod(String string) {
-    }
+	public Date getEndDate() {
+		return null;
+	}
 
-    public float getUnitPrice() {
-        return 0.0f;
-    }
+	public void setEndDate(Date date) {
+	}
 
-    public void setUnitPrice(float f) {
-    }
+	public String getPaymentMethod() {
+		return null;
+	}
 
-    public float getUnits() {
-      return 0.0f;
-  }
+	public void setPaymentMethod(String string) {
+	}
 
-  public void setUnits(float f) {
-  }
+	public float getUnitPrice() {
+		return 0.0f;
+	}
 
-    public String getCardNumber() {
-        return null;
-    }
+	public void setUnitPrice(float f) {
+	}
 
-    public void setCardNumber(String string) {
-    }
+	public float getUnits() {
+		return 0.0f;
+	}
 
-    public String getCardType() {
-        return null;
-    }
+	public void setUnits(float f) {
+	}
 
-    public void setCardType(String string) {
-    }
+	public String getCardNumber() {
+		return null;
+	}
 
-    public int getCardExpirationMonth() {
-        return 0;
-    }
+	public void setCardNumber(String string) {
+	}
 
-    public void setCardExpirationMonth(int i) {
-    }
+	public String getCardType() {
+		return null;
+	}
 
-    public int getCardExpirationYear() {
-        return 0;
-    }
+	public void setCardType(String string) {
+	}
 
-    public void setCardExpirationYear(int i) {
-    }
+	public int getCardExpirationMonth() {
+		return 0;
+	}
 
-		public Object getExtraInformation() {
-			return null;
-		}
+	public void setCardExpirationMonth(int i) {
+	}
 
-		public void setExtraInformation(Object extraInformation) {
-		}
+	public int getCardExpirationYear() {
+		return 0;
+	}
+
+	public void setCardExpirationYear(int i) {
+	}
+
+	public Object getExtraInformation() {
+		return null;
+	}
+
+	public void setExtraInformation(Object extraInformation) {
+	}
 }

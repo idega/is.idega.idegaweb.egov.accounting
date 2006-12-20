@@ -19,6 +19,8 @@
   </classpathentry>
   <classpathentry kind="src" path="/org.apache.axis">
   </classpathentry>
+  <classpathentry kind="var" path="MAVEN_REPO/poi/jars/poi-2.5-final-20040428.jar">
+  </classpathentry>
   <classpathentry kind="var" path="MAVEN_REPO/axis/jars/axis-1.3.jar">
   </classpathentry>
   <classpathentry kind="var" path="MAVEN_REPO/axis/jars/axis-jaxrpc-1.3.jar">

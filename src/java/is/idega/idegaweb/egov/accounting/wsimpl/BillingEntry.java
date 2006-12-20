@@ -12,6 +12,8 @@ import is.idega.idegaweb.egov.accounting.business.AccountingEntry;
 public class BillingEntry implements java.io.Serializable, AccountingEntry {
 
 	private java.lang.String personalId;
+	
+	private java.lang.String name;
 
 	private java.lang.String payerPersonalId;
 
@@ -46,8 +48,9 @@ public class BillingEntry implements java.io.Serializable, AccountingEntry {
 	public BillingEntry() {
 	}
 
-	public BillingEntry(java.lang.String personalId, java.lang.String payerPersonalId, java.lang.String providerCode, java.lang.String productCode, java.lang.String projectCode, int amount, java.util.Date startDate, java.util.Date endDate, java.lang.String paymentMethod, float unitPrice, java.lang.String cardNumber, java.lang.String cardType, int cardExpirationMonth, int cardExpirationYear) {
+	public BillingEntry(java.lang.String personalId, java.lang.String name, java.lang.String payerPersonalId, java.lang.String providerCode, java.lang.String productCode, java.lang.String projectCode, int amount, java.util.Date startDate, java.util.Date endDate, java.lang.String paymentMethod, float unitPrice, java.lang.String cardNumber, java.lang.String cardType, int cardExpirationMonth, int cardExpirationYear) {
 		this.personalId = personalId;
+		this.name = name;
 		this.payerPersonalId = payerPersonalId;
 		this.providerCode = providerCode;
 		this.productCode = productCode;
@@ -79,6 +82,24 @@ public class BillingEntry implements java.io.Serializable, AccountingEntry {
 	 */
 	public void setPersonalId(java.lang.String personalId) {
 		this.personalId = personalId;
+	}
+
+	/**
+	 * Gets the name value for this BillingEntry.
+	 * 
+	 * @return name
+	 */
+	public java.lang.String getName() {
+		return this.name;
+	}
+
+	/**
+	 * Sets the name value for this BillingEntry.
+	 * 
+	 * @param name
+	 */
+	public void setName(java.lang.String name) {
+		this.name = name;
 	}
 
 	/**
