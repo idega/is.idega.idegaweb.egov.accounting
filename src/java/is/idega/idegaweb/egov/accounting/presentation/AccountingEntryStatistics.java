@@ -336,12 +336,12 @@ public class AccountingEntryStatistics extends AccountingBlock {
 
 			cell = row.createCell();
 			cell.setStyleClass("validFrom");
-			cell.add(new Text(startDate.getDateString("MM-yyyy", iwc.getCurrentLocale())));
+			cell.add(new Text(startDate.getLocaleDate(iwc.getCurrentLocale(), IWTimestamp.SHORT)));
 
 			cell = row.createCell();
 			cell.setStyleClass("validTo");
 			if (endDate != null) {
-				cell.add(new Text(endDate.getDateString("MM-yyyy", iwc.getCurrentLocale())));
+				cell.add(new Text(endDate.getLocaleDate(iwc.getCurrentLocale(), IWTimestamp.SHORT)));
 			}
 			else {
 				cell.add(new Text("-"));

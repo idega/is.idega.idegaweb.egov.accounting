@@ -57,6 +57,7 @@ public class AccountingEntryWriter extends DownloadWriter implements MediaWritab
 		try {
 			this.locale = iwc.getApplicationSettings().getApplicationLocale();
 			this.iwrb = iwc.getIWMainApplication().getBundle(AccountingConstants.IW_BUNDLE_IDENTIFIER).getResourceBundle(this.locale);
+			this.caseCode = iwc.getParameter(PARAMETER_CASE_CODE);
 			
 			Map paymentMethod = (Map) iwc.getSessionAttribute(AccountingConstants.SESSION_PAYMENT_METHOD_MAP);
 			Map products = (Map) iwc.getSessionAttribute(AccountingConstants.SESSION_PRODUCT_MAP);
@@ -232,11 +233,11 @@ public class AccountingEntryWriter extends DownloadWriter implements MediaWritab
 	    cell.setCellValue(PersonalIDFormatter.format(entry.getPersonalId(), iwc.getCurrentLocale()));
 
 	    cell = row.createCell(cellColumn++);
-	    cell.setCellValue(startDate.getDateString("MM-yyyy", iwc.getCurrentLocale()));
+	    cell.setCellValue(startDate.getLocaleDate(iwc.getCurrentLocale(), IWTimestamp.SHORT));
 
 	    cell = row.createCell(cellColumn++);
 			if (endDate != null) {
-		    cell.setCellValue(endDate.getDateString("MM-yyyy", iwc.getCurrentLocale()));
+		    cell.setCellValue(endDate.getLocaleDate(iwc.getCurrentLocale(), IWTimestamp.SHORT));
 			}
 			else {
 		    cell.setCellValue("-");
