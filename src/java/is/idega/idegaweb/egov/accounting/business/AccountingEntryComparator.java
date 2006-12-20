@@ -26,6 +26,16 @@ public class AccountingEntryComparator implements Comparator {
 		AccountingEntry entry1 = (AccountingEntry) obj1;
 		AccountingEntry entry2 = (AccountingEntry) obj2;
 		
+		if (entry1.getName() == null && entry2.getName() != null) {
+			return 1;
+		}
+		else if (entry1.getName() != null && entry2.getName() == null) {
+			return -1;
+		}
+		else if (entry1.getName() == null && entry2.getName() == null) {
+			return 0;
+		}
+		
 		return Collator.getInstance(this.locale).compare(entry1.getName(), entry2.getName());
 	}
 
