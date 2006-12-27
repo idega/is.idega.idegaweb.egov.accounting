@@ -18,8 +18,6 @@ import is.idega.idegaweb.egov.accounting.business.NavisionXMLStringResult;
 import is.idega.idegaweb.egov.accounting.business.SFSStringResult;
 import is.idega.idegaweb.egov.accounting.wsimpl.BillingEntry;
 
-import java.rmi.RemoteException;
-
 import com.idega.business.IBOLookup;
 import com.idega.business.IBOLookupException;
 import com.idega.idegaweb.IWApplicationContext;
@@ -84,19 +82,13 @@ public class IWBundleStarter implements IWBundleStartable {
 		IWApplicationContext iwac = starterBundle.getApplication().getIWApplicationContext();
 		try {
 			NavisionBusiness navBiz = (NavisionBusiness) IBOLookup.getServiceInstance(iwac, NavisionBusiness.class);
-			if(navBiz.isActive()){
-				EventTimer navTimer = new EventTimer(EventTimer.THREAD_SLEEP_24_HOURS/4,AccountingConstants.ACCOUNTING_SYSTEM_NAVISION_XML);
-				//test
-//				EventTimer navTimer = new EventTimer(EventTimer.THREAD_SLEEP_1_MINUTE,AccountingConstants.ACCOUNTING_SYSTEM_NAVISION_XML);
-				
-				navTimer.addActionListener(navBiz);
-				navTimer.start(EventTimer.THREAD_SLEEP_1_MINUTE*3);
-			}
+			EventTimer navTimer = new EventTimer(EventTimer.THREAD_SLEEP_24_HOURS/4,AccountingConstants.ACCOUNTING_SYSTEM_NAVISION_XML);
+
+			navTimer.addActionListener(navBiz);
+			navTimer.start(EventTimer.THREAD_SLEEP_1_MINUTE*3);
 
 		} catch (IBOLookupException e1) {
 			e1.printStackTrace();
-		} catch (RemoteException e) {
-			e.printStackTrace();
 		}
 
 	}

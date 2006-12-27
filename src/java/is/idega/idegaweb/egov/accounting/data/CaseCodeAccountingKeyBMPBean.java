@@ -84,6 +84,10 @@ public class CaseCodeAccountingKeyBMPBean extends GenericEntity implements CaseC
 		return (CaseCode) getColumnValue(COLUMN_CASE_CODE);
 	}
 	
+	public String getCaseCodeString() {
+		return getStringColumnValue(COLUMN_CASE_CODE);
+	}
+	
 	public String getAccountingKey() {
 		return getStringColumnValue(COLUMN_ACCOUNTING_KEY);
 	}

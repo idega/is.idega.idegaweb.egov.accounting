@@ -16,6 +16,11 @@ public interface CaseCodeAccountingKey extends IDOEntity {
 	public CaseCode getCaseCode();
 
 	/**
+	 * @see is.idega.idegaweb.egov.accounting.data.CaseCodeAccountingKeyBMPBean#getCaseCodeString
+	 */
+	public String getCaseCodeString();
+	
+	/**
 	 * @see is.idega.idegaweb.egov.accounting.data.CaseCodeAccountingKeyBMPBean#getAccountingKey
 	 */
 	public String getAccountingKey();

@@ -1,5 +1,5 @@
 /*
- * $Id: NavisionBusinessBean.java,v 1.4 2006/11/27 09:56:21 laddi Exp $ Created
+ * $Id: NavisionBusinessBean.java,v 1.5 2006/12/27 17:21:53 eiki Exp $ Created
  * on Jul 12, 2006
  * 
  * Copyright (C) 2006 Idega Software hf. All Rights Reserved.
@@ -33,16 +33,26 @@ import com.idega.util.IWTimestamp;
  * maritech.nav.lastmonthsent,maritech.nav.lastmonthfailed,maritech.nav.fakecurrentdate .
  * The last one can be used to force a month to process by setting it to a date
  * of the last day of that month (2006-11-30) Last modified: $Date: 2006/11/23
- * 12:07:48 $ by $Author: laddi $
+ * 12:07:48 $ by $Author: eiki $
  * 
  * @author <a href="mailto:eiki@idega.com">eiki</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class NavisionBusinessBean extends AccountingKeyBusinessBean implements NavisionBusiness, ActionListener {
 
 	public static final String MARITECH_NAVISION_ENABLE = "maritech.navision.enable";
 	public static final String MARITECH_NAV_LASTMONTHSENT = "maritech.nav.lastmonthsent";
 	public static final String MARITECH_NAV_LASTMONTHFAILED = "maritech.nav.lastmonthfailed";
+	public static final String MARITECH_NAVISION_ALLOWED_CASE_CODES = "maritech.nav.month.casecodes";
+	
+	/**
+	 * The date of the last month sent "ahead" in time e.g. december records will be sent on the 1.december for the whole month of December
+	 */
+	public static final String MARITECH_NAV_LAST_FUTURE_MONTHSENT = "maritech.nav.lastFutureMSent";
+	public static final String MARITECH_NAV_LAST_FUTURE_MONTHFAILED = "maritech.nav.lastFutureMFail";
+	public static final String MARITECH_NAVISION_ALLOWED_FUTURE_MONTH_CASE_CODES = "maritech.nav.futuremonthccodes";
+	
+	
 	public static final String MARITECH_NAV_FAKE_CURRENT_DATE = "maritech.nav.fakecurrentdate";
 
 	/**
@@ -122,7 +132,9 @@ public class NavisionBusinessBean extends AccountingKeyBusinessBean implements N
 
 	/**
 	 * Gets all account entries for all casecodes for this month and sends them
-	 * with the webservice to maritech
+	 * with the webservice to maritech. Filters the allowed casecodes from an application property
+	 * "maritech.nav.month.casecodes" which is a comma seperated case code string of allowed case codes.
+	 * If the string is empty it sends ALL case codes.
 	 * 
 	 * @param now
 	 * @return
@@ -130,7 +142,8 @@ public class NavisionBusinessBean extends AccountingKeyBusinessBean implements N
 	public void sendAllAccountingEntriesForMonth(IWTimestamp stamp) {
 
 		log("STARTING to send account entries to Navision (" + stamp.toString() + ")");
-
+		String allowedCaseCodes = this.getIWApplicationContext().getApplicationSettings().getProperty(MARITECH_NAVISION_ALLOWED_CASE_CODES, "");
+		boolean anythingSent = false;
 		// get all the case codes and for each do:
 		Collection caseCodes;
 		try {
@@ -138,10 +151,21 @@ public class NavisionBusinessBean extends AccountingKeyBusinessBean implements N
 
 			for (Iterator iter = caseCodes.iterator(); iter.hasNext();) {
 				CaseCodeAccountingKey key = (CaseCodeAccountingKey) iter.next();
-				this.generateAccountingString(key.getCaseCode(), stamp.getDate(), false);
+				if(!"".equals(allowedCaseCodes)){
+					if(allowedCaseCodes.indexOf(key.getCaseCodeString())>=0){
+						this.generateAccountingString(key.getCaseCode(), stamp.getDate(), false);
+						anythingSent = true;
+					}
+				}
+				else{
+					this.generateAccountingString(key.getCaseCode(), stamp.getDate(), false);
+					anythingSent = true;
+				}
 			}
 
-			setMonthAsLastSent(stamp);
+			if(anythingSent){
+				setMonthAsLastSent(stamp);
+			}
 
 			log("FINISHED sending account entries to Navision (" + stamp.toString() + ")");
 
@@ -155,12 +179,65 @@ public class NavisionBusinessBean extends AccountingKeyBusinessBean implements N
 		}
 
 	}
+	
+	/**
+	 * Gets all account entries for all casecodes for a future month (on the 1st of every month) and sends them
+	 * with the webservice to maritech. Filters the allowed casecodes from an application property
+	 * "maritech.nav.futuremonthccodes" which is a comma seperated case code string of allowed case codes.
+	 * If the string is empty it sends NO case codes this is the biggest difference from the current month method
+	 * 
+	 * @param now
+	 * @return
+	 */
+	public void sendAllAccountingEntriesForFutureMonth(IWTimestamp stamp) {
 
+		log("STARTING to send future account entries to Navision (" + stamp.toString() + ")");
+		String futureCaseCodes = this.getIWApplicationContext().getApplicationSettings().getProperty(MARITECH_NAVISION_ALLOWED_FUTURE_MONTH_CASE_CODES, "");
+		boolean anythingSent = false;
+		// get all the case codes and for each do:
+		Collection caseCodes;
+		try {
+			caseCodes = this.getCaseCodeAccountingKeyHome().findAllCaseCodeAccountingKeys();
+
+			for (Iterator iter = caseCodes.iterator(); iter.hasNext();) {
+				CaseCodeAccountingKey key = (CaseCodeAccountingKey) iter.next();
+				if(!"".equals(futureCaseCodes)){
+					if(futureCaseCodes.indexOf(key.getCaseCodeString())>=0){
+						this.generateAccountingString(key.getCaseCode(), stamp.getDate(), false);
+						anythingSent = true;
+					}
+				}
+			}
+
+			if(anythingSent){
+				setMonthAsLastFutureMonthSent(stamp);
+			}
+			
+			log("FINISHED sending future account entries to Navision (" + stamp.toString() + ")");
+
+		}
+		catch (Exception e) {
+			// probably never reached because exception are buried!
+			setMonthAsLastFutureMonthFailed(stamp);
+			e.printStackTrace();
+
+			log("FAILED ON sending future account entries to Navision (" + stamp.toString() + ")");
+		}
+
+	}
+	
 	/**
 	 * @param stamp
 	 */
 	protected void setMonthAsLastSent(IWTimestamp stamp) {
 		this.getIWApplicationContext().getApplicationSettings().setProperty(MARITECH_NAV_LASTMONTHSENT, Integer.toString(stamp.getMonth()));
+	}
+	
+	/**
+	 * @param stamp
+	 */
+	protected void setMonthAsLastFutureMonthSent(IWTimestamp stamp) {
+		this.getIWApplicationContext().getApplicationSettings().setProperty(MARITECH_NAV_LAST_FUTURE_MONTHSENT, Integer.toString(stamp.getMonth()));
 	}
 
 	/**
@@ -168,6 +245,13 @@ public class NavisionBusinessBean extends AccountingKeyBusinessBean implements N
 	 */
 	protected void setMonthAsLastFailed(IWTimestamp stamp) {
 		this.getIWApplicationContext().getApplicationSettings().setProperty(MARITECH_NAV_LASTMONTHFAILED, Integer.toString(stamp.getMonth()));
+	}
+	
+	/**
+	 * @param stamp
+	 */
+	protected void setMonthAsLastFutureMonthFailed(IWTimestamp stamp) {
+		this.getIWApplicationContext().getApplicationSettings().setProperty(MARITECH_NAV_LAST_FUTURE_MONTHFAILED, Integer.toString(stamp.getMonth()));
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -181,9 +265,31 @@ public class NavisionBusinessBean extends AccountingKeyBusinessBean implements N
 			now = new IWTimestamp();
 		}
 
-		if (e.getActionCommand().equals(AccountingConstants.ACCOUNTING_SYSTEM_NAVISION_XML) && isActive() && isLastDayOfMonth(now) && !hasBeenSentForMonth(now)) {
-			sendAllAccountingEntriesForMonth(now);
+		if(e.getActionCommand().equals(AccountingConstants.ACCOUNTING_SYSTEM_NAVISION_XML) && isActive() ){
+			if (canSendForMonth(now)) {
+				//todo possible create a new thread that waits till the last minute of the day to send?
+				sendAllAccountingEntriesForMonth(now);
+			}
+			else if (canSendForFutureMonth(now)) {
+				sendAllAccountingEntriesForFutureMonth(now);
+			}
 		}
+	}
+
+	/**
+	 * @param now
+	 * @return
+	 */
+	protected boolean canSendForFutureMonth(IWTimestamp now) {
+		return isFirstDayOfMonth(now) && !hasBeenSentForFutureMonth(now);
+	}
+
+	/**
+	 * @param now
+	 * @return
+	 */
+	protected boolean canSendForMonth(IWTimestamp now) {
+		return isLastDayOfMonth(now) && !hasBeenSentForMonth(now);
 	}
 
 	public boolean isLastDayOfMonth(IWTimestamp stamp) {
@@ -193,9 +299,27 @@ public class NavisionBusinessBean extends AccountingKeyBusinessBean implements N
 
 		return (daysInMonth == thisDayOfMonth);
 	}
+	
+	public boolean isFirstDayOfMonth(IWTimestamp stamp) {
+		int thisDayOfMonth = stamp.getDay();
+		return (1==thisDayOfMonth);
+	}
 
 	public boolean hasBeenSentForMonth(IWTimestamp stamp) {
 		String lastMonthSent = this.getIWApplicationContext().getApplicationSettings().getProperty(MARITECH_NAV_LASTMONTHSENT);
+		// its a java.sql.date!
+		int month = stamp.getMonth();
+
+		if (lastMonthSent != null) {
+			return Integer.parseInt(lastMonthSent) <= month;
+		}
+		else {
+			return false;
+		}
+	}
+	
+	public boolean hasBeenSentForFutureMonth(IWTimestamp stamp) {
+		String lastMonthSent = this.getIWApplicationContext().getApplicationSettings().getProperty(MARITECH_NAV_LAST_FUTURE_MONTHSENT);
 		// its a java.sql.date!
 		int month = stamp.getMonth();
 
