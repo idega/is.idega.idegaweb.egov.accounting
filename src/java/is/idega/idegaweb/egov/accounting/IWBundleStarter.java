@@ -75,7 +75,7 @@ public class IWBundleStarter implements IWBundleStartable {
 
 
 	/**
-	 * Starts the maritech navision accountinkey webservice updater
+	 * Starts the maritech navision accountingkey webservice updater
 	 * @param starterBundle
 	 */
 	protected void startMaritechNavisionDaemon(IWBundle starterBundle){
@@ -83,6 +83,7 @@ public class IWBundleStarter implements IWBundleStartable {
 		try {
 			NavisionBusiness navBiz = (NavisionBusiness) IBOLookup.getServiceInstance(iwac, NavisionBusiness.class);
 			EventTimer navTimer = new EventTimer(EventTimer.THREAD_SLEEP_24_HOURS/4,AccountingConstants.ACCOUNTING_SYSTEM_NAVISION_XML);
+	//testing		EventTimer navTimer = new EventTimer(EventTimer.THREAD_SLEEP_2_MINUTES,AccountingConstants.ACCOUNTING_SYSTEM_NAVISION_XML);
 
 			navTimer.addActionListener(navBiz);
 			navTimer.start(EventTimer.THREAD_SLEEP_1_MINUTE*3);

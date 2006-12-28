@@ -1,5 +1,5 @@
 /*
- * $Id: NavisionBusinessBean.java,v 1.5 2006/12/27 17:21:53 eiki Exp $ Created
+ * $Id: NavisionBusinessBean.java,v 1.6 2006/12/28 17:19:32 eiki Exp $ Created
  * on Jul 12, 2006
  * 
  * Copyright (C) 2006 Idega Software hf. All Rights Reserved.
@@ -36,7 +36,7 @@ import com.idega.util.IWTimestamp;
  * 12:07:48 $ by $Author: eiki $
  * 
  * @author <a href="mailto:eiki@idega.com">eiki</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class NavisionBusinessBean extends AccountingKeyBusinessBean implements NavisionBusiness, ActionListener {
 
@@ -194,25 +194,29 @@ public class NavisionBusinessBean extends AccountingKeyBusinessBean implements N
 		log("STARTING to send future account entries to Navision (" + stamp.toString() + ")");
 		String futureCaseCodes = this.getIWApplicationContext().getApplicationSettings().getProperty(MARITECH_NAVISION_ALLOWED_FUTURE_MONTH_CASE_CODES, "");
 		boolean anythingSent = false;
+		
 		// get all the case codes and for each do:
 		Collection caseCodes;
 		try {
-			caseCodes = this.getCaseCodeAccountingKeyHome().findAllCaseCodeAccountingKeys();
+			if(!"".equals(futureCaseCodes)){
+				//todo when not lazy, find exactly the case codes in futureCaseCodes...
+				caseCodes = this.getCaseCodeAccountingKeyHome().findAllCaseCodeAccountingKeys();
 
-			for (Iterator iter = caseCodes.iterator(); iter.hasNext();) {
-				CaseCodeAccountingKey key = (CaseCodeAccountingKey) iter.next();
-				if(!"".equals(futureCaseCodes)){
+				for (Iterator iter = caseCodes.iterator(); iter.hasNext();) {
+					CaseCodeAccountingKey key = (CaseCodeAccountingKey) iter.next();
+
+					//only send for valid codes.
 					if(futureCaseCodes.indexOf(key.getCaseCodeString())>=0){
 						this.generateAccountingString(key.getCaseCode(), stamp.getDate(), false);
 						anythingSent = true;
 					}
+
+				}
+
+				if(anythingSent){
+					setMonthAsLastFutureMonthSent(stamp);
 				}
 			}
-
-			if(anythingSent){
-				setMonthAsLastFutureMonthSent(stamp);
-			}
-			
 			log("FINISHED sending future account entries to Navision (" + stamp.toString() + ")");
 
 		}
