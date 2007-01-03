@@ -1,5 +1,5 @@
 /*
- * $Id: NavisionBusinessBean.java,v 1.6 2006/12/28 17:19:32 eiki Exp $ Created
+ * $Id: NavisionBusinessBean.java,v 1.7 2007/01/03 12:32:28 eiki Exp $ Created
  * on Jul 12, 2006
  * 
  * Copyright (C) 2006 Idega Software hf. All Rights Reserved.
@@ -36,7 +36,7 @@ import com.idega.util.IWTimestamp;
  * 12:07:48 $ by $Author: eiki $
  * 
  * @author <a href="mailto:eiki@idega.com">eiki</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class NavisionBusinessBean extends AccountingKeyBusinessBean implements NavisionBusiness, ActionListener {
 
@@ -312,10 +312,25 @@ public class NavisionBusinessBean extends AccountingKeyBusinessBean implements N
 	public boolean hasBeenSentForMonth(IWTimestamp stamp) {
 		String lastMonthSent = this.getIWApplicationContext().getApplicationSettings().getProperty(MARITECH_NAV_LASTMONTHSENT);
 		// its a java.sql.date!
+		return isMonthDoneOrANewYearBeginning(stamp, lastMonthSent);
+	}
+
+	/**
+	 * @param stamp
+	 * @param lastMonthSent
+	 * @return
+	 */
+	protected boolean isMonthDoneOrANewYearBeginning(IWTimestamp stamp, String lastMonthSent) {
 		int month = stamp.getMonth();
 
 		if (lastMonthSent != null) {
-			return Integer.parseInt(lastMonthSent) <= month;
+			int last = Integer.parseInt(lastMonthSent);
+			if(last==12 && month!=last){
+				return false;
+			}
+			else{
+				return last >= month;
+			}
 		}
 		else {
 			return false;
@@ -325,14 +340,7 @@ public class NavisionBusinessBean extends AccountingKeyBusinessBean implements N
 	public boolean hasBeenSentForFutureMonth(IWTimestamp stamp) {
 		String lastMonthSent = this.getIWApplicationContext().getApplicationSettings().getProperty(MARITECH_NAV_LAST_FUTURE_MONTHSENT);
 		// its a java.sql.date!
-		int month = stamp.getMonth();
-
-		if (lastMonthSent != null) {
-			return Integer.parseInt(lastMonthSent) <= month;
-		}
-		else {
-			return false;
-		}
+		return isMonthDoneOrANewYearBeginning(stamp, lastMonthSent);
 	}
 
 	/**
