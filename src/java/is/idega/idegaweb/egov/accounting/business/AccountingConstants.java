@@ -20,6 +20,7 @@ public class AccountingConstants {
 
 	public static final String PROPERTY_ACCOUNTING_SYSTEM = "egov.external.accounting.system";
 	public static final String PROPERTY_ACCOUNTING_FETCHER_SHOW_INPUTS = "egov.accounting.show.all.inputs";
+	public static final String PROPERTY_ACCOUNTING_SHOW_AGRESSO_VIEW = "egov.accounting.show.agresso.view";
 	
 	public static final String SESSION_PRODUCT_MAP = "accounting_product_map";
 	public static final String SESSION_PAYMENT_METHOD_MAP = "accounting_payment_method_map";

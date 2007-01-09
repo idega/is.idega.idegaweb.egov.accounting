@@ -9,6 +9,7 @@
  */
 package is.idega.idegaweb.egov.accounting;
 
+import is.idega.idegaweb.egov.AccountingViewManager;
 import is.idega.idegaweb.egov.accounting.business.AccountingConstants;
 import is.idega.idegaweb.egov.accounting.business.AccountingEntry;
 import is.idega.idegaweb.egov.accounting.business.AccountingSystemManager;
@@ -23,6 +24,7 @@ import com.idega.business.IBOLookupException;
 import com.idega.idegaweb.IWApplicationContext;
 import com.idega.idegaweb.IWBundle;
 import com.idega.idegaweb.IWBundleStartable;
+import com.idega.idegaweb.IWMainApplication;
 import com.idega.repository.data.ImplementorRepository;
 import com.idega.util.EventTimer;
 
@@ -33,6 +35,8 @@ public class IWBundleStarter implements IWBundleStartable {
 
 
 	public void start(IWBundle starterBundle) {
+		addStandardViews(starterBundle.getApplication());
+
 		ImplementorRepository.getInstance().addImplementor(AccountingEntry.class, BillingEntry.class);
 
 		AccountingSystemManager.getInstance().addAccountingStringResult(AccountingConstants.ACCOUNTING_SYSTEM_NAVISION, NavisionStringResult.class);		
@@ -94,4 +98,10 @@ public class IWBundleStarter implements IWBundleStartable {
 
 	}
 
+	protected void addStandardViews(IWMainApplication iwma){
+		if (iwma.getIWApplicationContext().getApplicationSettings().getBoolean(AccountingConstants.PROPERTY_ACCOUNTING_SHOW_AGRESSO_VIEW, false)) {
+			AccountingViewManager manager = AccountingViewManager.getInstance(iwma);
+			manager.getAccountingViewNode();
+		}
+	}
 }

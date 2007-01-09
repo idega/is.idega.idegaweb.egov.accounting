@@ -6,6 +6,16 @@
 		</author>
 	</properties>
 	<body>
+	
+		<release version="1.0.18" date="2007-01-09">
+			<action dev="laddi" type="fix">
+				Fixed manual update of Agresso.
+			</action>
+			<action dev="laddi" type="update">
+				Added view for accounting in workspace.
+			</action>
+		</release>
+		
 		<release version="1.0.17" date="2007-01-03">
 			<action dev="eiki" type="fix">
 				Fixed has month been sent logic.
