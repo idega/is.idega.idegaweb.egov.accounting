@@ -1,3 +1,4 @@
+accounting=B\u00F3khald
 accounting_fetcher.confirm_remove=Ertu viss um a\u00F0 \u00FE\u00FA viljir ey\u00F0a \u00FEessari skr\u00E1?
 accounting_fetcher.create=B\u00FAa til skr\u00E1
 accounting_fetcher.created_date=B\u00FAin til dags.
@@ -22,3 +23,5 @@ accounting_statistics.total=Fj\u00F6ldi
 accounting_statistics.units=Einingar
 accounting_statistics.valid_from=Gildir fr\u00E1
 accounting_statistics.valid_to=Gildir til
+agresso=Agresso
+manual_update_agresso=Uppf\u00E6ra handvirkt
