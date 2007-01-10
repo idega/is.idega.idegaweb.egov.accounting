@@ -119,11 +119,13 @@ public class AccountingEntryStatistics extends AccountingBlock {
 			DateInput from = new DateInput(PARAMETER_DATE_FROM);
 			from.setStyleClass("dateInput");
 			from.setDate(fromStamp.getDate());
+			from.setYearRange(fromStamp.getYear() - 1, fromStamp.getYear() + 4);
 			from.keepStatusOnAction(true);
 			
 			DateInput to = new DateInput(PARAMETER_DATE_TO);
 			to.setStyleClass("dateInput");
 			to.setDate(toStamp.getDate());
+			to.setYearRange(fromStamp.getYear() - 1, fromStamp.getYear() + 4);
 			to.keepStatusOnAction(true);
 	
 			Layer formItem = new Layer(Layer.DIV);
