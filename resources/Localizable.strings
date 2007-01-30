@@ -1,4 +1,3 @@
-accounting=Accounting
 accounting_fetcher.confirm_remove=Are you sure you want to remove this file?
 accounting_fetcher.create=Create
 accounting_fetcher.created_date=Created date
@@ -23,5 +22,6 @@ accounting_statistics.total=Total
 accounting_statistics.units=Units
 accounting_statistics.valid_from=Valid from
 accounting_statistics.valid_to=Valid to
+iw.component.is.idega.idegaweb.egov.accounting.presentation.AccountingEntryFetcher.name=AccountingEntryFetcher
 agresso=Agresso
 manual_update_agresso=Manual update
