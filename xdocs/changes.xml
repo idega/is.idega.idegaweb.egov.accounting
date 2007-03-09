@@ -6,7 +6,13 @@
 		</author>
 	</properties>
 	<body>
-	
+		<release version="1.0.19" date="2007-03-09">
+			<action dev="palli" type="update">
+				Updating and fixing dependencies to create a new sunnan3
+				application.
+			</action>
+		</release>
+
 		<release version="1.0.18" date="2007-01-09">
 			<action dev="laddi" type="fix">
 				Fixed manual update of Agresso.
@@ -15,60 +21,72 @@
 				Added view for accounting in workspace.
 			</action>
 		</release>
-		
+
 		<release version="1.0.17" date="2007-01-03">
 			<action dev="eiki" type="fix">
 				Fixed has month been sent logic.
 			</action>
 		</release>
-		
+
 		<release version="1.0.16" date="2006-12-28">
 			<action dev="eiki" type="update">
-				Added the possibility to send future records to Navision for certain case codes from the 1st day of a month to the last. 
-				Now you can also filter which case codes will be sent bia an application property.
+				Added the possibility to send future records to Navision
+				for certain case codes from the 1st day of a month to
+				the last. Now you can also filter which case codes will
+				be sent bia an application property.
 			</action>
 		</release>
-		
+
 		<release version="1.0.15" date="2006-12-20">
 			<action dev="laddi" type="update">
 				Added new block to fetch statistics for a given period.
 			</action>
 		</release>
-		
+
 		<release version="1.0.14" date="2006-12-18">
 			<action dev="laddi" type="update">
 				Added method to enable manual update of agresso table.
 			</action>
 		</release>
-		
+
 		<release version="1.0.13" date="2006-11-30">
 			<action dev="laddi" type="update">
-				Added possibility to set an application binding property to allow choosing both from and to dates when fetching accounting entries.
+				Added possibility to set an application binding property
+				to allow choosing both from and to dates when fetching
+				accounting entries.
 			</action>
 		</release>
-		
+
 		<release version="1.0.12" date="2006-11-23">
 			<action dev="eiki" type="fix">
-				Fixing bug in NavisionBusiness, used setApplicationAttribute instead of getApplicationSettings().setProperty like I should have.
+				Fixing bug in NavisionBusiness, used
+				setApplicationAttribute instead of
+				getApplicationSettings().setProperty like I should have.
 				Also added some minimal logging.
 			</action>
 		</release>
-		
+
 		<release version="1.0.11" date="2006-11-20">
 			<action dev="eiki" type="update">
-				Adding support for Navision XML export file and Maritech Navision webservice. 
-				Set egov.external.accounting.system=NAVISIONXML in application properties to activate the xml file format
-				and set maritech.navision.enable to true to enable the webservice.
-				The businessbean checks if it is the last day of the month and if that month has been sent before.
- 				Other application properties to consider: 
- 					maritech.nav.lastmonthsent,maritech.nav.lastmonthfailed,maritech.nav.fakecurrentdate
- 					The last one can be used to force a month to process by setting it to a date of the last day of that month (2006-11-30).
+				Adding support for Navision XML export file and Maritech
+				Navision webservice. Set
+				egov.external.accounting.system=NAVISIONXML in
+				application properties to activate the xml file format
+				and set maritech.navision.enable to true to enable the
+				webservice. The businessbean checks if it is the last
+				day of the month and if that month has been sent before.
+				Other application properties to consider:
+				maritech.nav.lastmonthsent,maritech.nav.lastmonthfailed,maritech.nav.fakecurrentdate
+				The last one can be used to force a month to process by
+				setting it to a date of the last day of that month
+				(2006-11-30).
 			</action>
 		</release>
-	
+
 		<release version="1.0.10" date="2006-10-09">
 			<action dev="laddi" type="update">
-				Added support for multiple accounting systems when returning entries in a comma seperated file.
+				Added support for multiple accounting systems when
+				returning entries in a comma seperated file.
 			</action>
 		</release>
 
@@ -80,13 +98,15 @@
 
 		<release version="1.0.8" date="2006-09-14">
 			<action dev="laddi" type="update">
-				Fixed creation of accounting files when AccountingEntry has no start date set.
+				Fixed creation of accounting files when AccountingEntry
+				has no start date set.
 			</action>
 		</release>
 
 		<release version="1.0.7" date="2006-09-14">
 			<action dev="laddi" type="update">
-				Added usage of extra information field in AccountingEntry.
+				Added usage of extra information field in
+				AccountingEntry.
 			</action>
 		</release>
 
@@ -101,7 +121,8 @@
 
 		<release version="1.0.5" date="2006-09-04">
 			<action dev="laddi" type="update">
-				Finished implementation of the AccountingEntryFetcher class.
+				Finished implementation of the AccountingEntryFetcher
+				class.
 			</action>
 		</release>
 
