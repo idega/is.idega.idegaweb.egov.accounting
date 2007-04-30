@@ -6,6 +6,12 @@
 		</author>
 	</properties>
 	<body>
+		<release version="1.0.20" date="2007-04-30">
+			<action dev="laddi" type="update">
+				Updating dependencies.
+			</action>
+		</release>
+
 		<release version="1.0.19" date="2007-03-09">
 			<action dev="palli" type="update">
 				Updating and fixing dependencies to create a new sunnan3
