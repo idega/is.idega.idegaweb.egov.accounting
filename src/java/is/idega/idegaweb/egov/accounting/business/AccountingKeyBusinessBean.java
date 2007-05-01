@@ -13,6 +13,8 @@ import is.idega.idegaweb.egov.accounting.data.CaseCodeAccountingKey;
 import is.idega.idegaweb.egov.accounting.data.CaseCodeAccountingKeyHome;
 import is.idega.idegaweb.egov.accounting.data.ProductCode;
 import is.idega.idegaweb.egov.accounting.data.ProductCodeHome;
+import is.idega.idegaweb.egov.accounting.data.SchoolCode;
+import is.idega.idegaweb.egov.accounting.data.SchoolCodeHome;
 import is.idega.idegaweb.egov.accounting.data.SchoolProductCode;
 import is.idega.idegaweb.egov.accounting.data.SchoolProductCodeHome;
 
@@ -38,6 +40,7 @@ import com.idega.block.process.data.CaseCode;
 import com.idega.block.process.data.CaseCodeHome;
 import com.idega.block.school.business.SchoolBusiness;
 import com.idega.block.school.data.School;
+import com.idega.block.school.data.SchoolType;
 import com.idega.business.IBOLookup;
 import com.idega.business.IBOLookupException;
 import com.idega.business.IBORuntimeException;
@@ -85,6 +88,15 @@ public class AccountingKeyBusinessBean extends IBOServiceBean implements Account
 	protected CaseCodeHome getCaseCodeHome() {
 		try {
 			return (CaseCodeHome) IDOLookup.getHome(CaseCode.class);
+		}
+		catch (IDOLookupException e) {
+			throw new IBORuntimeException(e);
+		}
+	}
+
+	protected SchoolCodeHome getSchoolCodeHome() {
+		try {
+			return (SchoolCodeHome) IDOLookup.getHome(SchoolCode.class);
 		}
 		catch (IDOLookupException e) {
 			throw new IBORuntimeException(e);
@@ -197,6 +209,48 @@ public class AccountingKeyBusinessBean extends IBOServiceBean implements Account
 		return map;
 	}
 
+	public void storeSchoolCode(Object schoolPK, Object typePK, String accountingKey) throws CreateException {
+		try {
+			School school = getSchoolBusiness().getSchool(new Integer(schoolPK.toString()));
+			SchoolType type = getSchoolBusiness().getSchoolType(new Integer(typePK.toString()));
+			storeSchoolCode(school, type, accountingKey);
+		}
+		catch (RemoteException re) {
+			throw new IBORuntimeException(re);
+		}
+	}
+
+	public void storeSchoolCode(School school, SchoolType type, String accountingKey) throws CreateException {
+		SchoolCode code = getSchoolCode(school, type);
+		if (code == null) {
+			code = getSchoolCodeHome().create();
+			code.setSchool(school);
+			code.setSchoolType(type);
+		}
+		code.setSchoolCode(accountingKey);
+		code.store();
+	}
+
+	public Collection getSchoolCodes(School school) {
+		try {
+			return getSchoolCodeHome().findAllBySchool(school);
+		}
+		catch (FinderException e) {
+			e.printStackTrace();
+			return new ArrayList();
+		}
+	}
+
+	public SchoolCode getSchoolCode(School school, SchoolType type) {
+		try {
+			return getSchoolCodeHome().findBySchoolAndSchoolType(school, type);
+		}
+		catch (FinderException e) {
+			// No code found...
+			return null;
+		}
+	}
+
 	public void createAccountingFile(String caseCode, Date month) {
 		generateAccountingString(caseCode, month, true);
 	}
@@ -215,7 +269,7 @@ public class AccountingKeyBusinessBean extends IBOServiceBean implements Account
 	public void createAccountingFile(String caseCode, Date from, Date to) {
 		generateAccountingString(caseCode, from, to, true);
 	}
-	
+
 	public void generateAccountingString(String caseCode, Date from, Date to, boolean createFile) {
 		CaseCode code;
 		try {
@@ -250,7 +304,7 @@ public class AccountingKeyBusinessBean extends IBOServiceBean implements Account
 
 					IWTimestamp fromStamp = new IWTimestamp(from);
 					IWTimestamp toStamp = new IWTimestamp(to);
-					
+
 					BufferedWriter bWriter = null;
 					File tempfile = null;
 					if (createFile) {
@@ -313,7 +367,7 @@ public class AccountingKeyBusinessBean extends IBOServiceBean implements Account
 			}
 		}
 	}
-	
+
 	public AccountingEntry[] getAccountingEntries(CaseCode code, Date from, Date to) throws FinderException {
 		AccountingBusinessManager manager = AccountingBusinessManager.getInstance();
 		AccountingBusiness b = null;
