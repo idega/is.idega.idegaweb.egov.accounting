@@ -5,7 +5,7 @@
   <pomVersion>3</pomVersion>
   <name>eGov Accounting</name>
   <artifactId>is.idega.idegaweb.egov.accounting</artifactId>
-  <currentVersion>1.0.21</currentVersion>
+  <currentVersion>1.0.22</currentVersion>
   <inceptionYear>2006</inceptionYear>
   <shortDescription>eGov Citizen</shortDescription>
   <versions>
@@ -113,6 +113,11 @@
       <id>1.0.21</id>
       <name>1.0.21</name>
       <tag>EGOV_ACCOUNTING_1_0_21</tag>
+    </version>
+    <version>
+      <id>1.0.22</id>
+      <name>1.0.22</name>
+      <tag>EGOV_ACCOUNTING_1_0_22</tag>
     </version>
   </versions>
   <branches/>

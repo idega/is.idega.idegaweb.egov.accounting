@@ -7,7 +7,12 @@ import java.rmi.RemoteException;
 public interface AgressoBusiness extends IBOService {
 
 	/**
-	 * @see is.idega.idegaweb.egov.accounting.business.AgressoBusinessBean#executeUpdate
+	 * @see is.idega.idegaweb.egov.accounting.business.AgressoBusinessBean#executeAfterSchoolCareUpdate
 	 */
-	public void executeUpdate() throws RemoteException;
+	public void executeAfterSchoolCareUpdate() throws RemoteException;
+
+	/**
+	 * @see is.idega.idegaweb.egov.accounting.business.AgressoBusinessBean#executeCourseUpdate
+	 */
+	public void executeCourseUpdate() throws RemoteException;
 }

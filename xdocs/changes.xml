@@ -6,6 +6,12 @@
 		</author>
 	</properties>
 	<body>
+		<release version="1.0.22" date="2007-05-06">
+			<action dev="laddi" type="update">
+				Added daemon for updating course payments to specific agresso table (RRVK_AGRESSO_COURSE)
+			</action>
+		</release>
+
 		<release version="1.0.21" date="2007-05-01">
 			<action dev="laddi" type="update">
 				Added new bean for storing codes for school based on school type.
