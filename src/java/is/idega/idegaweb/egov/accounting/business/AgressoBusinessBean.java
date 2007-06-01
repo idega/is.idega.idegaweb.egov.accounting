@@ -176,7 +176,7 @@ public class AgressoBusinessBean extends IBOServiceBean implements AgressoBusine
 				stmt2.setString(5, entry.getProjectCode());
 				stmt2.setString(7, entry.getPaymentMethod());
 				stmt2.setInt(8, entry.getAmount());
-				stmt2.setString(9, new IWTimestamp((Timestamp) entry.getStartDate()).toSQLString());
+				stmt2.setString(9, new IWTimestamp((Timestamp) entry.getStartDate()).getDateString("yyyy-MM-dd hh:mm:ss.S"));
 
 				if (extra instanceof AccountingEntry) {
 					AccountingEntry extraEntry = (AccountingEntry) extra;
