@@ -183,6 +183,9 @@ public class AgressoBusinessBean extends IBOServiceBean implements AgressoBusine
 					if (extraEntry.getProjectCode() != null) {
 						stmt2.setString(10, extraEntry.getProjectCode());
 					}
+					else {
+						stmt2.setString(10, "");
+					}
 					stmt2.setString(11, extraEntry.getProductCode());
 					stmt2.setString(12, extraEntry.getExtraInformation().toString());
 				}
