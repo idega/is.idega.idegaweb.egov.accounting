@@ -163,18 +163,32 @@ public class AgressoBusinessBean extends IBOServiceBean implements AgressoBusine
 			String productCode = null;
 			AccountingEntry[] entries = business.getAccountingEntries(productCode, null, null, null);
 
-			PreparedStatement stmt2 = conn.prepareCall("insert into " + tableName + "(PAYER_PERSONAL_ID,PERSONAL_ID,PRODUCT_CODE,PROVIDER_CODE,TYPE_CODE,CENTER_CODE,PAYMENT_TYPE,PRICE) values(?,?,?,?,?,?,?,?)");
+			PreparedStatement stmt2 = conn.prepareCall("insert into " + tableName + "(PAYER_PERSONAL_ID,PERSONAL_ID,PRODUCT_CODE,PROVIDER_CODE,TYPE_CODE,CENTER_CODE,PAYMENT_TYPE,PRICE,PAYMENT_DATE,BATCH_NUMBER,COURSE_NAME,UNIQUE_ID) values(?,?,?,?,?,?,?,?)");
 
 			for (int i = 0; i < entries.length; i++) {
 				entry = entries[i];
+				Object extra = entry.getExtraInformation();
 				stmt2.setString(1, entry.getPayerPersonalId());
 				stmt2.setString(2, entry.getPersonalId());
 				stmt2.setString(3, entry.getProductCode());
 				stmt2.setString(4, entry.getProviderCode());
 				stmt2.setString(5, entry.getProjectCode());
-				stmt2.setString(6, entry.getExtraInformation().toString());
 				stmt2.setString(7, entry.getPaymentMethod());
 				stmt2.setInt(8, entry.getAmount());
+				stmt2.setTimestamp(9, new IWTimestamp(entry.getStartDate()).getTimestamp());
+
+				if (extra instanceof AccountingEntry) {
+					AccountingEntry extraEntry = (AccountingEntry) extra;
+					stmt2.setString(6, extraEntry.getProviderCode());
+					if (extraEntry.getProjectCode() != null) {
+						stmt2.setString(10, extraEntry.getProjectCode());
+					}
+					stmt2.setString(11, extraEntry.getProductCode());
+					stmt2.setString(12, extraEntry.getExtraInformation().toString());
+				}
+				else {
+					stmt2.setString(6, extra.toString());
+				}
 				stmt2.execute();
 			}
 
