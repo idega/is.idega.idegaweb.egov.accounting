@@ -163,7 +163,7 @@ public class AgressoBusinessBean extends IBOServiceBean implements AgressoBusine
 			String productCode = null;
 			AccountingEntry[] entries = business.getAccountingEntries(productCode, null, null, null);
 
-			PreparedStatement stmt2 = conn.prepareCall("insert into " + tableName + "(PAYER_PERSONAL_ID,PERSONAL_ID,PRODUCT_CODE,PROVIDER_CODE,TYPE_CODE,CENTER_CODE,PAYMENT_TYPE,PRICE,PAYMENT_DATE,BATCH_NUMBER,COURSE_NAME,UNIQUE_ID) values(?,?,?,?,?,?,?,?)");
+			PreparedStatement stmt2 = conn.prepareCall("insert into " + tableName + "(PAYER_PERSONAL_ID,PERSONAL_ID,PRODUCT_CODE,PROVIDER_CODE,TYPE_CODE,CENTER_CODE,PAYMENT_TYPE,PRICE,PAYMENT_DATE,BATCH_NUMBER,COURSE_NAME,UNIQUE_ID) values(?,?,?,?,?,?,?,?,?,?,?,?)");
 
 			for (int i = 0; i < entries.length; i++) {
 				entry = entries[i];
