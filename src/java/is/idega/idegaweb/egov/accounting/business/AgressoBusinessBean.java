@@ -164,7 +164,7 @@ public class AgressoBusinessBean extends IBOServiceBean implements AgressoBusine
 			String productCode = null;
 			AccountingEntry[] entries = business.getAccountingEntries(productCode, null, null, null);
 
-			PreparedStatement stmt2 = conn.prepareCall("insert into " + tableName + "(PAYER_PERSONAL_ID,PERSONAL_ID,PRODUCT_CODE,PROVIDER_CODE,TYPE_CODE,CENTER_CODE,PAYMENT_TYPE,PRICE,PAYMENT_DATE,BATCH_NUMBER,COURSE_NAME,UNIQUE_ID) values(?,?,?,?,?,?,?,?,?,?,?,?)");
+			PreparedStatement stmt2 = conn.prepareCall("insert into " + tableName + "(PAYER_PERSONAL_ID,PERSONAL_ID,PRODUCT_CODE,PROVIDER_CODE,TYPE_CODE,CENTER_CODE,PAYMENT_TYPE,PRICE,PAYMENT_DATE,BATCH_NUMBER,COURSE_NAME,UNIQUE_ID,START_DATE,END_DATE) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
 			for (int i = 0; i < entries.length; i++) {
 				entry = entries[i];
@@ -176,11 +176,13 @@ public class AgressoBusinessBean extends IBOServiceBean implements AgressoBusine
 				stmt2.setString(5, entry.getProjectCode());
 				stmt2.setString(7, entry.getPaymentMethod());
 				stmt2.setInt(8, entry.getAmount());
-				stmt2.setString(9, new IWTimestamp((Timestamp) entry.getStartDate()).getDateString("yyyy-MM-dd hh:mm:ss.S"));
+				stmt2.setDate(13, new IWTimestamp(entry.getStartDate()).getDate());
+				stmt2.setDate(14, new IWTimestamp(entry.getEndDate()).getDate());
 
 				if (extra instanceof AccountingEntry) {
 					AccountingEntry extraEntry = (AccountingEntry) extra;
 					stmt2.setString(6, extraEntry.getProviderCode());
+					stmt2.setTimestamp(9, (Timestamp) extraEntry.getStartDate());
 					if (extraEntry.getProjectCode() != null) {
 						stmt2.setString(10, extraEntry.getProjectCode());
 					}
