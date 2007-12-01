@@ -6,6 +6,12 @@
 		</author>
 	</properties>
 	<body>
+		<release version="1.0.23" date="2007-12-01">
+			<action dev="palli" type="update">
+				Updated billingEntry and accountingEntryImpl to include new number of day field. Updated agresso business bean to use it.
+			</action>
+		</release>
+
 		<release version="1.0.22" date="2007-05-06">
 			<action dev="laddi" type="update">
 				Added daemon for updating course payments to specific agresso table (RRVK_AGRESSO_COURSE)

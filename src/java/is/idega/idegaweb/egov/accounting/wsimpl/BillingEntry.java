@@ -44,6 +44,8 @@ public class BillingEntry implements java.io.Serializable, AccountingEntry {
 	private int cardExpirationYear;
 
 	private Object extraInformation;
+	
+	private int numberOfDaysPrWeek;
 
 	public BillingEntry() {
 	}
@@ -334,6 +336,14 @@ public class BillingEntry implements java.io.Serializable, AccountingEntry {
 	 */
 	public void setCardExpirationYear(int cardExpirationYear) {
 		this.cardExpirationYear = cardExpirationYear;
+	}
+	
+	public int getNumberOfDaysPrWeek() {
+		return this.numberOfDaysPrWeek;
+	}
+	
+	public void setNumberOfDaysPrWeek(int numberOfDays) {
+		this.numberOfDaysPrWeek = numberOfDays;
 	}
 
 	private java.lang.Object __equalsCalc = null;

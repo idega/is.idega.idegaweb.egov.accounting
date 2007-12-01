@@ -80,9 +80,10 @@ public class AgressoBusinessBean extends IBOServiceBean implements AgressoBusine
 				if (entry.getEndDate() != null) {
 					endDate = new IWTimestamp(entry.getEndDate()).getDate();
 				}
+				
 				stmt2.setString(1, entry.getPayerPersonalId());
 				stmt2.setString(2, entry.getPersonalId());
-				stmt2.setString(3, entry.getProductCode());
+				stmt2.setString(3, entry.getProductCode() + "_" + entry.getNumberOfDaysPrWeek());
 				stmt2.setString(4, entry.getProviderCode());
 				stmt2.setString(5, entry.getPaymentMethod());
 				stmt2.setString(6, entry.getCardNumber());

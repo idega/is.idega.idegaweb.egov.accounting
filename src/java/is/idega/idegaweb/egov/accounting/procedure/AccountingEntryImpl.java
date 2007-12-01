@@ -6,6 +6,8 @@ import java.util.Date;
 
 public class AccountingEntryImpl implements AccountingEntry {
 
+	private int numberOfDaysPrWeek;
+	
 	public String getName() {
 		return null;
 	}
@@ -126,5 +128,13 @@ public class AccountingEntryImpl implements AccountingEntry {
 	}
 
 	public void setExtraInformation(Object extraInformation) {
+	}
+	
+	public int getNumberOfDaysPrWeek() {
+		return 	numberOfDaysPrWeek;
+	}
+	
+	public void setNumberOfDaysPrWeek(int numberOfDays) {
+		this.numberOfDaysPrWeek = numberOfDays;
 	}
 }
