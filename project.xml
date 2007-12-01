@@ -119,6 +119,11 @@
       <name>1.0.22</name>
       <tag>EGOV_ACCOUNTING_1_0_22</tag>
     </version>
+    <version>
+      <id>1.0.23</id>
+      <name>1.0.23</name>
+      <tag>EGOV_ACCOUNTING_1_0_23</tag>
+    </version>
   </versions>
   <branches/>
   <developers>
