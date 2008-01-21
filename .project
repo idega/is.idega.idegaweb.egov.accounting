@@ -1,26 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <projectDescription>
-	<name>is.idega.idegaweb.egov.accounting</name>
-	<comment>
+  <name>is.idega.idegaweb.egov.accounting</name>
+  <comment>
   </comment>
-	<projects>
-		<project>com.idega.block.school</project>
-		<project>is.idega.idegaweb.egov</project>
-	</projects>
-	<buildSpec>
-		<buildCommand>
-			<name>org.eclipse.jdt.core.javabuilder</name>
-			<arguments>
-			</arguments>
-		</buildCommand>
-		<buildCommand>
-			<name>org.maven.ide.eclipse.maven2Builder</name>
-			<arguments>
-			</arguments>
-		</buildCommand>
-	</buildSpec>
-	<natures>
-		<nature>org.eclipse.jdt.core.javanature</nature>
-		<nature>org.maven.ide.eclipse.maven2Nature</nature>
-	</natures>
+  <projects>
+    <project>com.idega.block.school</project>
+    <project>is.idega.idegaweb.egov</project>
+  </projects>
+  <buildSpec>
+    <buildCommand>
+      <name>org.eclipse.jdt.core.javabuilder</name>
+      <arguments>
+      </arguments>
+    </buildCommand>
+  </buildSpec>
+  <natures>
+    <nature>org.eclipse.jdt.core.javanature</nature>
+  </natures>
 </projectDescription>
