@@ -1,5 +1,5 @@
 /*
- * $Id: NavisionBusinessBean.java,v 1.7 2007/01/03 12:32:28 eiki Exp $ Created
+ * $Id: NavisionBusinessBean.java,v 1.8 2008/05/10 11:52:04 valdas Exp $ Created
  * on Jul 12, 2006
  * 
  * Copyright (C) 2006 Idega Software hf. All Rights Reserved.
@@ -21,6 +21,7 @@ import java.util.Iterator;
 
 import javax.xml.rpc.ServiceException;
 
+import com.idega.idegaweb.IWMainApplication;
 import com.idega.util.IWCalendar;
 import com.idega.util.IWTimestamp;
 
@@ -33,10 +34,10 @@ import com.idega.util.IWTimestamp;
  * maritech.nav.lastmonthsent,maritech.nav.lastmonthfailed,maritech.nav.fakecurrentdate .
  * The last one can be used to force a month to process by setting it to a date
  * of the last day of that month (2006-11-30) Last modified: $Date: 2006/11/23
- * 12:07:48 $ by $Author: eiki $
+ * 12:07:48 $ by $Author: valdas $
  * 
  * @author <a href="mailto:eiki@idega.com">eiki</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class NavisionBusinessBean extends AccountingKeyBusinessBean implements NavisionBusiness, ActionListener {
 
@@ -261,7 +262,7 @@ public class NavisionBusinessBean extends AccountingKeyBusinessBean implements N
 	public void actionPerformed(ActionEvent e) {
 		IWTimestamp now = null;
 		// fake current date option so we can force a month to process
-		String fakeCurrentDate = this.getIWApplicationContext().getApplicationSettings().getProperty(MARITECH_NAV_FAKE_CURRENT_DATE);
+		String fakeCurrentDate = IWMainApplication.getDefaultIWApplicationContext().getApplicationSettings().getProperty(MARITECH_NAV_FAKE_CURRENT_DATE);
 		if (fakeCurrentDate != null) {
 			now = new IWTimestamp(fakeCurrentDate);
 		}
