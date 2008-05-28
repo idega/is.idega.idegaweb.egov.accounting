@@ -20,10 +20,10 @@ import com.idega.util.IWTimestamp;
  * integration of date from the AfterschoolCare module with the Reykjavik
  * Accounting system.
  * </p>
- * Last modified: $Date: 2008/05/28 13:10:40 $ by $Author: laddi $
+ * Last modified: $Date: 2008/05/28 13:38:14 $ by $Author: laddi $
  * 
  * @author <a href="mailto:tryggvil@idega.com">tryggvil</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class RvkAgressoUpdater implements Runnable {
 
@@ -75,7 +75,7 @@ public class RvkAgressoUpdater implements Runnable {
 	private void executeUpdate() {
 		try {
 			AgressoBusiness business = (AgressoBusiness) IBOLookup.getServiceInstance(this.iwma.getIWApplicationContext(), AgressoBusiness.class);
-			//business.executeAfterSchoolCareUpdate();
+			business.executeAfterSchoolCareUpdate();
 			business.executeCourseUpdate();
 		}
 		catch (IBOLookupException e) {
