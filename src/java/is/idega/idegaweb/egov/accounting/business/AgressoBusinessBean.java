@@ -61,11 +61,12 @@ public class AgressoBusinessBean extends IBOServiceBean implements AgressoBusine
 			AccountingBusiness business = AccountingBusinessManager.getInstance().getAccountingBusinessOrDefault(afterSchCare, this.getIWApplicationContext());
 
 			IWTimestamp fromDateTS = new IWTimestamp();
-			fromDateTS.addDays(-62);
+			fromDateTS.setDay(1);
+			fromDateTS.setMonth(1);
 			Date fromDate = fromDateTS.getDate();
 			String productCode = null;
 			IWTimestamp toDateTS = new IWTimestamp();
-			toDateTS.addDays(62);
+			toDateTS.addMonths(1);
 			Date toDate = toDateTS.getDate();
 			AccountingEntry[] entries = business.getAccountingEntries(productCode, null, fromDate, toDate);
 
@@ -164,12 +165,11 @@ public class AgressoBusinessBean extends IBOServiceBean implements AgressoBusine
 			AccountingBusiness business = AccountingBusinessManager.getInstance().getAccountingBusinessOrDefault(afterSchCare, this.getIWApplicationContext());
 
 			IWTimestamp fromDateTS = new IWTimestamp();
-			fromDateTS.setDay(1);
-			fromDateTS.setMonth(1);
+			fromDateTS.addMonths(-3);
 			Date fromDate = fromDateTS.getDate();
 			String productCode = null;
 			IWTimestamp toDateTS = new IWTimestamp();
-			toDateTS.addMonths(1);
+			toDateTS.addMonths(2);
 			Date toDate = toDateTS.getDate();
 
 			AccountingEntry[] entries = business.getAccountingEntries(productCode, null, fromDate, toDate);
