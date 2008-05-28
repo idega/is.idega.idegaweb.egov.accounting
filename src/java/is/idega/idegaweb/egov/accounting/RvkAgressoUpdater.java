@@ -16,13 +16,14 @@ import com.idega.util.IWTimestamp;
 
 /**
  * <p>
- * Daemon thread which handles the update of the table RRVK_AGRESSO for integration of date from the AfterschoolCare module with the Reykjavik
+ * Daemon thread which handles the update of the table RRVK_AGRESSO for
+ * integration of date from the AfterschoolCare module with the Reykjavik
  * Accounting system.
  * </p>
- * Last modified: $Date: 2007/05/06 12:21:13 $ by $Author: laddi $
+ * Last modified: $Date: 2008/05/28 13:10:40 $ by $Author: laddi $
  * 
  * @author <a href="mailto:tryggvil@idega.com">tryggvil</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class RvkAgressoUpdater implements Runnable {
 
@@ -74,7 +75,7 @@ public class RvkAgressoUpdater implements Runnable {
 	private void executeUpdate() {
 		try {
 			AgressoBusiness business = (AgressoBusiness) IBOLookup.getServiceInstance(this.iwma.getIWApplicationContext(), AgressoBusiness.class);
-			business.executeAfterSchoolCareUpdate();
+			//business.executeAfterSchoolCareUpdate();
 			business.executeCourseUpdate();
 		}
 		catch (IBOLookupException e) {
@@ -99,7 +100,7 @@ public class RvkAgressoUpdater implements Runnable {
 
 	/**
 	 * @param thread
-	 *          the thread to set
+	 * 		the thread to set
 	 */
 	public void setThread(Thread thread) {
 		this.thread = thread;
