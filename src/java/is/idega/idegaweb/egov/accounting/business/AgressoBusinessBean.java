@@ -3,7 +3,8 @@
  * 
  * Copyright (C) 2006 Idega Software hf. All Rights Reserved.
  * 
- * This software is the proprietary information of Idega hf. Use is subject to license terms.
+ * This software is the proprietary information of Idega hf. Use is subject to
+ * license terms.
  */
 package is.idega.idegaweb.egov.accounting.business;
 
@@ -80,7 +81,7 @@ public class AgressoBusinessBean extends IBOServiceBean implements AgressoBusine
 				if (entry.getEndDate() != null) {
 					endDate = new IWTimestamp(entry.getEndDate()).getDate();
 				}
-				
+
 				stmt2.setString(1, entry.getPayerPersonalId());
 				stmt2.setString(2, entry.getPersonalId());
 				stmt2.setString(3, entry.getProductCode() + "_" + entry.getNumberOfDaysPrWeek());
@@ -162,8 +163,15 @@ public class AgressoBusinessBean extends IBOServiceBean implements AgressoBusine
 
 			AccountingBusiness business = AccountingBusinessManager.getInstance().getAccountingBusinessOrDefault(afterSchCare, this.getIWApplicationContext());
 
+			IWTimestamp fromDateTS = new IWTimestamp();
+			fromDateTS.addMonths(-3);
+			Date fromDate = fromDateTS.getDate();
 			String productCode = null;
-			AccountingEntry[] entries = business.getAccountingEntries(productCode, null, null, null);
+			IWTimestamp toDateTS = new IWTimestamp();
+			toDateTS.addMonths(2);
+			Date toDate = toDateTS.getDate();
+
+			AccountingEntry[] entries = business.getAccountingEntries(productCode, null, fromDate, toDate);
 
 			PreparedStatement stmt2 = conn.prepareCall("insert into " + tableName + "(PAYER_PERSONAL_ID,PERSONAL_ID,PRODUCT_CODE,PROVIDER_CODE,TYPE_CODE,CENTER_CODE,PAYMENT_TYPE,PRICE,PAYMENT_DATE,BATCH_NUMBER,COURSE_NAME,UNIQUE_ID,START_DATE,END_DATE) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
