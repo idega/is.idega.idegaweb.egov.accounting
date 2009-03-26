@@ -61,12 +61,11 @@ public class AgressoBusinessBean extends IBOServiceBean implements AgressoBusine
 			AccountingBusiness business = AccountingBusinessManager.getInstance().getAccountingBusinessOrDefault(afterSchCare, this.getIWApplicationContext());
 
 			IWTimestamp fromDateTS = new IWTimestamp();
-			fromDateTS.setDay(1);
-			fromDateTS.setMonth(1);
+			fromDateTS.addDays(-62);
 			Date fromDate = fromDateTS.getDate();
 			String productCode = null;
 			IWTimestamp toDateTS = new IWTimestamp();
-			toDateTS.addMonths(1);
+			toDateTS.addDays(62);
 			Date toDate = toDateTS.getDate();
 			AccountingEntry[] entries = business.getAccountingEntries(productCode, null, fromDate, toDate);
 
@@ -165,16 +164,17 @@ public class AgressoBusinessBean extends IBOServiceBean implements AgressoBusine
 			AccountingBusiness business = AccountingBusinessManager.getInstance().getAccountingBusinessOrDefault(afterSchCare, this.getIWApplicationContext());
 
 			IWTimestamp fromDateTS = new IWTimestamp();
-			fromDateTS.addMonths(-3);
+			fromDateTS.setDay(1);
+			fromDateTS.setMonth(1);
 			Date fromDate = fromDateTS.getDate();
 			String productCode = null;
 			IWTimestamp toDateTS = new IWTimestamp();
-			toDateTS.addMonths(2);
+			toDateTS.addMonths(1);
 			Date toDate = toDateTS.getDate();
 
 			AccountingEntry[] entries = business.getAccountingEntries(productCode, null, fromDate, toDate);
 
-			PreparedStatement stmt2 = conn.prepareCall("insert into " + tableName + "(PAYER_PERSONAL_ID,PERSONAL_ID,PRODUCT_CODE,PROVIDER_CODE,TYPE_CODE,CENTER_CODE,PAYMENT_TYPE,PRICE,PAYMENT_DATE,BATCH_NUMBER,COURSE_NAME,UNIQUE_ID,START_DATE,END_DATE) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+			PreparedStatement stmt2 = conn.prepareCall("insert into " + tableName + "(PAYER_PERSONAL_ID,PERSONAL_ID,PRODUCT_CODE,PROVIDER_CODE,TYPE_CODE,CENTER_CODE,PAYMENT_TYPE,PRICE,PAYMENT_DATE,BATCH_NUMBER,COURSE_NAME,UNIQUE_ID,START_DATE,END_DATE,CARD_TYPE,CARD_NUMBER,CARD_VALIDITY) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
 			for (int i = 0; i < entries.length; i++) {
 				entry = entries[i];
@@ -188,6 +188,17 @@ public class AgressoBusinessBean extends IBOServiceBean implements AgressoBusine
 				stmt2.setInt(8, entry.getAmount());
 				stmt2.setDate(13, new IWTimestamp(entry.getStartDate()).getDate());
 				stmt2.setDate(14, new IWTimestamp(entry.getEndDate()).getDate());
+				stmt2.setString(15, entry.getCardType());
+				stmt2.setString(16, entry.getCardNumber());
+				if (entry.getCardNumber() != null) {
+					IWTimestamp stamp = new IWTimestamp();
+					stamp.setYear(entry.getCardExpirationYear());
+					stamp.setMonth(entry.getCardExpirationMonth());
+					stmt2.setString(17, stamp.getDateString("MM/yyyy"));
+				}
+				else {
+					stmt2.setString(17, null);
+				}
 
 				if (extra instanceof AccountingEntry) {
 					AccountingEntry extraEntry = (AccountingEntry) extra;
