@@ -45,6 +45,7 @@ import com.idega.presentation.ui.Label;
 import com.idega.presentation.ui.SubmitButton;
 import com.idega.util.IWTimestamp;
 import com.idega.util.PersonalIDFormatter;
+import com.idega.util.PresentationUtil;
 
 public class AccountingEntryStatistics extends AccountingBlock {
 
@@ -61,6 +62,8 @@ public class AccountingEntryStatistics extends AccountingBlock {
 
 	private void parse(IWContext iwc) throws RemoteException {
 		if (iwc.isParameterSet(PARAMETER_DATE_FROM) && iwc.isParameterSet(PARAMETER_DATE_TO)) {
+			PresentationUtil.addStyleSheetToHeader(iwc, iwc.getIWMainApplication().getBundle("is.idega.idegaweb.egov.application").getVirtualPathWithFileNameString("style/application.css"));
+
 			try {
 				CaseCodeHome home = (CaseCodeHome) IDOLookup.getHome(CaseCode.class);
 				CaseCode code = home.findByPrimaryKey(this.caseCode);
