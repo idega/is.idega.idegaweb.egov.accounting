@@ -30,6 +30,7 @@ import com.idega.presentation.ui.Form;
 import com.idega.presentation.ui.Label;
 import com.idega.presentation.ui.SubmitButton;
 import com.idega.util.IWTimestamp;
+import com.idega.util.PresentationUtil;
 
 public class AccountingEntryFetcher extends AccountingBlock {
 
@@ -61,6 +62,7 @@ public class AccountingEntryFetcher extends AccountingBlock {
 	protected void present(IWContext iwc) {
 		try {
 			parse(iwc);
+			PresentationUtil.addStyleSheetToHeader(iwc, iwc.getIWMainApplication().getBundle("is.idega.idegaweb.egov.application").getVirtualPathWithFileNameString("style/application.css"));
 	
 			if (this.caseCode == null) {
 				add(new Text("Please set the case code"));
