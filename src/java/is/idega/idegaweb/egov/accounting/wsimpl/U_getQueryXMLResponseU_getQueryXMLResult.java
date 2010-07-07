@@ -42,7 +42,6 @@ public class U_getQueryXMLResponseU_getQueryXMLResult  implements java.io.Serial
     public synchronized boolean equals(java.lang.Object obj) {
         if (!(obj instanceof U_getQueryXMLResponseU_getQueryXMLResult)) return false;
         U_getQueryXMLResponseU_getQueryXMLResult other = (U_getQueryXMLResponseU_getQueryXMLResult) obj;
-        if (obj == null) return false;
         if (this == obj) return true;
         if (__equalsCalc != null) {
             return (__equalsCalc == obj);

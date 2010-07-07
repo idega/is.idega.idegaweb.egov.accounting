@@ -114,7 +114,6 @@ public class BillingEntriesRequest  implements java.io.Serializable {
     public synchronized boolean equals(java.lang.Object obj) {
         if (!(obj instanceof BillingEntriesRequest)) return false;
         BillingEntriesRequest other = (BillingEntriesRequest) obj;
-        if (obj == null) return false;
         if (this == obj) return true;
         if (this.__equalsCalc != null) {
             return (this.__equalsCalc == obj);

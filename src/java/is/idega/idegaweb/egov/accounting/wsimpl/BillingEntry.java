@@ -352,8 +352,6 @@ public class BillingEntry implements java.io.Serializable, AccountingEntry {
 		if (!(obj instanceof BillingEntry))
 			return false;
 		BillingEntry other = (BillingEntry) obj;
-		if (obj == null)
-			return false;
 		if (this == obj)
 			return true;
 		if (this.__equalsCalc != null) {

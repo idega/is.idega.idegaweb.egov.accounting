@@ -14,8 +14,6 @@ public class GetAllBillingEntriesRequest  implements java.io.Serializable {
     private java.lang.Object __equalsCalc = null;
     public synchronized boolean equals(java.lang.Object obj) {
         if (!(obj instanceof GetAllBillingEntriesRequest)) return false;
-        //GetAllBillingEntriesRequest other = (GetAllBillingEntriesRequest) obj;
-        if (obj == null) return false;
         if (this == obj) return true;
         if (this.__equalsCalc != null) {
             return (this.__equalsCalc == obj);

@@ -138,7 +138,6 @@ public class U_LoginDistribution  implements java.io.Serializable {
     public synchronized boolean equals(java.lang.Object obj) {
         if (!(obj instanceof U_LoginDistribution)) return false;
         U_LoginDistribution other = (U_LoginDistribution) obj;
-        if (obj == null) return false;
         if (this == obj) return true;
         if (__equalsCalc != null) {
             return (__equalsCalc == obj);

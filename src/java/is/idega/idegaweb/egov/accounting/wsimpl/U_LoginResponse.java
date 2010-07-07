@@ -42,7 +42,6 @@ public class U_LoginResponse  implements java.io.Serializable {
     public synchronized boolean equals(java.lang.Object obj) {
         if (!(obj instanceof U_LoginResponse)) return false;
         U_LoginResponse other = (U_LoginResponse) obj;
-        if (obj == null) return false;
         if (this == obj) return true;
         if (__equalsCalc != null) {
             return (__equalsCalc == obj);
