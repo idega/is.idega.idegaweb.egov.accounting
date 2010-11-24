@@ -17,6 +17,7 @@ import is.idega.idegaweb.egov.accounting.business.NavisionBusiness;
 import is.idega.idegaweb.egov.accounting.business.NavisionStringResult;
 import is.idega.idegaweb.egov.accounting.business.NavisionXMLStringResult;
 import is.idega.idegaweb.egov.accounting.business.SFSStringResult;
+import is.idega.idegaweb.egov.accounting.timer.AgressoUpdateTimer;
 import is.idega.idegaweb.egov.accounting.wsimpl.BillingEntry;
 
 import com.idega.business.IBOLookup;
@@ -27,12 +28,14 @@ import com.idega.idegaweb.IWBundleStartable;
 import com.idega.idegaweb.IWMainApplication;
 import com.idega.repository.data.ImplementorRepository;
 import com.idega.util.EventTimer;
+import com.idega.util.timer.PastDateException;
+import com.idega.util.timer.TimerManager;
 
 
 public class IWBundleStarter implements IWBundleStartable {
 
-	RvkAgressoUpdater agressoDaemon;
-
+	//RvkAgressoUpdater agressoDaemon;
+	TimerManager mgr;
 
 	public void start(IWBundle starterBundle) {
 		addStandardViews(starterBundle.getApplication());
@@ -60,20 +63,28 @@ public class IWBundleStarter implements IWBundleStartable {
 		if(prop!=null){
 			Boolean enabled = Boolean.valueOf(prop);
 			if(enabled.booleanValue()){
+				/*
 				this.agressoDaemon = new RvkAgressoUpdater(starterBundle.getApplication());
 				Thread thread = new Thread(this.agressoDaemon);
 				thread.setName("RvkAgressoUpdater");
 				thread.setDaemon(true);
 				this.agressoDaemon.setThread(thread);
 				thread.start();
+				*/
+				mgr = new TimerManager();
+				
+				try {
+					mgr.addTimer(0, 4, -1, -1, -1, -1, new AgressoUpdateTimer(starterBundle.getApplication()));
+				} catch (PastDateException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}
 
 	public void stop(IWBundle starterBundle) {
-		if(this.agressoDaemon!=null){
-			this.agressoDaemon.stop();
-			this.agressoDaemon=null;
+		if (mgr != null) {
+			mgr.removeAllTimers();
 		}
 	}
 
