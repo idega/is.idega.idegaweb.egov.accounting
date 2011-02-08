@@ -69,7 +69,7 @@ public class AgressoBusinessBean extends IBOServiceBean implements AgressoBusine
 			Date toDate = toDateTS.getDate();
 			AccountingEntry[] entries = business.getAccountingEntries(productCode, null, fromDate, toDate);
 
-			PreparedStatement stmt2 = conn.prepareCall("insert into " + tableName + "(PAYER_PERSONAL_ID,PERSONAL_ID,PRODUCT_CODE,PROVIDER_CODE,PAYMENT_TYPE,CARD_NUMBER,CARD_EXPIRATION_MONTH,CARD_EXPIRATION_YEAR,START_DATE,END_DATE) values(?,?,?,?,?,?,?,?,?,?)");
+			PreparedStatement stmt2 = conn.prepareCall("insert into " + tableName + "(PAYER_PERSONAL_ID,PERSONAL_ID,PRODUCT_CODE,PROVIDER_CODE,PAYMENT_TYPE,CARD_NUMBER,CARD_EXPIRATION_MONTH,CARD_EXPIRATION_YEAR,START_DATE,END_DATE,FAMILY_NUMBER,SIBLING_NUMBER) values(?,?,?,?,?,?,?,?,?,?,?,?)");
 
 			for (int i = 0; i < entries.length; i++) {
 				entry = entries[i];
@@ -92,6 +92,8 @@ public class AgressoBusinessBean extends IBOServiceBean implements AgressoBusine
 				stmt2.setString(8, Integer.toString(entry.getCardExpirationYear()));
 				stmt2.setDate(9, startDate);
 				stmt2.setDate(10, endDate);
+				stmt2.setString(11, "");
+				stmt2.setInt(12, -1);
 				stmt2.execute();
 			}
 
