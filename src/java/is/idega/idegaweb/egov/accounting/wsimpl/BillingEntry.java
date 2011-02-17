@@ -46,6 +46,10 @@ public class BillingEntry implements java.io.Serializable, AccountingEntry {
 	private Object extraInformation;
 	
 	private int numberOfDaysPrWeek;
+	
+	private String familyNumber;
+	
+	private int siblingNumber;
 
 	public BillingEntry() {
 	}
@@ -345,6 +349,23 @@ public class BillingEntry implements java.io.Serializable, AccountingEntry {
 	public void setNumberOfDaysPrWeek(int numberOfDays) {
 		this.numberOfDaysPrWeek = numberOfDays;
 	}
+	
+	public String getFamilyNumber() {
+		return this.familyNumber;
+	}
+	
+	public void setFamilyNumber(String familyNumber) {
+		this.familyNumber = familyNumber;
+	}
+	
+	public int getSiblingNumber() {
+		return this.siblingNumber;
+	}
+	
+	public void setSiblingNumber(int siblingNumber) {
+		this.siblingNumber = siblingNumber;
+	}
+
 
 	private java.lang.Object __equalsCalc = null;
 

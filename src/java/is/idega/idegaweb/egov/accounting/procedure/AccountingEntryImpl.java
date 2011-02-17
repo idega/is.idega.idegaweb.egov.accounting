@@ -137,4 +137,21 @@ public class AccountingEntryImpl implements AccountingEntry {
 	public void setNumberOfDaysPrWeek(int numberOfDays) {
 		this.numberOfDaysPrWeek = numberOfDays;
 	}
+	
+	public String getFamilyNumber() {
+		return null;
+	}
+	
+	public void setFamilyNumber(String familyNumber) {
+		
+	}
+	
+	public int getSiblingNumber() {
+		return 0;
+	}
+	
+	public void setSiblingNumber(int siblingNumber) {
+		
+	}
+
 }

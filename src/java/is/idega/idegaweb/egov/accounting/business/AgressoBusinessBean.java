@@ -92,8 +92,12 @@ public class AgressoBusinessBean extends IBOServiceBean implements AgressoBusine
 				stmt2.setString(8, Integer.toString(entry.getCardExpirationYear()));
 				stmt2.setDate(9, startDate);
 				stmt2.setDate(10, endDate);
-				stmt2.setString(11, "");
-				stmt2.setInt(12, -1);
+				if (entry.getFamilyNumber() != null) {
+					stmt2.setString(11, entry.getFamilyNumber());
+				} else {
+					stmt2.setString(11, "");					
+				}
+				stmt2.setInt(12, entry.getSiblingNumber());
 				stmt2.execute();
 			}
 
