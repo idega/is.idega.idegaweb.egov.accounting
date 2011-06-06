@@ -24,6 +24,8 @@ public class NavisionStringResult implements AccountingStringResult {
 		format.setMaximumFractionDigits(0);
 		format.setMinimumFractionDigits(0);
 		format.setGroupingUsed(false);
+		
+		String caseCode = key.getCaseCodeString();
 
 		StringBuffer buffer = new StringBuffer();
 		
@@ -33,7 +35,7 @@ public class NavisionStringResult implements AccountingStringResult {
 		buffer.append(",");
 		buffer.append(entry.getPersonalId());
 		buffer.append(",");
-		if (entry.getUnits() > 0) {
+		if (entry.getUnits() > 0 && (caseCode == null || !caseCode.equals("COURSEA"))) {
 			buffer.append(String.valueOf(entry.getUnits()));
 		}
 		else {
@@ -87,8 +89,20 @@ public class NavisionStringResult implements AccountingStringResult {
 		}
 		
 		if (entry.getExtraInformation() != null) {
-			buffer.append(",");
-			buffer.append(entry.getExtraInformation().toString());
+			Object extraInformation = entry.getExtraInformation();
+			if (extraInformation instanceof AccountingEntry) {
+				AccountingEntry extraEntry = (AccountingEntry) extraInformation;
+				
+				buffer.append(",").append(new IWTimestamp(extraEntry.getStartDate()).getDateString("dd-MM-yyyy"));
+				buffer.append(",").append(extraEntry.getProductCode());
+				buffer.append(",").append(extraEntry.getProjectCode());
+				buffer.append(",").append(extraEntry.getProviderCode());
+				buffer.append(",").append(extraEntry.getExtraInformation());
+			}
+			else {
+				buffer.append(",");
+				buffer.append(entry.getExtraInformation().toString());
+			}
 		}
 		
 		return buffer.toString();
