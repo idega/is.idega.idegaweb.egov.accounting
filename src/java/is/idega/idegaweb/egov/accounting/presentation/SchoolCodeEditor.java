@@ -16,7 +16,6 @@ import com.idega.block.school.data.SchoolType;
 import com.idega.business.IBOLookup;
 import com.idega.business.IBOLookupException;
 import com.idega.business.IBORuntimeException;
-import com.idega.data.IDORelationshipException;
 import com.idega.presentation.IWContext;
 import com.idega.presentation.Layer;
 import com.idega.presentation.Span;
@@ -222,14 +221,7 @@ public class SchoolCodeEditor extends AccountingBlock {
 		section.add(helpLayer);
 
 		School school = getSchoolBusiness(iwc).getSchool(new Integer(iwc.getParameter(PARAMETER_SCHOOL_ID)));
-		Collection types = null;
-		try {
-			types = school.getSchoolTypes();
-		}
-		catch (IDORelationshipException e) {
-			e.printStackTrace();
-			types = new ArrayList();
-		}
+		Collection types = school.getCourseProviderAreas();
 
 		Layer layer;
 		Label label;

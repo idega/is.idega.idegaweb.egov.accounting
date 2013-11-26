@@ -210,14 +210,9 @@ public class AccountingKeyBusinessBean extends IBOServiceBean implements Account
 	}
 
 	public void storeSchoolCode(Object schoolPK, Object typePK, String accountingKey) throws CreateException {
-		try {
-			School school = getSchoolBusiness().getSchool(new Integer(schoolPK.toString()));
-			SchoolType type = getSchoolBusiness().getSchoolType(new Integer(typePK.toString()));
-			storeSchoolCode(school, type, accountingKey);
-		}
-		catch (RemoteException re) {
-			throw new IBORuntimeException(re);
-		}
+		School school = getSchoolBusiness().getSchool(new Integer(schoolPK.toString()));
+		SchoolType type = getSchoolBusiness().getSchoolType(new Integer(typePK.toString()));
+		storeSchoolCode(school, type, accountingKey);
 	}
 
 	public void storeSchoolCode(School school, SchoolType type, String accountingKey) throws CreateException {
