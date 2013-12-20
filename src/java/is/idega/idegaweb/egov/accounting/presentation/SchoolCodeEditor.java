@@ -221,7 +221,7 @@ public class SchoolCodeEditor extends AccountingBlock {
 		section.add(helpLayer);
 
 		School school = getSchoolBusiness(iwc).getSchool(new Integer(iwc.getParameter(PARAMETER_SCHOOL_ID)));
-		Collection types = school.getCourseProviderAreas();
+		Collection types = school.getCourseProviderTypes();
 
 		Layer layer;
 		Label label;
