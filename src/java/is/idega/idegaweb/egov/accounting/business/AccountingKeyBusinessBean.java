@@ -1,8 +1,8 @@
 /*
  * $Id$ Created on Jul 12, 2006
- * 
+ *
  * Copyright (C) 2006 Idega Software hf. All Rights Reserved.
- * 
+ *
  * This software is the proprietary information of Idega hf. Use is subject to license terms.
  */
 package is.idega.idegaweb.egov.accounting.business;
@@ -114,7 +114,7 @@ public class AccountingKeyBusinessBean extends IBOServiceBean implements Account
 
 	protected SchoolBusiness getSchoolBusiness() {
 		try {
-			return (SchoolBusiness) IBOLookup.getServiceInstance(getIWApplicationContext(), SchoolBusiness.class);
+			return IBOLookup.getServiceInstance(getIWApplicationContext(), SchoolBusiness.class);
 		}
 		catch (IBOLookupException ile) {
 			throw new IBORuntimeException(ile);
@@ -123,16 +123,18 @@ public class AccountingKeyBusinessBean extends IBOServiceBean implements Account
 
 	/**
 	 * Retrieves the <code>CaseCodeAccountingKey</code> entry for the corresponding <code>CaseCode</code>
-	 * 
+	 *
 	 * @param code
 	 *          The <code>CaseCode</code> you want to retrieve the accounting key for.
 	 * @return Returns a <code>CaseCodeAccountingKey</code> entry or throws a <code>FinderException</code> if it doesn't exist.
 	 * @throws FinderException
 	 */
+	@Override
 	public CaseCodeAccountingKey getAccountingKey(CaseCode code) throws FinderException {
 		return getCaseCodeAccountingKeyHome().findByPrimaryKey(code);
 	}
 
+	@Override
 	public Collection getAccountingFiles(String caseCode) {
 		try {
 			CaseCode code = getCaseCodeHome().findByPrimaryKey(caseCode);
@@ -144,6 +146,7 @@ public class AccountingKeyBusinessBean extends IBOServiceBean implements Account
 		}
 	}
 
+	@Override
 	public void removeAccountingFile(Object accountingFilePK) {
 		try {
 			getAccountingFilesHome().findByPrimaryKey(accountingFilePK).remove();
@@ -156,6 +159,7 @@ public class AccountingKeyBusinessBean extends IBOServiceBean implements Account
 		}
 	}
 
+	@Override
 	public Map getProductKeyMap(CaseCode code) {
 		Map map = new HashMap();
 
@@ -174,6 +178,7 @@ public class AccountingKeyBusinessBean extends IBOServiceBean implements Account
 		return map;
 	}
 
+	@Override
 	public Map getSchoolProductKeyMap() {
 		Map map = new HashMap();
 
@@ -209,17 +214,18 @@ public class AccountingKeyBusinessBean extends IBOServiceBean implements Account
 		return map;
 	}
 
+	@Override
 	public void storeSchoolCode(Object schoolPK, Object typePK, String accountingKey) throws CreateException {
 		try {
 			School school = getSchoolBusiness().getSchool(new Integer(schoolPK.toString()));
 			SchoolType type = getSchoolBusiness().getSchoolType(new Integer(typePK.toString()));
 			storeSchoolCode(school, type, accountingKey);
-		}
-		catch (RemoteException re) {
-			throw new IBORuntimeException(re);
+		} catch (Exception e) {
+			throw new CreateException(e.getMessage());
 		}
 	}
 
+	@Override
 	public void storeSchoolCode(School school, SchoolType type, String accountingKey) throws CreateException {
 		SchoolCode code = getSchoolCode(school, type);
 		if (code == null) {
@@ -231,6 +237,7 @@ public class AccountingKeyBusinessBean extends IBOServiceBean implements Account
 		code.store();
 	}
 
+	@Override
 	public Collection getSchoolCodes(School school) {
 		try {
 			return getSchoolCodeHome().findAllBySchool(school);
@@ -241,6 +248,7 @@ public class AccountingKeyBusinessBean extends IBOServiceBean implements Account
 		}
 	}
 
+	@Override
 	public SchoolCode getSchoolCode(School school, SchoolType type) {
 		try {
 			return getSchoolCodeHome().findBySchoolAndSchoolType(school, type);
@@ -251,10 +259,12 @@ public class AccountingKeyBusinessBean extends IBOServiceBean implements Account
 		}
 	}
 
+	@Override
 	public void createAccountingFile(String caseCode, Date month) {
 		generateAccountingString(caseCode, month, true);
 	}
 
+	@Override
 	public void generateAccountingString(String caseCode, Date month, boolean createFile) {
 		CaseCode code;
 		try {
@@ -266,10 +276,12 @@ public class AccountingKeyBusinessBean extends IBOServiceBean implements Account
 		}
 	}
 
+	@Override
 	public void createAccountingFile(String caseCode, Date from, Date to) {
 		generateAccountingString(caseCode, from, to, true);
 	}
 
+	@Override
 	public void generateAccountingString(String caseCode, Date from, Date to, boolean createFile) {
 		CaseCode code;
 		try {
@@ -281,6 +293,7 @@ public class AccountingKeyBusinessBean extends IBOServiceBean implements Account
 		}
 	}
 
+	@Override
 	public void generateAccountingString(CaseCode code, Date month, boolean createFile) {
 		IWTimestamp fromStamp = new IWTimestamp(month);
 		fromStamp.setDay(1);
@@ -291,6 +304,7 @@ public class AccountingKeyBusinessBean extends IBOServiceBean implements Account
 		generateAccountingString(code, fromStamp.getDate(), toStamp.getDate(), createFile);
 	}
 
+	@Override
 	public void generateAccountingString(CaseCode code, Date from, Date to, boolean createFile) {
 		if (from != null && to != null) {
 			try {
@@ -368,6 +382,7 @@ public class AccountingKeyBusinessBean extends IBOServiceBean implements Account
 		}
 	}
 
+	@Override
 	public AccountingEntry[] getAccountingEntries(CaseCode code, Date from, Date to) throws FinderException {
 		AccountingBusinessManager manager = AccountingBusinessManager.getInstance();
 		AccountingBusiness b = null;
@@ -389,7 +404,7 @@ public class AccountingKeyBusinessBean extends IBOServiceBean implements Account
 	/**
 	 * You can extend this class and overide this method so for each line of writing to a file or just generating an accountingstring it also calls this
 	 * method. Used for example in NavisionBusiness
-	 * 
+	 *
 	 * @param resultString
 	 */
 	protected void onGeneratedAccountingString(String resultString, AccountingEntry entry, CaseCodeAccountingKey key, String accountingSystem, IWTimestamp fromStamp, IWTimestamp toStamp) {

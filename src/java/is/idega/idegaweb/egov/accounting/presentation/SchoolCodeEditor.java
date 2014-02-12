@@ -16,7 +16,6 @@ import com.idega.block.school.data.SchoolType;
 import com.idega.business.IBOLookup;
 import com.idega.business.IBOLookupException;
 import com.idega.business.IBORuntimeException;
-import com.idega.data.IDORelationshipException;
 import com.idega.presentation.IWContext;
 import com.idega.presentation.Layer;
 import com.idega.presentation.Span;
@@ -48,6 +47,7 @@ public class SchoolCodeEditor extends AccountingBlock {
 
 	private String iSchoolCategory;
 
+	@Override
 	public void present(IWContext iwc) {
 		if (iSchoolCategory == null) {
 			add("No school category defined...");
@@ -121,14 +121,14 @@ public class SchoolCodeEditor extends AccountingBlock {
 		column.setSpan(2);
 		column.setWidth("12");
 
-		Collection schools = null;
-		Collection schoolTypes = null;
+		Collection<School> schools = null;
+		Collection<SchoolType> schoolTypes = null;
 		try {
 			schools = getSchoolBusiness(iwc).findAllSchoolsByCategory(getSchoolCategory());
 			schoolTypes = getSchoolBusiness(iwc).findAllSchoolTypesInCategory(getSchoolCategory());
 		}
 		catch (RemoteException rex) {
-			schools = new ArrayList();
+			schools = new ArrayList<School>();
 		}
 
 		TableRowGroup group = table.createHeaderRowGroup();
@@ -138,9 +138,8 @@ public class SchoolCodeEditor extends AccountingBlock {
 		cell.setStyleClass("school");
 		cell.add(new Text(this.iwrb.getLocalizedString("school", "School")));
 
-		Iterator iterator = schoolTypes.iterator();
-		while (iterator.hasNext()) {
-			SchoolType type = (SchoolType) iterator.next();
+		for (Iterator<SchoolType> iterator = schoolTypes.iterator(); iterator.hasNext();) {
+			SchoolType type = iterator.next();
 
 			cell = row.createHeaderCell();
 			cell.setStyleClass(type.getPrimaryKey().toString());
@@ -154,9 +153,8 @@ public class SchoolCodeEditor extends AccountingBlock {
 
 		group = table.createBodyRowGroup();
 		int iRow = 1;
-		java.util.Iterator iter = schools.iterator();
-		while (iter.hasNext()) {
-			School school = (School) iter.next();
+		for (Iterator<School> iter = schools.iterator(); iter.hasNext();) {
+			School school = iter.next();
 			row = group.createRow();
 
 			try {
@@ -169,9 +167,8 @@ public class SchoolCodeEditor extends AccountingBlock {
 				cell.setStyleClass("school");
 				cell.add(new Text(school.getName()));
 
-				iterator = schoolTypes.iterator();
-				while (iterator.hasNext()) {
-					SchoolType type = (SchoolType) iterator.next();
+				for (Iterator<SchoolType> iterator = schoolTypes.iterator(); iterator.hasNext();) {
+					SchoolType type = iterator.next();
 					SchoolCode code = getAccountingKeyBusiness(iwc).getSchoolCode(school, type);
 
 					cell = row.createCell();
@@ -222,13 +219,11 @@ public class SchoolCodeEditor extends AccountingBlock {
 		section.add(helpLayer);
 
 		School school = getSchoolBusiness(iwc).getSchool(new Integer(iwc.getParameter(PARAMETER_SCHOOL_ID)));
-		Collection types = null;
+		Collection<SchoolType> types = null;
 		try {
 			types = school.getSchoolTypes();
-		}
-		catch (IDORelationshipException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
-			types = new ArrayList();
 		}
 
 		Layer layer;
@@ -245,9 +240,8 @@ public class SchoolCodeEditor extends AccountingBlock {
 		layer.add(span);
 		section.add(layer);
 
-		Iterator iterator = types.iterator();
-		while (iterator.hasNext()) {
-			SchoolType type = (SchoolType) iterator.next();
+		for (Iterator<SchoolType> iterator = types.iterator(); iterator.hasNext();) {
+			SchoolType type = iterator.next();
 			SchoolCode code = getAccountingKeyBusiness(iwc).getSchoolCode(school, type);
 
 			TextInput input = new TextInput(PARAMETER_ACCOUNTING_KEY);
@@ -287,9 +281,10 @@ public class SchoolCodeEditor extends AccountingBlock {
 		add(form);
 	}
 
+	@Override
 	public AccountingKeyBusiness getAccountingKeyBusiness(IWContext iwc) {
 		try {
-			return (AccountingKeyBusiness) IBOLookup.getServiceInstance(iwc, AccountingKeyBusiness.class);
+			return IBOLookup.getServiceInstance(iwc, AccountingKeyBusiness.class);
 		}
 		catch (IBOLookupException e) {
 			throw new IBORuntimeException(e);
@@ -298,7 +293,7 @@ public class SchoolCodeEditor extends AccountingBlock {
 
 	public SchoolBusiness getSchoolBusiness(IWContext iwc) {
 		try {
-			return (SchoolBusiness) IBOLookup.getServiceInstance(iwc, SchoolBusiness.class);
+			return IBOLookup.getServiceInstance(iwc, SchoolBusiness.class);
 		}
 		catch (IBOLookupException e) {
 			throw new IBORuntimeException(e);
