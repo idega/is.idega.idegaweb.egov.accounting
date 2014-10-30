@@ -1,8 +1,8 @@
 /*
  * $Id$ Created on Dec 18, 2006
- * 
+ *
  * Copyright (C) 2006 Idega Software hf. All Rights Reserved.
- * 
+ *
  * This software is the proprietary information of Idega hf. Use is subject to
  * license terms.
  */
@@ -27,9 +27,24 @@ import com.idega.util.database.ConnectionBroker;
 
 public class AgressoBusinessBean extends IBOServiceBean implements AgressoBusiness {
 
+	private static final long serialVersionUID = 2786796608350882282L;
+
 	static Logger log = Logger.getLogger(AgressoBusinessBean.class.getName());
 
+	@Override
 	public void executeAfterSchoolCareUpdate() {
+		IWTimestamp fromDateTS = new IWTimestamp();
+		fromDateTS.addDays(-62);
+		Date fromDate = fromDateTS.getDate();
+
+		IWTimestamp toDateTS = new IWTimestamp();
+		toDateTS.addDays(62);
+		Date toDate = toDateTS.getDate();
+
+		executeAfterSchoolCareUpdate(fromDate, toDate);
+	}
+
+	public void executeAfterSchoolCareUpdate(Date fromDate, Date toDate) {
 		log.info("Starting Agresso after school care update");
 
 		Connection conn = ConnectionBroker.getConnection();
@@ -60,13 +75,7 @@ public class AgressoBusinessBean extends IBOServiceBean implements AgressoBusine
 
 			AccountingBusiness business = AccountingBusinessManager.getInstance().getAccountingBusinessOrDefault(afterSchCare, this.getIWApplicationContext());
 
-			IWTimestamp fromDateTS = new IWTimestamp();
-			fromDateTS.addDays(-62);
-			Date fromDate = fromDateTS.getDate();
 			String productCode = null;
-			IWTimestamp toDateTS = new IWTimestamp();
-			toDateTS.addDays(62);
-			Date toDate = toDateTS.getDate();
 			AccountingEntry[] entries = business.getAccountingEntries(productCode, null, fromDate, toDate);
 
 			PreparedStatement stmt2 = conn.prepareCall("insert into " + tableName + "(PAYER_PERSONAL_ID,PERSONAL_ID,PRODUCT_CODE,PROVIDER_CODE,PAYMENT_TYPE,CARD_NUMBER,CARD_EXPIRATION_MONTH,CARD_EXPIRATION_YEAR,START_DATE,END_DATE,FAMILY_NUMBER,SIBLING_NUMBER) values(?,?,?,?,?,?,?,?,?,?,?,?)");
@@ -95,7 +104,7 @@ public class AgressoBusinessBean extends IBOServiceBean implements AgressoBusine
 				if (entry.getFamilyNumber() != null) {
 					stmt2.setString(11, entry.getFamilyNumber());
 				} else {
-					stmt2.setString(11, "");					
+					stmt2.setString(11, "");
 				}
 				stmt2.setInt(12, entry.getSiblingNumber());
 				stmt2.execute();
@@ -138,6 +147,7 @@ public class AgressoBusinessBean extends IBOServiceBean implements AgressoBusine
 		}
 	}
 
+	@Override
 	public void executeCourseUpdate() {
 		log.info("Starting Agresso course update");
 
