@@ -1,6 +1,6 @@
 /**
  * BillingEntry.java
- * 
+ *
  * This file was auto-generated from WSDL by the Apache Axis 1.3 Oct 05, 2005
  * (05:23:37 EDT) WSDL2Java emitter.
  */
@@ -11,8 +11,10 @@ import is.idega.idegaweb.egov.accounting.business.AccountingEntry;
 
 public class BillingEntry implements java.io.Serializable, AccountingEntry {
 
+	private static final long serialVersionUID = 363466398096672702L;
+
 	private java.lang.String personalId;
-	
+
 	private java.lang.String name;
 
 	private java.lang.String payerPersonalId;
@@ -44,11 +46,11 @@ public class BillingEntry implements java.io.Serializable, AccountingEntry {
 	private int cardExpirationYear;
 
 	private Object extraInformation;
-	
+
 	private int numberOfDaysPrWeek;
-	
+
 	private String familyNumber;
-	
+
 	private int siblingNumber;
 
 	public BillingEntry() {
@@ -74,294 +76,330 @@ public class BillingEntry implements java.io.Serializable, AccountingEntry {
 
 	/**
 	 * Gets the personalId value for this BillingEntry.
-	 * 
+	 *
 	 * @return personalId
 	 */
+	@Override
 	public java.lang.String getPersonalId() {
 		return this.personalId;
 	}
 
 	/**
 	 * Sets the personalId value for this BillingEntry.
-	 * 
+	 *
 	 * @param personalId
 	 */
+	@Override
 	public void setPersonalId(java.lang.String personalId) {
 		this.personalId = personalId;
 	}
 
 	/**
 	 * Gets the name value for this BillingEntry.
-	 * 
+	 *
 	 * @return name
 	 */
+	@Override
 	public java.lang.String getName() {
 		return this.name;
 	}
 
 	/**
 	 * Sets the name value for this BillingEntry.
-	 * 
+	 *
 	 * @param name
 	 */
+	@Override
 	public void setName(java.lang.String name) {
 		this.name = name;
 	}
 
 	/**
 	 * Gets the payerPersonalId value for this BillingEntry.
-	 * 
+	 *
 	 * @return payerPersonalId
 	 */
+	@Override
 	public java.lang.String getPayerPersonalId() {
 		return this.payerPersonalId;
 	}
 
 	/**
 	 * Sets the payerPersonalId value for this BillingEntry.
-	 * 
+	 *
 	 * @param payerPersonalId
 	 */
+	@Override
 	public void setPayerPersonalId(java.lang.String payerPersonalId) {
 		this.payerPersonalId = payerPersonalId;
 	}
 
 	/**
 	 * Gets the providerCode value for this BillingEntry.
-	 * 
+	 *
 	 * @return providerCode
 	 */
+	@Override
 	public java.lang.String getProviderCode() {
 		return this.providerCode;
 	}
 
 	/**
 	 * Sets the providerCode value for this BillingEntry.
-	 * 
+	 *
 	 * @param providerCode
 	 */
+	@Override
 	public void setProviderCode(java.lang.String providerCode) {
 		this.providerCode = providerCode;
 	}
 
 	/**
 	 * Gets the productCode value for this BillingEntry.
-	 * 
+	 *
 	 * @return productCode
 	 */
+	@Override
 	public java.lang.String getProductCode() {
 		return this.productCode;
 	}
 
 	/**
 	 * Sets the productCode value for this BillingEntry.
-	 * 
+	 *
 	 * @param productCode
 	 */
+	@Override
 	public void setProductCode(java.lang.String productCode) {
 		this.productCode = productCode;
 	}
 
 	/**
 	 * Gets the projectCode value for this BillingEntry.
-	 * 
+	 *
 	 * @return projectCode
 	 */
+	@Override
 	public java.lang.String getProjectCode() {
 		return this.projectCode;
 	}
 
 	/**
 	 * Sets the projectCode value for this BillingEntry.
-	 * 
+	 *
 	 * @param projectCode
 	 */
+	@Override
 	public void setProjectCode(java.lang.String projectCode) {
 		this.projectCode = projectCode;
 	}
 
 	/**
 	 * Gets the amount value for this BillingEntry.
-	 * 
+	 *
 	 * @return amount
 	 */
+	@Override
 	public int getAmount() {
 		return this.amount;
 	}
 
 	/**
 	 * Sets the amount value for this BillingEntry.
-	 * 
+	 *
 	 * @param amount
 	 */
+	@Override
 	public void setAmount(int amount) {
 		this.amount = amount;
 	}
 
 	/**
 	 * Gets the startDate value for this BillingEntry.
-	 * 
+	 *
 	 * @return startDate
 	 */
+	@Override
 	public java.util.Date getStartDate() {
 		return this.startDate;
 	}
 
 	/**
 	 * Sets the startDate value for this BillingEntry.
-	 * 
+	 *
 	 * @param startDate
 	 */
+	@Override
 	public void setStartDate(java.util.Date startDate) {
 		this.startDate = startDate;
 	}
 
 	/**
 	 * Gets the endDate value for this BillingEntry.
-	 * 
+	 *
 	 * @return endDate
 	 */
+	@Override
 	public java.util.Date getEndDate() {
 		return this.endDate;
 	}
 
 	/**
 	 * Sets the endDate value for this BillingEntry.
-	 * 
+	 *
 	 * @param endDate
 	 */
+	@Override
 	public void setEndDate(java.util.Date endDate) {
 		this.endDate = endDate;
 	}
 
 	/**
 	 * Gets the paymentMethod value for this BillingEntry.
-	 * 
+	 *
 	 * @return paymentMethod
 	 */
+	@Override
 	public java.lang.String getPaymentMethod() {
 		return this.paymentMethod;
 	}
 
 	/**
 	 * Sets the paymentMethod value for this BillingEntry.
-	 * 
+	 *
 	 * @param paymentMethod
 	 */
+	@Override
 	public void setPaymentMethod(java.lang.String paymentMethod) {
 		this.paymentMethod = paymentMethod;
 	}
 
 	/**
 	 * Gets the unitPrice value for this BillingEntry.
-	 * 
+	 *
 	 * @return unitPrice
 	 */
+	@Override
 	public float getUnitPrice() {
 		return this.unitPrice;
 	}
 
 	/**
 	 * Sets the unitPrice value for this BillingEntry.
-	 * 
+	 *
 	 * @param unitPrice
 	 */
+	@Override
 	public void setUnitPrice(float unitPrice) {
 		this.unitPrice = unitPrice;
 	}
 
 	/**
 	 * Gets the cardNumber value for this BillingEntry.
-	 * 
+	 *
 	 * @return cardNumber
 	 */
+	@Override
 	public java.lang.String getCardNumber() {
 		return this.cardNumber;
 	}
 
 	/**
 	 * Sets the cardNumber value for this BillingEntry.
-	 * 
+	 *
 	 * @param cardNumber
 	 */
+	@Override
 	public void setCardNumber(java.lang.String cardNumber) {
 		this.cardNumber = cardNumber;
 	}
 
 	/**
 	 * Gets the cardType value for this BillingEntry.
-	 * 
+	 *
 	 * @return cardType
 	 */
+	@Override
 	public java.lang.String getCardType() {
 		return this.cardType;
 	}
 
 	/**
 	 * Sets the cardType value for this BillingEntry.
-	 * 
+	 *
 	 * @param cardType
 	 */
+	@Override
 	public void setCardType(java.lang.String cardType) {
 		this.cardType = cardType;
 	}
 
 	/**
 	 * Gets the cardExpirationMonth value for this BillingEntry.
-	 * 
+	 *
 	 * @return cardExpirationMonth
 	 */
+	@Override
 	public int getCardExpirationMonth() {
 		return this.cardExpirationMonth;
 	}
 
 	/**
 	 * Sets the cardExpirationMonth value for this BillingEntry.
-	 * 
+	 *
 	 * @param cardExpirationMonth
 	 */
+	@Override
 	public void setCardExpirationMonth(int cardExpirationMonth) {
 		this.cardExpirationMonth = cardExpirationMonth;
 	}
 
 	/**
 	 * Gets the cardExpirationYear value for this BillingEntry.
-	 * 
+	 *
 	 * @return cardExpirationYear
 	 */
+	@Override
 	public int getCardExpirationYear() {
 		return this.cardExpirationYear;
 	}
 
 	/**
 	 * Sets the cardExpirationYear value for this BillingEntry.
-	 * 
+	 *
 	 * @param cardExpirationYear
 	 */
+	@Override
 	public void setCardExpirationYear(int cardExpirationYear) {
 		this.cardExpirationYear = cardExpirationYear;
 	}
-	
+
+	@Override
 	public int getNumberOfDaysPrWeek() {
 		return this.numberOfDaysPrWeek;
 	}
-	
+
+	@Override
 	public void setNumberOfDaysPrWeek(int numberOfDays) {
 		this.numberOfDaysPrWeek = numberOfDays;
 	}
-	
+
+	@Override
 	public String getFamilyNumber() {
 		return this.familyNumber;
 	}
-	
+
+	@Override
 	public void setFamilyNumber(String familyNumber) {
 		this.familyNumber = familyNumber;
 	}
-	
+
+	@Override
 	public int getSiblingNumber() {
 		return this.siblingNumber;
 	}
-	
+
+	@Override
 	public void setSiblingNumber(int siblingNumber) {
 		this.siblingNumber = siblingNumber;
 	}
@@ -369,6 +407,7 @@ public class BillingEntry implements java.io.Serializable, AccountingEntry {
 
 	private java.lang.Object __equalsCalc = null;
 
+	@Override
 	public synchronized boolean equals(java.lang.Object obj) {
 		if (!(obj instanceof BillingEntry))
 			return false;
@@ -387,6 +426,7 @@ public class BillingEntry implements java.io.Serializable, AccountingEntry {
 
 	private boolean __hashCodeCalc = false;
 
+	@Override
 	public synchronized int hashCode() {
 		if (this.__hashCodeCalc) {
 			return 0;
@@ -543,20 +583,28 @@ public class BillingEntry implements java.io.Serializable, AccountingEntry {
 		return new org.apache.axis.encoding.ser.BeanDeserializer(_javaType, _xmlType, typeDesc);
 	}
 
+	@Override
 	public float getUnits() {
 		return this.units;
 	}
 
+	@Override
 	public void setUnits(float units) {
 		this.units = units;
 	}
 
+	@Override
 	public Object getExtraInformation() {
 		return this.extraInformation;
 	}
 
+	@Override
 	public void setExtraInformation(Object extraInformation) {
 		this.extraInformation = extraInformation;
 	}
 
+	@Override
+	public String toString() {
+		return getName() + " (personal ID: " + getPersonalId() + ") amount: " + getAmount();
+	}
 }
