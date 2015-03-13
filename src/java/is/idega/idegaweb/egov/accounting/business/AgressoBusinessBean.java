@@ -22,6 +22,7 @@ import java.util.logging.Logger;
 import com.idega.block.process.data.CaseCode;
 import com.idega.business.IBOServiceBean;
 import com.idega.data.IDOLookup;
+import com.idega.util.ArrayUtil;
 import com.idega.util.IWTimestamp;
 import com.idega.util.database.ConnectionBroker;
 
@@ -78,42 +79,44 @@ public class AgressoBusinessBean extends IBOServiceBean implements AgressoBusine
 			String productCode = null;
 			AccountingEntry[] entries = business.getAccountingEntries(productCode, null, fromDate, toDate);
 
-			PreparedStatement stmt2 = conn.prepareCall("insert into " + tableName + "(PAYER_PERSONAL_ID,PERSONAL_ID,PRODUCT_CODE,PROVIDER_CODE,PAYMENT_TYPE,CARD_NUMBER,CARD_EXPIRATION_MONTH,CARD_EXPIRATION_YEAR,START_DATE,END_DATE,FAMILY_NUMBER,SIBLING_NUMBER) values(?,?,?,?,?,?,?,?,?,?,?,?)");
+			if (!ArrayUtil.isEmpty(entries)) {
+				PreparedStatement stmt2 = conn.prepareCall("insert into " + tableName + "(PAYER_PERSONAL_ID,PERSONAL_ID,PRODUCT_CODE,PROVIDER_CODE,PAYMENT_TYPE,CARD_NUMBER,CARD_EXPIRATION_MONTH,CARD_EXPIRATION_YEAR,START_DATE,END_DATE,FAMILY_NUMBER,SIBLING_NUMBER) values(?,?,?,?,?,?,?,?,?,?,?,?)");
 
-			for (int i = 0; i < entries.length; i++) {
-				entry = entries[i];
-				Date startDate = null;
-				if (entry.getStartDate() != null) {
-					startDate = new IWTimestamp(entry.getStartDate()).getDate();
-				}
-				Date endDate = null;
-				if (entry.getEndDate() != null) {
-					endDate = new IWTimestamp(entry.getEndDate()).getDate();
+				for (int i = 0; i < entries.length; i++) {
+					entry = entries[i];
+					Date startDate = null;
+					if (entry.getStartDate() != null) {
+						startDate = new IWTimestamp(entry.getStartDate()).getDate();
+					}
+					Date endDate = null;
+					if (entry.getEndDate() != null) {
+						endDate = new IWTimestamp(entry.getEndDate()).getDate();
+					}
+
+					stmt2.setString(1, entry.getPayerPersonalId());
+					stmt2.setString(2, entry.getPersonalId());
+					stmt2.setString(3, entry.getProductCode() + "_" + entry.getNumberOfDaysPrWeek());
+					stmt2.setString(4, entry.getProviderCode());
+					stmt2.setString(5, entry.getPaymentMethod());
+					stmt2.setString(6, entry.getCardNumber());
+					stmt2.setString(7, Integer.toString(entry.getCardExpirationMonth()));
+					stmt2.setString(8, Integer.toString(entry.getCardExpirationYear()));
+					stmt2.setDate(9, startDate);
+					stmt2.setDate(10, endDate);
+					if (entry.getFamilyNumber() != null) {
+						stmt2.setString(11, entry.getFamilyNumber());
+					} else {
+						stmt2.setString(11, "");
+					}
+					stmt2.setInt(12, entry.getSiblingNumber());
+					stmt2.execute();
 				}
 
-				stmt2.setString(1, entry.getPayerPersonalId());
-				stmt2.setString(2, entry.getPersonalId());
-				stmt2.setString(3, entry.getProductCode() + "_" + entry.getNumberOfDaysPrWeek());
-				stmt2.setString(4, entry.getProviderCode());
-				stmt2.setString(5, entry.getPaymentMethod());
-				stmt2.setString(6, entry.getCardNumber());
-				stmt2.setString(7, Integer.toString(entry.getCardExpirationMonth()));
-				stmt2.setString(8, Integer.toString(entry.getCardExpirationYear()));
-				stmt2.setDate(9, startDate);
-				stmt2.setDate(10, endDate);
-				if (entry.getFamilyNumber() != null) {
-					stmt2.setString(11, entry.getFamilyNumber());
-				} else {
-					stmt2.setString(11, "");
-				}
-				stmt2.setInt(12, entry.getSiblingNumber());
-				stmt2.execute();
+				stmt2.close();
+				conn.commit();
+
+				log.info("Finished Agresso update successfully");
 			}
-
-			stmt2.close();
-			conn.commit();
-
-			log.info("Finished Agresso update successfully");
 		}
 		catch (Exception e) {
 			try {
