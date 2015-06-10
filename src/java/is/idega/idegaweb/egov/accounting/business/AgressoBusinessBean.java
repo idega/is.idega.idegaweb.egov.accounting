@@ -186,10 +186,6 @@ public class AgressoBusinessBean extends IBOServiceBean implements AgressoBusine
 
 			conn.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
 
-			Statement stmt1 = conn.createStatement();
-			stmt1.executeUpdate("delete from " + tableName);
-			stmt1.close();
-
 			CaseCodeAccountingKeyHome ccah = (CaseCodeAccountingKeyHome) IDOLookup.getHome(CaseCodeAccountingKey.class);
 			CaseCodeAccountingKey accKey = ccah.findByAccountingKey(accountingKey);
 			CaseCode afterSchCare = accKey.getCaseCode();
@@ -201,53 +197,59 @@ public class AgressoBusinessBean extends IBOServiceBean implements AgressoBusine
 
 			AccountingEntry[] entries = business.getAccountingEntries(productCode, null, fromDate, toDate);
 
-			PreparedStatement stmt2 = conn.prepareCall("insert into " + tableName + "(PAYER_PERSONAL_ID,PERSONAL_ID,PRODUCT_CODE,PROVIDER_CODE,TYPE_CODE,CENTER_CODE,PAYMENT_TYPE,PRICE,PAYMENT_DATE,BATCH_NUMBER,COURSE_NAME,UNIQUE_ID,START_DATE,END_DATE,CARD_TYPE,CARD_NUMBER,CARD_VALIDITY) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+			if (getIWMainApplication().getSettings().getBoolean("write_courses_to_agresso", true)) {
+				Statement stmt1 = conn.createStatement();
+				stmt1.executeUpdate("delete from " + tableName);
+				stmt1.close();
 
-			for (int i = 0; i < entries.length; i++) {
-				entry = entries[i];
-				Object extra = entry.getExtraInformation();
-				stmt2.setString(1, entry.getPayerPersonalId());
-				stmt2.setString(2, entry.getPersonalId());
-				stmt2.setString(3, entry.getProductCode());
-				stmt2.setString(4, entry.getProviderCode());
-				stmt2.setString(5, entry.getProjectCode());
-				stmt2.setString(7, entry.getPaymentMethod());
-				stmt2.setInt(8, entry.getAmount());
-				stmt2.setDate(13, new IWTimestamp(entry.getStartDate()).getDate());
-				stmt2.setDate(14, new IWTimestamp(entry.getEndDate()).getDate());
-				stmt2.setString(15, entry.getCardType());
-				stmt2.setString(16, entry.getCardNumber());
-				if (entry.getCardNumber() != null) {
-					IWTimestamp stamp = new IWTimestamp();
-					stamp.setYear(entry.getCardExpirationYear());
-					stamp.setMonth(entry.getCardExpirationMonth());
-					stmt2.setString(17, stamp.getDateString("MM/yyyy"));
-				}
-				else {
-					stmt2.setString(17, null);
-				}
+				PreparedStatement stmt2 = conn.prepareCall("insert into " + tableName + "(PAYER_PERSONAL_ID,PERSONAL_ID,PRODUCT_CODE,PROVIDER_CODE,TYPE_CODE,CENTER_CODE,PAYMENT_TYPE,PRICE,PAYMENT_DATE,BATCH_NUMBER,COURSE_NAME,UNIQUE_ID,START_DATE,END_DATE,CARD_TYPE,CARD_NUMBER,CARD_VALIDITY) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
-				if (extra instanceof AccountingEntry) {
-					AccountingEntry extraEntry = (AccountingEntry) extra;
-					stmt2.setString(6, extraEntry.getProviderCode());
-					stmt2.setTimestamp(9, (Timestamp) extraEntry.getStartDate());
-					if (extraEntry.getProjectCode() != null) {
-						stmt2.setString(10, extraEntry.getProjectCode());
+				for (int i = 0; i < entries.length; i++) {
+					entry = entries[i];
+					Object extra = entry.getExtraInformation();
+					stmt2.setString(1, entry.getPayerPersonalId());
+					stmt2.setString(2, entry.getPersonalId());
+					stmt2.setString(3, entry.getProductCode());
+					stmt2.setString(4, entry.getProviderCode());
+					stmt2.setString(5, entry.getProjectCode());
+					stmt2.setString(7, entry.getPaymentMethod());
+					stmt2.setInt(8, entry.getAmount());
+					stmt2.setDate(13, new IWTimestamp(entry.getStartDate()).getDate());
+					stmt2.setDate(14, new IWTimestamp(entry.getEndDate()).getDate());
+					stmt2.setString(15, entry.getCardType());
+					stmt2.setString(16, entry.getCardNumber());
+					if (entry.getCardNumber() != null) {
+						IWTimestamp stamp = new IWTimestamp();
+						stamp.setYear(entry.getCardExpirationYear());
+						stamp.setMonth(entry.getCardExpirationMonth());
+						stmt2.setString(17, stamp.getDateString("MM/yyyy"));
 					}
 					else {
-						stmt2.setString(10, "");
+						stmt2.setString(17, null);
 					}
-					stmt2.setString(11, extraEntry.getProductCode());
-					stmt2.setString(12, extraEntry.getExtraInformation().toString());
-				}
-				else {
-					stmt2.setString(6, extra.toString());
-				}
-				stmt2.execute();
-			}
 
-			stmt2.close();
-			conn.commit();
+					if (extra instanceof AccountingEntry) {
+						AccountingEntry extraEntry = (AccountingEntry) extra;
+						stmt2.setString(6, extraEntry.getProviderCode());
+						stmt2.setTimestamp(9, (Timestamp) extraEntry.getStartDate());
+						if (extraEntry.getProjectCode() != null) {
+							stmt2.setString(10, extraEntry.getProjectCode());
+						}
+						else {
+							stmt2.setString(10, "");
+						}
+						stmt2.setString(11, extraEntry.getProductCode());
+						stmt2.setString(12, extraEntry.getExtraInformation().toString());
+					}
+					else {
+						stmt2.setString(6, extra.toString());
+					}
+					stmt2.execute();
+				}
+
+				stmt2.close();
+				conn.commit();
+			}
 
 			log.info("Finished Agresso course update successfully");
 		}
