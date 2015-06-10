@@ -153,6 +153,19 @@ public class AgressoBusinessBean extends IBOServiceBean implements AgressoBusine
 
 	@Override
 	public void executeCourseUpdate() {
+		IWTimestamp fromDateTS = new IWTimestamp();
+		fromDateTS.setDay(1);
+		fromDateTS.setMonth(1);
+		Date fromDate = fromDateTS.getDate();
+
+		IWTimestamp toDateTS = new IWTimestamp();
+		toDateTS.addMonths(1);
+		Date toDate = toDateTS.getDate();
+
+		executeCourseUpdate(fromDate, toDate);
+	}
+
+	public void executeCourseUpdate(Date fromDate, Date toDate) {
 		log.info("Starting Agresso course update");
 
 		Connection conn = ConnectionBroker.getConnection();
@@ -183,14 +196,7 @@ public class AgressoBusinessBean extends IBOServiceBean implements AgressoBusine
 
 			AccountingBusiness business = AccountingBusinessManager.getInstance().getAccountingBusinessOrDefault(afterSchCare, this.getIWApplicationContext());
 
-			IWTimestamp fromDateTS = new IWTimestamp();
-			fromDateTS.setDay(1);
-			fromDateTS.setMonth(1);
-			Date fromDate = fromDateTS.getDate();
 			String productCode = null;
-			IWTimestamp toDateTS = new IWTimestamp();
-			toDateTS.addMonths(1);
-			Date toDate = toDateTS.getDate();
 
 			AccountingEntry[] entries = business.getAccountingEntries(productCode, null, fromDate, toDate);
 
