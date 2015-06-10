@@ -8,6 +8,7 @@
  */
 package is.idega.idegaweb.egov.accounting.business;
 
+import is.idega.idegaweb.egov.accounting.bean.AgressoTable;
 import is.idega.idegaweb.egov.accounting.data.CaseCodeAccountingKey;
 import is.idega.idegaweb.egov.accounting.data.CaseCodeAccountingKeyHome;
 
@@ -60,7 +61,7 @@ public class AgressoBusinessBean extends IBOServiceBean implements AgressoBusine
 		}
 		AccountingEntry entry;
 		try {
-			String tableName = "RRVK_AGRESSO";
+			String tableName = AgressoTable.AFTER_SCHOOL_CARE.getDBTableName();
 
 			conn.setAutoCommit(false);
 
@@ -166,7 +167,7 @@ public class AgressoBusinessBean extends IBOServiceBean implements AgressoBusine
 		}
 		AccountingEntry entry;
 		try {
-			String tableName = "RRVK_AGRESSO_COURSE";
+			String tableName = AgressoTable.COURSE.getDBTableName();
 
 			conn.setAutoCommit(false);
 
