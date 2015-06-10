@@ -64,7 +64,7 @@ public class AgressoServices extends DefaultSpringBean implements DWRAnnotationP
 	}
 
 	@RemoteMethod
-	public boolean doUpdateAgressoEntriesForCourses(String from, String to) {
+	public boolean doUpdateAgressoEntriesForCourses(String from, String to, String accountingKey) {
 		IWContext iwc = CoreUtil.getIWContext();
 		if (!iwc.isSuperAdmin()) {
 			return false;
@@ -91,7 +91,7 @@ public class AgressoServices extends DefaultSpringBean implements DWRAnnotationP
 			}
 
 			getLogger().info("From: " + fromDate + ", to: " + toDate);
-			abb.executeCourseUpdate(fromDate, toDate);
+			abb.executeCourseUpdate(fromDate, toDate, accountingKey);
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();

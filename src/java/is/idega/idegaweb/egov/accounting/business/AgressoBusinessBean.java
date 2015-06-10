@@ -162,10 +162,10 @@ public class AgressoBusinessBean extends IBOServiceBean implements AgressoBusine
 		toDateTS.addMonths(1);
 		Date toDate = toDateTS.getDate();
 
-		executeCourseUpdate(fromDate, toDate);
+		executeCourseUpdate(fromDate, toDate, "ITRNAMSK");
 	}
 
-	public void executeCourseUpdate(Date fromDate, Date toDate) {
+	public void executeCourseUpdate(Date fromDate, Date toDate, String accountingKey) {
 		log.info("Starting Agresso course update");
 
 		Connection conn = ConnectionBroker.getConnection();
@@ -191,10 +191,11 @@ public class AgressoBusinessBean extends IBOServiceBean implements AgressoBusine
 			stmt1.close();
 
 			CaseCodeAccountingKeyHome ccah = (CaseCodeAccountingKeyHome) IDOLookup.getHome(CaseCodeAccountingKey.class);
-			CaseCodeAccountingKey accKey = ccah.findByAccountingKey("ITRNAMSK");
+			CaseCodeAccountingKey accKey = ccah.findByAccountingKey(accountingKey);
 			CaseCode afterSchCare = accKey.getCaseCode();
 
 			AccountingBusiness business = AccountingBusinessManager.getInstance().getAccountingBusinessOrDefault(afterSchCare, this.getIWApplicationContext());
+			getLogger().info("Using implementation of accounting business: " + business.getClass().getName());
 
 			String productCode = null;
 
@@ -248,7 +249,7 @@ public class AgressoBusinessBean extends IBOServiceBean implements AgressoBusine
 			stmt2.close();
 			conn.commit();
 
-			log.info("Finished Agresso update successfully");
+			log.info("Finished Agresso course update successfully");
 		}
 		catch (Exception e) {
 			try {
