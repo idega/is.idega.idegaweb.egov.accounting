@@ -21,7 +21,9 @@ import java.util.Iterator;
 
 import javax.xml.rpc.ServiceException;
 
+import com.idega.idegaweb.IWApplicationContext;
 import com.idega.idegaweb.IWMainApplication;
+import com.idega.idegaweb.IWMainApplicationSettings;
 import com.idega.util.IWCalendar;
 import com.idega.util.IWTimestamp;
 
@@ -262,7 +264,7 @@ public class NavisionBusinessBean extends AccountingKeyBusinessBean implements N
 	public void actionPerformed(ActionEvent e) {
 		IWTimestamp now = null;
 		// fake current date option so we can force a month to process
-		String fakeCurrentDate = IWMainApplication.getDefaultIWApplicationContext().getApplicationSettings().getProperty(MARITECH_NAV_FAKE_CURRENT_DATE);
+		String fakeCurrentDate = getProperty(MARITECH_NAV_FAKE_CURRENT_DATE);
 		if (fakeCurrentDate != null) {
 			now = new IWTimestamp(fakeCurrentDate);
 		}
@@ -352,5 +354,27 @@ public class NavisionBusinessBean extends AccountingKeyBusinessBean implements N
 		String enabled = this.getIWApplicationContext().getApplicationSettings().getProperty(MARITECH_NAVISION_ENABLE);
 
 		return (AccountingConstants.ACCOUNTING_SYSTEM_NAVISION_XML).equals(accountingSystem) && enabled != null;
+	}
+
+	protected IWApplicationContext getDefaultIWApplicationContext() {
+		return IWMainApplication.getDefaultIWApplicationContext();
+	}
+
+	protected IWMainApplicationSettings getApplicationSettings() {
+		IWApplicationContext context = getDefaultIWApplicationContext();
+		if (context != null) {
+			return context.getApplicationSettings();
+		}
+
+		return null;
+	}
+
+	protected String getProperty(String propertyName) {
+		IWMainApplicationSettings applicationSettings = getApplicationSettings();
+		if (applicationSettings != null) {
+			return applicationSettings.getProperty(propertyName);
+		}
+
+		return null;
 	}
 }
