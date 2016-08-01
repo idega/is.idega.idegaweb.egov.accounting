@@ -378,4 +378,26 @@ public class NavisionBusinessBean extends AccountingKeyBusinessBean implements N
 
 		return (AccountingConstants.ACCOUNTING_SYSTEM_NAVISION_XML).equals(accountingSystem) && enabled != null;
 	}
+
+	protected IWApplicationContext getDefaultIWApplicationContext() {
+		return IWMainApplication.getDefaultIWApplicationContext();
+	}
+
+	protected IWMainApplicationSettings getApplicationSettings() {
+		IWApplicationContext context = getDefaultIWApplicationContext();
+		if (context != null) {
+			return context.getApplicationSettings();
+		}
+
+		return null;
+	}
+
+	protected String getProperty(String propertyName) {
+		IWMainApplicationSettings applicationSettings = getApplicationSettings();
+		if (applicationSettings != null) {
+			return applicationSettings.getProperty(propertyName);
+		}
+
+		return null;
+	}
 }
