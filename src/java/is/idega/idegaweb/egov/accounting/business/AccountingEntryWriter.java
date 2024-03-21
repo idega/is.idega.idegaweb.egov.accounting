@@ -113,8 +113,8 @@ public class AccountingEntryWriter extends DownloadWriter implements MediaWritab
 	    sheet.setColumnWidth((short)0, (short) (30 * 256));
 	    sheet.setColumnWidth((short)1, (short) (14 * 256));
 
-			HSSFFont font = wb.createFont();
-	    font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+		HSSFFont font = wb.createFont();
+	    font.setBold(true);
 	    font.setFontHeightInPoints((short)12);
 	    HSSFCellStyle style = wb.createCellStyle();
 	    style.setFont(font);
@@ -166,6 +166,7 @@ public class AccountingEntryWriter extends DownloadWriter implements MediaWritab
 			}
 
 			wb.write(mos);
+			wb.close();
 		}
 		buffer.setMimeType(MimeTypeUtil.MIME_TYPE_EXCEL_2);
 		return buffer;
@@ -184,10 +185,10 @@ public class AccountingEntryWriter extends DownloadWriter implements MediaWritab
     sheet.setColumnWidth((short)1, (short) (14 * 256));
     sheet.setColumnWidth((short)2, (short) (14 * 256));
     sheet.setColumnWidth((short)3, (short) (14 * 256));
-		sheet.setColumnWidth((short)4, (short) (14 * 256));
+	sheet.setColumnWidth((short)4, (short) (14 * 256));
 
-		HSSFFont font = workbook.createFont();
-    font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+	HSSFFont font = workbook.createFont();
+    font.setBold(true);
     font.setFontHeightInPoints((short)12);
     HSSFCellStyle style = workbook.createCellStyle();
     style.setFont(font);
